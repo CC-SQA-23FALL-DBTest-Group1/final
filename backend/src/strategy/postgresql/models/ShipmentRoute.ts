@@ -1,0 +1,22 @@
+// Written by Frederick
+// Version 1
+// Last update: 2023-12-09
+import { Column, Entity, Index, ManyToOne, PrimaryColumn } from "typeorm"
+import { Shipment } from "./Shipment"
+import { Trip } from "./Trip"
+
+@Entity()
+export class ShipmentRoute {
+
+    @PrimaryColumn()
+    @Index()
+    @ManyToOne(() => Shipment)
+    shipment: Shipment
+
+    @PrimaryColumn()
+    @Column("int")
+    order: number
+
+    @ManyToOne(() => Trip)
+    trip: Trip
+}
