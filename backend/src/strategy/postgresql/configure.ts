@@ -1,5 +1,10 @@
 import { DataSource } from "typeorm";
-import { Photo } from "./photo/photo";
+import {
+  Customer, Employee, EmployeeVehicleTypeOperation, MechanicVehicleType,
+  Shipment, ShipmentRoute, TransitPoint, Trip, Vehicle, VehicleRepairRecord,
+  VehicleType
+} from "./models";
+
 
 export const postgresDataSource = new DataSource({
   type: "postgres",
@@ -8,7 +13,9 @@ export const postgresDataSource = new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: [Photo],
+  entities: [Customer, Employee, EmployeeVehicleTypeOperation, 
+    MechanicVehicleType, Shipment, ShipmentRoute, TransitPoint,
+    Trip, Vehicle, VehicleRepairRecord, VehicleType],
   synchronize: true,
   logging: false,
   migrations: [],
