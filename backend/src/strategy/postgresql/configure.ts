@@ -1,3 +1,6 @@
+// Written by Frederick
+// Version 2
+// Last update: 2023-12-11
 import { DataSource } from "typeorm";
 import {
   Customer, Employee, EmployeeVehicleTypeOperation, MechanicVehicleType,
@@ -13,10 +16,16 @@ export const postgresDataSource = new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: [Customer, Employee, EmployeeVehicleTypeOperation, 
+  entities: [Customer, Employee, EmployeeVehicleTypeOperation,
     MechanicVehicleType, Shipment, ShipmentRoute, TransitPoint,
     Trip, Vehicle, VehicleRepairRecord, VehicleType],
   synchronize: true,
   logging: false,
   migrations: [],
 });
+
+
+export interface DataConnector<T> {
+  get: (predicate: Object) => Promise<T[] | Error>
+  save: (entity: T) => Promise<void | Error>
+}
