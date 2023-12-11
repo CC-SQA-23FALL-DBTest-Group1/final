@@ -1,4 +1,4 @@
-//Written by Frederick
+// Written by Frederick
 // Version 1
 // Last update: 2023-12-09
 export { Customer } from "./Customer"
