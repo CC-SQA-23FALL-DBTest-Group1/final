@@ -1,16 +1,18 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
-import { Entity, Index, ManyToOne } from "typeorm";
+// Version 2
+// Last update: 2023-12-10
+import { Entity, Index, ManyToOne, PrimaryColumn } from "typeorm";
 import { Employee } from "./Employee";
 import { VehicleType } from "./VehicleType";
 
 @Entity()
 export class EmployeeVehicleTypeOperation {
     @Index()
+    @PrimaryColumn()
     @ManyToOne(() => Employee)
-    employee: Employee
+    employee: number
 
+    @PrimaryColumn()
     @ManyToOne(() => VehicleType)
-    type: VehicleType
+    type: number
 }

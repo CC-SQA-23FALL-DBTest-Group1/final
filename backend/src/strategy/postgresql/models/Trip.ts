@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
+// Version 2
+// Last update: 2023-12-10
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Vehicle } from "./Vehicle"
 import { Employee } from "./Employee"
@@ -12,17 +12,17 @@ export class Trip {
     id: number
 
     @ManyToOne(() => Vehicle)
-    vehicle: Vehicle
+    vehicle: number
 
     @ManyToOne(() => Employee)
-    driver1: Employee
+    driver1: number
 
     @ManyToOne(() => Employee, { nullable: true })
-    driver2: Employee
+    driver2: number
 
     @ManyToOne(() => TransitPoint)
-    from: TransitPoint
+    from: number
 
     @ManyToOne(() => TransitPoint)
-    to: TransitPoint
+    to: number
 }

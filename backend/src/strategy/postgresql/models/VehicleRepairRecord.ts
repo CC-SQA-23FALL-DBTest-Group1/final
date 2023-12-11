@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
+// Version 2
+// Last update: 2023-12-10
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Employee } from "./Employee";
 import { Vehicle } from "./Vehicle";
@@ -17,9 +17,9 @@ export class VehicleRepairRecord {
     actualTime: number // days
 
     @ManyToOne(() => Vehicle)
-    vehicle: Vehicle
+    vehicle: number
 
     @ManyToOne(() => Employee)
-    mechanic: Employee
+    mechanic: number
 
 }

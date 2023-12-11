@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
+// Version 2
+// Last update: 2023-12-10
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { VehicleType } from "./VehicleType"
 
@@ -28,5 +28,5 @@ export class Vehicle {
     numberOfRepair: number
 
     @ManyToOne(() => VehicleType)
-    type: VehicleType
+    type: number
 }

@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
+// Version 2
+// Last update: 2023-12-10
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 import { TransitPoint } from "./TransitPoint"
 import { Customer } from "./Customer"
@@ -11,10 +11,10 @@ export class Shipment {
     id: number
 
     @ManyToOne(() => TransitPoint)
-    from: TransitPoint
+    from: number
 
     @ManyToOne(() => TransitPoint)
-    to: TransitPoint
+    to: number
 
     @Column("int")
     weight: number // gram
@@ -23,5 +23,5 @@ export class Shipment {
     value: number
 
     @ManyToOne(() => Customer)
-    customer: Customer
+    customer: number
 }

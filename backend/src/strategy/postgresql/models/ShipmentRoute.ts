@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
+// Version 2
+// Last update: 2023-12-10
 import { Column, Entity, Index, ManyToOne, PrimaryColumn } from "typeorm"
 import { Shipment } from "./Shipment"
 import { Trip } from "./Trip"
@@ -11,12 +11,12 @@ export class ShipmentRoute {
     @PrimaryColumn()
     @Index()
     @ManyToOne(() => Shipment)
-    shipment: Shipment
+    shipment: number
 
     @PrimaryColumn()
     @Column("int")
     order: number
 
     @ManyToOne(() => Trip)
-    trip: Trip
+    trip: number
 }

@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-09
+// Version 2
+// Last update: 2023-12-10
 import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
@@ -27,4 +27,9 @@ export class Customer {
         nullable: true,
     })
     phoneNumber2: string
+
+
+    public toString = () : string => {
+        return `Customer (ID: ${this.id}, Name: ${this.name})`;
+    }
 }
