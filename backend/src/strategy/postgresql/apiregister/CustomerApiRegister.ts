@@ -3,7 +3,8 @@
 // Last update: 2023-12-11
 import { DataSource } from "typeorm";
 import { Express } from "express";
-import CustomerApi, { CustomerDataConnector } from "../api/CustomerApi";
+import { CustomerApi } from "../api";
+import { CustomerDataConnector } from "../dataconnector";
 
 /**
  * Register the urls related to Customer table.
