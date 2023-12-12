@@ -4,6 +4,7 @@
 import cors from "cors";
 import express, { json } from "express";
 import postgresDataSource from "./strategy/postgresql";
+import ApiRegister from "./strategy/postgresql/apiregister/ApiRegister";
 
 
 (async () => {
@@ -13,7 +14,8 @@ import postgresDataSource from "./strategy/postgresql";
 
   const datasource = await postgresDataSource.initialize();
 
-
+  new ApiRegister(datasource,app);
+  
   app.get("/", (_, res) => {
     return res.send("<h1>Final Assignment - Group 1 SEC 3</h1><br>"+
     "<h2>By:<br>Yaonan Deng(Frederick)<br>Xingru Yao(Starley)<br>Keerthana Tikkisetty</h2>");
