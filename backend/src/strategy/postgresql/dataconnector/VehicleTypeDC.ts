@@ -18,7 +18,7 @@ export class VehicleTypeDataConnector implements DataConnector<VehicleType>{
         try {
             return await this.#dataSource.manager.findBy(VehicleType, predicates)
         } catch (e) {
-            throw Error(`Error occured when searching. Code: CS000`)
+            throw Error(`Error occured when searching. Code: VS000`)
         }
 
     }
@@ -27,7 +27,7 @@ export class VehicleTypeDataConnector implements DataConnector<VehicleType>{
         try {
             await this.#dataSource.manager.save(entity);
         } catch (e) {
-            throw Error(`Error occured when saving. Code: CS001`)
+            throw Error(`Error occured when saving. Code: VS001`)
         }
 
     }
@@ -36,7 +36,7 @@ export class VehicleTypeDataConnector implements DataConnector<VehicleType>{
         try {
             await this.#dataSource.manager.remove(entity);
         } catch (error) {
-            throw new Error(`Error occured when removing. Code: CS003`)
+            throw new Error(`Error occured when removing. Code: VS003`)
         }
     }
 }
