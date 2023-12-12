@@ -66,6 +66,23 @@ export default class CustomerApi {
 
     }
 
+    async DeleteByID(id:number){
+        if (isNaN(id) || id < 0) {
+            throw new Error(`The ID is not valid. Code: CU003`);
+        }
+
+        const result = await this.#dataConnector.get([{ id: id }]);
+
+        if (result.length < 1){
+            throw new Error(`Customer with ID ${id} not found. Code: CG004`);
+        }
+
+        const customer = result[0];
+
+        await this.#dataConnector.delete(customer);
+
+    }
+
 
 
 }
@@ -78,6 +95,7 @@ export class CustomerDataConnector implements DataConnector<Customer>{
     constructor(dataSource: DataSource) {
         this.#dataSource = dataSource;
     }
+    
 
     async get(predicates: Object[]): Promise<Customer[]> {
         try {
@@ -95,5 +113,13 @@ export class CustomerDataConnector implements DataConnector<Customer>{
             throw Error(`Error occured when saving. Code: CS001`)
         }
 
+    }
+
+    async delete(entity: Customer):Promise<void>{
+        try {
+            await this.#dataSource.manager.remove(entity);
+        } catch (error) {
+            throw new Error(`Error occured when removing. Code: CS003`)
+        }
     }
 }

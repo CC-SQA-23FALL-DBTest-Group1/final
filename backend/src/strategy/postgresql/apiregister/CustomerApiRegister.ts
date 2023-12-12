@@ -128,6 +128,30 @@ export default class CustomerApiRegister {
         })
 
 
+        //Delete Customer
+        this.#express.post(`/customer/delete`, async (req, res) => {
+            const id: string = req.body.name?.trim() ?? null
+
+            /**
+             * 
+             * Space for Validations
+             * 
+             */
+
+
+            const dataConnector = new CustomerDataConnector(this.#dataSource);
+            const api = new CustomerApi(dataConnector);
+
+            try {
+                await api.DeleteByID(parseInt(id));
+
+                return res.json(`Delete ID:${id}`);
+            } catch (e) {
+                return res.json((e as Error).message);
+            }
+
+        })
+
 
     }
 
