@@ -26,6 +26,6 @@ export const postgresDataSource = new DataSource({
 
 
 export interface DataConnector<T> {
-  get: (predicate: Object) => Promise<T[] | Error>
-  save: (entity: T) => Promise<void | Error>
+  get: (predicates: Object[]) => Promise<T[]>
+  save: (entity: T) => Promise<void>
 }
