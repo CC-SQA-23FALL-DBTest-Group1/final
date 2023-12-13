@@ -117,7 +117,7 @@ export default class VehicleTypeApiRegister {
 
 
             try {
-                await api.DeleteByID(parseInt(id));
+                await api.deleteByID(parseInt(id));
 
                 return res.json(`Delete ID:${id}`);
             } catch (e) {
