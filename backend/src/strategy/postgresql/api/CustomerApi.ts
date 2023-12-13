@@ -33,10 +33,23 @@ export class CustomerApi {
         phoneNumber2: string): Promise<Customer> {
 
         var customer = new Customer();
-        customer.name = name;
-        customer.address = address;
-        customer.phoneNumber1 = phoneNumber1;
-        customer.phoneNumber2 = phoneNumber2
+        customer.name = name.trim();
+        customer.address = address.trim();
+        customer.phoneNumber1 = phoneNumber1.trim();
+        customer.phoneNumber2 = phoneNumber2.trim();
+
+        if(customer.name.length == 0) {
+            throw new Error(`Name can not be empty. Code: CU005`);
+        }
+        if(customer.address.length == 0) {
+            throw new Error(`Address can not be empty. Code: CU006`);
+        }
+        if(customer.phoneNumber1.length == 0) {
+            throw new Error(`Phone Number 1 can not be empty. Code: CU007`);
+        }
+        if(customer.phoneNumber2.length == 0) {
+            throw new Error(`Phone Number 2 can not be empty. Code: CU008`);
+        }
 
         await this.#dataConnector.save(customer);
 
@@ -48,16 +61,29 @@ export class CustomerApi {
         phoneNumber1: string, phoneNumber2: string): Promise<Customer> {
 
         if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: CU002`)
+            throw new Error(`The ID is not valid. Code: CU002`);
         }
 
-        const result = await this.#dataConnector.get([{ id: id }])
+        const result = await this.#dataConnector.get([{ id: id }]);
 
         var customer = result[0];
-        customer.name = name;
-        customer.address = address;
-        customer.phoneNumber1 = phoneNumber1;
-        customer.phoneNumber2 = phoneNumber2;
+        customer.name = name.trim();
+        customer.address = address.trim();
+        customer.phoneNumber1 = phoneNumber1.trim();
+        customer.phoneNumber2 = phoneNumber2.trim();
+
+        if(customer.name.length == 0) {
+            throw new Error(`Name can not be empty. Code: CU005`);
+        }
+        if(customer.address.length == 0) {
+            throw new Error(`Address can not be empty. Code: CU006`);
+        }
+        if(customer.phoneNumber1.length == 0) {
+            throw new Error(`Phone Number 1 can not be empty. Code: CU007`);
+        }
+        if(customer.phoneNumber2.length == 0) {
+            throw new Error(`Phone Number 2 can not be empty. Code: CU008`);
+        }
 
         await this.#dataConnector.save(customer);
 
