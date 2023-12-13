@@ -12,17 +12,17 @@ export class Trip {
     id: number
 
     @ManyToOne(() => Vehicle)
-    vehicle: number
+    vehicle: Vehicle
 
     @ManyToOne(() => Employee)
-    driver1: number
+    driver1: Employee
 
     @ManyToOne(() => Employee, { nullable: true })
-    driver2: number
+    driver2: Employee
 
     @ManyToOne(() => TransitPoint)
-    from: number
+    from: TransitPoint
 
     @ManyToOne(() => TransitPoint)
-    to: number
+    to: TransitPoint
 }
