@@ -84,7 +84,8 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '123456789';
             let phoneNumber2 = '789456123';
             // expecting void
-            expect(await customerApi.create(name,address,phoneNumber1,phoneNumber2)).not.toBeDefined();
+      
+            expect(await customerApi.create(name,address,phoneNumber1,phoneNumber2)).toBeInstanceOf(Customer);
         });
 
         test(`with invalid name(empty string) should throw an error`, async () => {
@@ -127,7 +128,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
             // expecting void
-            expect(await customerApi.updateByID(0, name,address,phoneNumber1,phoneNumber2)).not.toBeDefined();
+            expect(await customerApi.updateByID(0, name,address,phoneNumber1,phoneNumber2)).toBeInstanceOf(Customer);
         });
 
 
@@ -306,9 +307,11 @@ class MockCustomerApiDataConnector implements DataConnector<Customer>{
 
     }
 
-    save: (entity: Customer) => Promise<void>;
+    async save(entity: Customer) :Promise<void> {
 
-    delete: (entity: Customer) => Promise<void>;
+    }
 
+    async delete(entity: Customer): Promise<void> {
 
+    }
 }
