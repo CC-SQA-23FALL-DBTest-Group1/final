@@ -42,12 +42,6 @@ export class ShipmentRouteApi {
             throw new Error(`The order is not valid. Code: SA002`)
         }
 
-        if(order>9999 || order <0) {
-
-            throw new Error(
-                'Shipmentroute order(${order}) is not valid. Code: SR005'
-            );
-        }
         let shipmentRoute = new ShipmentRoute();
         shipmentRoute.shipment = shipment;
         shipmentRoute.order = order;
