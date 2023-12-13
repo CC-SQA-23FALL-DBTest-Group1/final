@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-11
+// Version 2
+// Last update: 2023-12-12
 import { VehicleType } from "../models";
 import { DataConnector } from "../dataconnector/DataConnector";
 
@@ -30,9 +30,11 @@ export class VehicleTypeApi {
     }
 
     async create(name: string): Promise<VehicleType> {
-
+        if (name.trim().length == 0){
+            throw new Error(`Name can not be empty. Code: VT005`)
+        }
         let vehicleType = new VehicleType();
-        vehicleType.name = name;
+        vehicleType.name = name.trim();
 
         await this.#dataConnector.save(vehicleType);
 
@@ -45,11 +47,14 @@ export class VehicleTypeApi {
         if (isNaN(id) || id < 0) {
             throw new Error(`The ID is not valid. Code: VT002`)
         }
+        if (newName.trim().length == 0){
+            throw new Error(`Name can not be empty. Code: VT006`)
+        }
 
         const result = await this.#dataConnector.get([{ id: id }])
 
         var vehicleType = result[0];
-        vehicleType.name = newName;
+        vehicleType.name = newName.trim();
 
         await this.#dataConnector.save(vehicleType);
 
