@@ -236,7 +236,7 @@ describe("Employee Table API Tests", () => {
             );
 
             // expecting void
-            expect(await employeeApi.DeleteByID(0)).not.toBeDefined();
+            expect(await employeeApi.deleteByID(0)).not.toBeDefined();
         });
 
 
@@ -245,7 +245,7 @@ describe("Employee Table API Tests", () => {
                 new MockEmployeeApiDataConnector()
             );
 
-            await expect(employeeApi.DeleteByID(9)).rejects.toThrow(Error);
+            await expect(employeeApi.deleteByID(9)).rejects.toThrow(Error);
         });
 
 
@@ -254,7 +254,7 @@ describe("Employee Table API Tests", () => {
                 new MockEmployeeApiDataConnector()
             );
 
-            await expect(employeeApi.DeleteByID(-1)).rejects.toThrow(Error);
+            await expect(employeeApi.deleteByID(-1)).rejects.toThrow(Error);
         });
 
     });
