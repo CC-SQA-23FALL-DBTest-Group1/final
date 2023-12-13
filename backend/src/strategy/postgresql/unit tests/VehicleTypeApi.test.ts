@@ -1,12 +1,13 @@
 // Written by Frederick
-// Version 1
-
+// Version 2
+// Last update: 2023-12-12
 import { VehicleTypeApi } from "../api"
 import { DataConnector } from "../dataconnector"
 import { VehicleType } from "../models"
 
-// Last update: 2023-12-12
+
 describe(`Vehicle Type Table API Tests`, () => {
+
     describe(`Get By ID`, () => {
         test(`With Valid Existing ID`, async () => {
             const vehicleTypeApi = new VehicleTypeApi(
@@ -75,19 +76,174 @@ describe(`Vehicle Type Table API Tests`, () => {
     });
 
 
-
     describe(`Create`, () => {
+        test(`with valid name`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
 
+            let name = `Trunk`;
+            // expecting void
+            expect(await vehicleTypeApi.create(name)).not.toBeDefined();
+        });
+
+        test(`with invalid name(empty string) should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = ``;
+
+            await expect(vehicleTypeApi.create(name)).rejects.toThrow(Error);
+        });
+
+        test(`with invalid name(only spaces) should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `   `;
+
+            await expect(vehicleTypeApi.create(name)).rejects.toThrow(Error);
+        });
     });
 
 
     describe(`Update By ID`, () => {
 
+        test(`with valid name and existing ID`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `Trunk`;
+            // expecting void
+            expect(await vehicleTypeApi.updateByID(0, name)).not.toBeDefined();
+        });
+
+
+        test(`with valid name and nonexisting ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `Trunk`;
+
+            await expect(vehicleTypeApi.updateByID(9, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with valid name and invalid ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `Trunk`;
+
+            await expect(vehicleTypeApi.updateByID(-1, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with invalid name(empty string) and existing ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = ``;
+
+            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with invalid name(empty string) and nonexisting ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = ``;
+
+            await expect(vehicleTypeApi.updateByID(9, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with invalid name(empty string) and invalid ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = ``;
+
+            await expect(vehicleTypeApi.updateByID(-1, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with invalid name(only spaces) and existing ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `   `;
+
+            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with invalid name(only spaces) and nonexisting ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `   `;
+
+            await expect(vehicleTypeApi.updateByID(9, name)).rejects.toThrow(Error);
+        });
+
+
+        test(`with invalid name(only spaces) and invalid ID should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            let name = `   `;
+
+            await expect(vehicleTypeApi.updateByID(-1, name)).rejects.toThrow(Error);
+        });
+
     });
+
 
     describe(`Delete By ID`, () => {
 
+        test(`with existing ID`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            // expecting void
+            expect(await vehicleTypeApi.DeleteByID(0)).not.toBeDefined();
+        });
+
+
+        test(`With Valid Nonexisting ID`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            await expect(vehicleTypeApi.DeleteByID(9)).rejects.toThrow(Error);
+        });
+
+
+        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+            const vehicleTypeApi = new VehicleTypeApi(
+                new MockVehicleTypeDataConnector()
+            );
+
+            await expect(vehicleTypeApi.DeleteByID(-1)).rejects.toThrow(Error);
+        });
+
     });
+
+
 
 });
 
