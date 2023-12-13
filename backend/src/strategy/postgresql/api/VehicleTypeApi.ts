@@ -62,7 +62,7 @@ export class VehicleTypeApi {
 
     }
 
-    async DeleteByID(id: number) {
+    async deleteByID(id: number) {
         if (isNaN(id) || id < 0) {
             throw new Error(`The ID is not valid. Code: VT003`);
         }
