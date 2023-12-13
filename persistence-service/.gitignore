@@ -1,0 +1,3 @@
+.env
+backend/src/strategy/postgresql/photo
+backend/src/strategy/flatfile
