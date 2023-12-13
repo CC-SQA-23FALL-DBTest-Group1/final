@@ -28,8 +28,4 @@ export class Customer {
     })
     phoneNumber2: string
 
-
-    public toString = () : string => {
-        return `Customer (ID: ${this.id}, Name: ${this.name})`;
-    }
 }

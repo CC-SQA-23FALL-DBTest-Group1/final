@@ -27,6 +27,6 @@ export class Vehicle {
     @Column({ type: "int"})
     numberOfRepair: number
 
-    @ManyToOne(() => VehicleType)
-    type: number
+    @ManyToOne(() => VehicleType, { onDelete: 'CASCADE' })
+    type: VehicleType
 }
