@@ -1,8 +1,8 @@
 // Written by Frederick and Xingru
-// Version 1
-// Last update: 2023-12-11
+// Version 2
+// Last update: 2023-12-13
 
-import { ShipmentRoute } from "../models";
+import { Shipment, ShipmentRoute, Trip } from "../models";
 import { DataConnector } from "../dataconnector/DataConnector";
 
 export class ShipmentRouteApi {
@@ -12,28 +12,40 @@ export class ShipmentRouteApi {
         this.#dataConnector = dataConnector;
     }
 
-    async getByID(id: number): Promise<ShipmentRoute> {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VT000`)
-        }
-        const result = await this.#dataConnector.get([{ id: id }])
-        if (result.length >= 1) {
-            return result[0]
-        } else {
-            throw new Error(`Customer with ID ${id} not found. Code: VT001`)
-        }
+    async getByShipment(shipment: Shipment): Promise<ShipmentRoute[]> {
 
-    }
+        const result = await this.#dataConnector.get([{ shipment: shipment }])
 
-    async get(predicates: Object[]): Promise<ShipmentRoute[]> {
-        const result = await this.#dataConnector.get(predicates);
         return result;
     }
 
-    async create(name: string): Promise<ShipmentRoute> {
+    async get(shipment: Shipment, order: number): Promise<ShipmentRoute> {
+        if (isNaN(order) || order < 0) {
+            throw new Error(`The order is not valid. Code: SA000`)
+        }
+
+        const result = await this.#dataConnector.get([{
+            shipment: shipment,
+            order: order
+        }])
+
+        if (result.length != 1) {
+            throw Error(`Combination of shipment and order not found. Code: SA001`);
+        }
+
+        return result[0];
+    }
+
+    async create(shipment: Shipment, order: number, trip: Trip): Promise<ShipmentRoute> {
+
+        if (isNaN(order) || order < 0) {
+            throw new Error(`The order is not valid. Code: SA002`)
+        }
 
         let shipmentRoute = new ShipmentRoute();
-        shipmentRoute.name = name;
+        shipmentRoute.shipment = shipment;
+        shipmentRoute.order = order;
+        shipmentRoute.trip = trip;
 
         await this.#dataConnector.save(shipmentRoute);
 
@@ -41,16 +53,25 @@ export class ShipmentRouteApi {
 
     }
 
-    async updateByID(id: number, newName: string): Promise<ShipmentRoute> {
+    async update(shipment: Shipment, order: number, trip: Trip): Promise<ShipmentRoute> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VT002`)
+        if (isNaN(order) || order < 0) {
+            throw new Error(`The order is not valid. Code: SA003`)
         }
 
-        const result = await this.#dataConnector.get([{ id: id }])
+        const result = await this.#dataConnector.get([{
+            shipment: shipment,
+            order: order
+        }])
 
-        var shipmentRoute = result[0];
-        shipmentRoute.name = newName;
+        if (result.length != 1) {
+            throw Error(`Combination of shipment and order not found. Code: SA004`);
+        }
+
+        let shipmentRoute = result[0];
+        shipmentRoute.shipment = shipment;
+        shipmentRoute.order = order;
+        shipmentRoute.trip = trip;
 
         await this.#dataConnector.save(shipmentRoute);
 
@@ -58,15 +79,18 @@ export class ShipmentRouteApi {
 
     }
 
-    async DeleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VT003`);
+    async delete(shipment: Shipment, order: number) {
+        if (isNaN(order) || order < 0) {
+            throw new Error(`The order is not valid. Code: SA005`)
         }
 
-        const result = await this.#dataConnector.get([{ id: id }]);
+        const result = await this.#dataConnector.get([{
+            shipment: shipment,
+            order: order
+        }])
 
-        if (result.length < 1) {
-            throw new Error(`Vehicle Type with ID ${id} not found. Code: VT004`);
+        if (result.length != 1) {
+            throw Error(`Combination of shipment and order not found. Code: SA006`);
         }
 
         const shipmentRoute = result[0];
@@ -74,8 +98,6 @@ export class ShipmentRouteApi {
         await this.#dataConnector.delete(shipmentRoute);
 
     }
-
-
 
 }
 
