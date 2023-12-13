@@ -257,7 +257,7 @@ describe("Customer Table API Tests", () => {
             );
 
             // expecting void
-            expect(await customerApi.DeleteByID(0)).not.toBeDefined();
+            expect(await customerApi.deleteByID(0)).not.toBeDefined();
         });
 
 
@@ -266,7 +266,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            await expect(customerApi.DeleteByID(9)).rejects.toThrow(Error);
+            await expect(customerApi.deleteByID(9)).rejects.toThrow(Error);
         });
 
 
@@ -275,7 +275,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            await expect(customerApi.DeleteByID(-1)).rejects.toThrow(Error);
+            await expect(customerApi.deleteByID(-1)).rejects.toThrow(Error);
         });
     });
 
