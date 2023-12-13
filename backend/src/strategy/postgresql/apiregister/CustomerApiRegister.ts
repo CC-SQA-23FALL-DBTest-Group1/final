@@ -144,7 +144,7 @@ export default class CustomerApiRegister {
             const api = new CustomerApi(dataConnector);
 
             try {
-                await api.DeleteByID(parseInt(id));
+                await api.deleteByID(parseInt(id));
 
                 return res.json(`Delete ID:${id}`);
             } catch (e) {
