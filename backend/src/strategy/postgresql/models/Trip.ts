@@ -18,7 +18,7 @@ export class Trip {
     driver1: Employee
 
     @ManyToOne(() => Employee, { nullable: true })
-    driver2: Employee
+    driver2?: Employee
 
     @ManyToOne(() => TransitPoint)
     from: TransitPoint
