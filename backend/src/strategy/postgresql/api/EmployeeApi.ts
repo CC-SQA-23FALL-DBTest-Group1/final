@@ -87,7 +87,7 @@ export class EmployeeApi {
 
     }
 
-    async DeleteByID(id: number) {
+    async deleteByID(id: number) {
         if (isNaN(id) || id < 0) {
             throw new Error(`The ID is not valid. Code: EA003`);
         }

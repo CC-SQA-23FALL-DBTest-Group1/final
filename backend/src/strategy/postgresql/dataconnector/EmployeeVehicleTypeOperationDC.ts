@@ -2,7 +2,7 @@
 // Version 1
 // Last update: 2023-12-12
 import { DataSource } from "typeorm";
-import { EmployeeVehicleTypeOperation } from "../models";
+import { Employee, EmployeeVehicleTypeOperation, VehicleType } from "../models";
 import { DataConnector } from "./DataConnector";
 export class EmployeeVehicleTypeOperationDataConnector
     implements DataConnector<EmployeeVehicleTypeOperation>{
@@ -14,12 +14,20 @@ export class EmployeeVehicleTypeOperationDataConnector
     }
 
 
-    async get(predicates: Object[]): Promise<EmployeeVehicleTypeOperation[]> {
+    async get(e?: Employee, vt?: VehicleType): Promise<EmployeeVehicleTypeOperation[]> {
         try {
-            return await this.#dataSource.manager.findBy(
-                EmployeeVehicleTypeOperation,
-                predicates
-            );
+            const queryBuilder = this.#dataSource.getRepository(EmployeeVehicleTypeOperation)
+                .createQueryBuilder(`evt`);
+
+            if (e !== undefined && e !== null) {
+                queryBuilder.where(`evt.employee = :employeeID`, { employeeID: e.id });
+            }
+
+            if (vt !== undefined && vt !== null) {
+                queryBuilder.andWhere(`evt.type = :typeID`, { typeID: vt.id });
+            }
+
+            return await queryBuilder.getMany();
         } catch (e) {
             throw Error(`Error occured when searching. Code: EV000`);
         }

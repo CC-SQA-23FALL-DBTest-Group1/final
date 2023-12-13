@@ -11,11 +11,24 @@ export class TransitPointDataConnector implements DataConnector<TransitPoint>{
     constructor(dataSource: DataSource) {
         this.#dataSource = dataSource;
     }
-    
 
-    async get(predicates: Object[]): Promise<TransitPoint[]> {
+
+    async get(id?: number, name?: string): Promise<TransitPoint[]> {
         try {
-            return await this.#dataSource.manager.findBy(TransitPoint, predicates);
+
+            const queryBuilder = this.#dataSource.getRepository(TransitPoint)
+                .createQueryBuilder(`tp`);
+
+            if (name !== undefined && name !== '') {
+                queryBuilder.where(`tp.name LIKE :searchTerm`, { searchTerm: `%${name}%` });
+            }
+
+            if (id !== undefined) {
+                queryBuilder.andWhere(`tp.id = :id`, { id });
+            }
+    
+            return await queryBuilder.getMany();
+            
         } catch (e) {
             throw Error(`Error occured when searching. Code: TD000`);
         }
@@ -31,7 +44,7 @@ export class TransitPointDataConnector implements DataConnector<TransitPoint>{
 
     }
 
-    async delete(entity: TransitPoint):Promise<void>{
+    async delete(entity: TransitPoint): Promise<void> {
         try {
             await this.#dataSource.manager.remove(entity);
         } catch (e) {
