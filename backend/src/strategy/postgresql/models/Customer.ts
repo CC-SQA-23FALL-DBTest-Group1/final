@@ -26,6 +26,6 @@ export class Customer {
         length: 20,
         nullable: true,
     })
-    phoneNumber2?: string
+    phoneNumber2: string | null
 
 }
