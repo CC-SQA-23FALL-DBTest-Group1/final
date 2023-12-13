@@ -42,14 +42,14 @@ export class VehicleRepairRecordApi {
         mechanic: Employee
     ): Promise<VehicleRepairRecord> {
 
-        if (isNaN(estimatedTime) || estimatedTime < 0) {
+        if (isNaN(estimatedTime) || estimatedTime <= 0) {
             throw new Error(
                 `EstimatedTime is not valid. `
                 + `Code: VRR002`
             );
         }
 
-        if (isNaN(actualTime) || actualTime < 0) {
+        if (isNaN(actualTime) || actualTime <= 0) {
             throw new Error(
                 `ActualTime is not valid. `
                 + `Code:VRR003`
@@ -80,14 +80,14 @@ export class VehicleRepairRecordApi {
             throw new Error(`The ID is not valid. Code: SI004`)
         }
 
-        if (isNaN(estimatedTime) || estimatedTime < 0) {
+        if (isNaN(estimatedTime) || estimatedTime <= 0) {
             throw new Error(
                 `EstimatedTimeis not valid. `
                 + `Code: VRR006`
             );
         }
 
-        if (isNaN(actualTime) || actualTime < 0) {
+        if (isNaN(actualTime) || actualTime <= 0) {
             throw new Error(
                 `ActualTime is not valid. `
                 + `Code:VRR007`
