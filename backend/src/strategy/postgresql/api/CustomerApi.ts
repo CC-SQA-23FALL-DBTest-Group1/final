@@ -73,16 +73,16 @@ export class CustomerApi {
         customer.phoneNumber2 = phoneNumber2.trim();
 
         if(customer.name.length == 0) {
-            throw new Error(`Name can not be empty. Code: CU005`);
+            throw new Error(`Name can not be empty. Code: CU009`);
         }
         if(customer.address.length == 0) {
-            throw new Error(`Address can not be empty. Code: CU006`);
+            throw new Error(`Address can not be empty. Code: CU010`);
         }
         if(customer.phoneNumber1.length == 0) {
-            throw new Error(`Phone Number 1 can not be empty. Code: CU007`);
+            throw new Error(`Phone Number 1 can not be empty. Code: CU011`);
         }
         if(customer.phoneNumber2.length == 0) {
-            throw new Error(`Phone Number 2 can not be empty. Code: CU008`);
+            throw new Error(`Phone Number 2 can not be empty. Code: CU012`);
         }
 
         await this.#dataConnector.save(customer);
