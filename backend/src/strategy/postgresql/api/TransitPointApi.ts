@@ -1,6 +1,8 @@
-// Written by Frederick
+// Written by Keerthana
 // Version 1
 // Last update: 2023-12-13
+// Reviewed By Frederick
+// Reviewed on 2023-12-13
 import { TransitPoint } from "../models";
 import { DataConnector } from "../dataconnector/DataConnector";
 
