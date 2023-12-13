@@ -1,8 +1,9 @@
-// Written by Keerthana
+// Written by Frederick and Keerthana
 // Version 1
-// Last update: 2023-12-12
-import { EmployeeVehicleTypeOperation } from "../models";
-import { DataConnector } from "../dataconnector/DataConnector";
+// Last update: 2023-12-13
+
+import { Employee, EmployeeVehicleTypeOperation, VehicleType } from "../models";
+import { DataConnector, EmployeeVehicleTypeOperationDataConnector } from "../dataconnector";
 
 export class EmployeeVehicleTypeOperationApi {
     #dataConnector: DataConnector<EmployeeVehicleTypeOperation>;
@@ -11,72 +12,102 @@ export class EmployeeVehicleTypeOperationApi {
         this.#dataConnector = dataConnector;
     }
 
-    async getByID(id: number): Promise<EmployeeVehicleTypeOperation> {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: EV000`)
-        }
-        const result = await this.#dataConnector.get([{ id: id }])
+    async get(employee?: Employee, type?: VehicleType)
+        : Promise<EmployeeVehicleTypeOperation[]> {
+
+        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
+
+        const result = await dataConnector.get(employee, type);
+
         if (result.length >= 1) {
-            return result[0]
+            return result;
         } else {
-            throw new Error(`EmployeeVehicleTypeOperation with ID ${id} not found. Code: EV001`)
+            throw new Error(
+                `Combination of Employee and Vehicle Type not found. `
+                + `Code: EO001`
+            );
+        }
+    }
+
+    async create(employee: Employee, type: VehicleType)
+        : Promise<EmployeeVehicleTypeOperation> {
+
+        if (!(employee instanceof Employee)) {
+            throw new Error(
+                `Employee is not valid. `
+                + `Code: EO002`
+            );
         }
 
-    }
-
-    async get(predicates: Object[]): Promise<EmployeeVehicleTypeOperation[]> {
-        const result = await this.#dataConnector.get(predicates);
-        return result;
-    }
-
-    async create(employee: number,type: number): Promise<EmployeeVehicleTypeOperation> {
-
-        let employeeVehicleTypeOperation = new EmployeeVehicleTypeOperation();
-        employeeVehicleTypeOperation.employee = employee;
-        employeeVehicleTypeOperation.type = type;
-
-        await this.#dataConnector.save(employeeVehicleTypeOperation);
-
-        return employeeVehicleTypeOperation;
-
-    }
-
-    async updateByID(id: number, employee: number,type: number): Promise<EmployeeVehicleTypeOperation> {
-
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: EV002`)
+        if (!(type instanceof VehicleType)) {
+            throw new Error(
+                `Old Vehicle type is not valid. `
+                + `Code: EO003`
+            );
         }
-
-        const result = await this.#dataConnector.get([{ id: id }])
-
-        var employeeVehicleTypeOperation = result[0];
-        employeeVehicleTypeOperation.employee = employee;
-        employeeVehicleTypeOperation.type = type;
-
-        await this.#dataConnector.save(employeeVehicleTypeOperation);
-
-        return employeeVehicleTypeOperation;
-
-    }
-
-    async DeleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: EV003`);
-        }
-
-        const result = await this.#dataConnector.get([{ id: id }]);
-
-        if (result.length < 1) {
-            throw new Error(`EmployeeVehicleTypeOperation with ID ${id} not found. Code: EV004`);
-        }
-
-        const employeeVehicleTypeOperation = result[0];
-
-        await this.#dataConnector.delete(employeeVehicleTypeOperation);
-
-    }
-
         
 
+        let evto = new EmployeeVehicleTypeOperation();
+        evto.employee = employee;
+        evto.type = type;
+
+        await this.#dataConnector.save(evto);
+
+        return evto;
+
+    }
+
+    async update(employee: Employee, type: VehicleType, newType: VehicleType)
+        : Promise<EmployeeVehicleTypeOperation> {
+
+        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
+
+        const result = await dataConnector.get(employee, type);
+
+        if (result.length < 1) {
+            throw new Error(
+                `Combination of Employee and Vehicle Type not found. `
+                + `Code: EO004`
+            );
+        }
+        else if (result.length > 1) {
+            throw new Error(
+                `Implimentation Error. `
+                + `Code: EO005`
+            );
+        }
+
+        let evto = result[0];
+
+        await this.#dataConnector.delete(evto);
+
+        evto = await this.create(employee,newType);
+
+        return evto;
+    }
+
+    async delete(employee: Employee, type: VehicleType) {
+        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
+
+        const result = await dataConnector.get(employee, type);
+
+        if (result.length < 1) {
+            throw new Error(
+                `Combination of Employee and Vehicle Type not found. `
+                + `Code: EO006`
+            );
+        }
+        else if (result.length > 1) {
+            throw new Error(
+                `Implimentation Error. `
+                + `Code: EO007`
+            );
+        }
+
+        const evto = result[0];
+
+        await this.#dataConnector.delete(evto);
+
+    }
 
 }

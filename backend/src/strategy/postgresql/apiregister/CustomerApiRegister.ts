@@ -32,7 +32,7 @@ export default class CustomerApiRegister {
             const api = new CustomerApi(dataConnector);
 
             try {
-                const customer = await api.getCustomerByID(parseInt(id));
+                const customer = await api.getByID(parseInt(id));
                 return res.json(customer);
             } catch (e) {
                 return res.json((e as Error).message);
@@ -50,7 +50,7 @@ export default class CustomerApiRegister {
             const api = new CustomerApi(dataConnector);
 
             try {
-                const customers = await api.getCustomers([{
+                const customers = await api.get([{
                     name: name,
                     address: address,
                     phoneNumber1: phoneNumber
@@ -144,7 +144,7 @@ export default class CustomerApiRegister {
             const api = new CustomerApi(dataConnector);
 
             try {
-                await api.DeleteByID(parseInt(id));
+                await api.deleteByID(parseInt(id));
 
                 return res.json(`Delete ID:${id}`);
             } catch (e) {

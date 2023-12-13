@@ -1,7 +1,9 @@
 // Written by Keerthana
 // Version 1
 // Last update: 2023-12-13
-import { TransitPoint, Vehicle } from "../models";
+// Reviewed By Frederick
+// Reviewed on 2023-12-13
+import { Vehicle, VehicleType } from "../models";
 import { DataConnector } from "../dataconnector/DataConnector";
 
 export class VehicleApi {
@@ -30,7 +32,7 @@ export class VehicleApi {
     }
 
     async create(brand: string, model: string, load: number, capacity: number, 
-        year: number, numberOfRepair: number, type: number): Promise<Vehicle> {
+        year: number, numberOfRepair: number, type: VehicleType): Promise<Vehicle> {
 
         let vehicle = new Vehicle();
         vehicle.brand = brand;
@@ -48,7 +50,7 @@ export class VehicleApi {
     }
 
     async updateByID(id: number, brand: string, model: string, load: number, capacity: number, 
-        year: number, numberOfRepair: number, type: number): Promise<Vehicle> {
+        year: number, numberOfRepair: number, type: VehicleType): Promise<Vehicle> {
 
         if (isNaN(id) || id < 0) {
             throw new Error(`The ID is not valid. Code: VE002`)

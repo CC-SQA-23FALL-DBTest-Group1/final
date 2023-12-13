@@ -17,9 +17,9 @@ export class VehicleRepairRecord {
     actualTime: number // days
 
     @ManyToOne(() => Vehicle)
-    vehicle: number
+    vehicle: Vehicle
 
     @ManyToOne(() => Employee)
-    mechanic: number
+    mechanic: Employee
 
 }

@@ -26,10 +26,6 @@ export class Customer {
         length: 20,
         nullable: true,
     })
-    phoneNumber2: string
+    phoneNumber2?: string
 
-
-    public toString = () : string => {
-        return `Customer (ID: ${this.id}, Name: ${this.name})`;
-    }
 }

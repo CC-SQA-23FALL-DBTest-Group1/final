@@ -1,22 +1,26 @@
 // Written by Frederick
-// Version 2
-// Last update: 2023-12-10
-import { Column, Entity, Index, ManyToOne, PrimaryColumn } from "typeorm";
+// Version 3
+// Last update: 2023-12-12
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Employee } from "./Employee";
 import { VehicleType } from "./VehicleType";
 
 @Entity()
+@Index(["employee", "type"], { unique: true })
 export class MechanicVehicleType {
-    @Index()
-    @PrimaryColumn()
-    @ManyToOne(() => Employee)
-    employee: number
+    // Have to add this because of limitation of TypeORM
+    // The Foreign Key with Class Data Type can not be the Primary key.
+    @PrimaryGeneratedColumn()
+    private id: number 
 
-    @Index()
-    @PrimaryColumn()
-    @ManyToOne(() => VehicleType)
-    type: number
+    // @PrimaryColumn()
+    @ManyToOne(() => Employee, { onDelete: 'CASCADE' })
+    employee: Employee;
+
+    // @PrimaryColumn()
+    @ManyToOne(() => VehicleType, { onDelete: 'CASCADE' })
+    type: VehicleType;
 
     @Column()
-    status: boolean
+    status: boolean;
 }

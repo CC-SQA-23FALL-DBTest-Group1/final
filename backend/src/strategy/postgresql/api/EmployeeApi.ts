@@ -41,9 +41,15 @@ export class EmployeeApi {
             );
         }
         let employee = new Employee();
-        employee.firstName = firstName;
-        employee.lastName = lastName;
+        employee.firstName = firstName.trim();
+        employee.lastName = lastName.trim();
         employee.seniority = seniority;
+        if(employee.firstName.length == 0){
+            throw new Error(`First name can not be empty. Code: EA006`)
+        }
+        if(employee.lastName.length == 0){
+            throw new Error(`Last name can not be empty. Code: EA007`)
+        }
 
         await this.#dataConnector.save(employee);
 
@@ -65,9 +71,15 @@ export class EmployeeApi {
         const result = await this.#dataConnector.get([{ id: id }])
 
         var employee = result[0];
-        employee.firstName = firstName;
-        employee.lastName = lastName;
+        employee.firstName = firstName.trim();
+        employee.lastName = lastName.trim();
         employee.seniority = seniority;
+        if(employee.firstName.length == 0){
+            throw new Error(`First name can not be empty. Code: EA008`)
+        }
+        if(employee.lastName.length == 0){
+            throw new Error(`Last name can not be empty. Code: EA009`)
+        }
 
         await this.#dataConnector.save(employee);
 
@@ -75,7 +87,7 @@ export class EmployeeApi {
 
     }
 
-    async DeleteByID(id: number) {
+    async deleteByID(id: number) {
         if (isNaN(id) || id < 0) {
             throw new Error(`The ID is not valid. Code: EA003`);
         }
