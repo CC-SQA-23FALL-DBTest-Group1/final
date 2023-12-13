@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="1" errors="0" time="7.041">
-  <testsuite name="smoke" errors="0" failures="1" skipped="0" timestamp="2023-12-13T20:29:08" time="6.893" tests="1">
-    <testcase classname="smoke persistence-service status is 200" name="smoke persistence-service status is 200" time="5.006">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a test.
-Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test.&quot;
-    at E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\src\smoke.test.ts:6:3
-    at _dispatchDescribe (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-circus\build\index.js:105:26)
-    at describe (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-circus\build\index.js:60:5)
-    at Object.&lt;anonymous&gt; (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\src\smoke.test.ts:5:1)
-    at Runtime._execModule (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-runtime\build\index.js:1714:24)
-    at Runtime._loadModule (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-runtime\build\index.js:1223:12)
-    at Runtime.requireModule (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-runtime\build\index.js:1047:12)
-    at jestAdapter (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:89:13)
-    at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at runTestInternal (E:\Conestoga\SENG8070 Database Testing\group01 - SENG8070 -Final Assignment\integration-test\node_modules\jest-runner\build\runTest.js:411:16)</failure>
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.973">
+  <testsuite name="smoke" errors="0" failures="0" skipped="0" timestamp="2023-12-13T21:06:34" time="1.849" tests="1">
+    <testcase classname="smoke persistence-service status is 200" name="smoke persistence-service status is 200" time="0.123">
     </testcase>
   </testsuite>
 </testsuites>

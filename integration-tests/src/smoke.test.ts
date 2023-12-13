@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const targetUrl = `${process.env.TARGET_URL}`;
+//const targetUrl = `${process.env.TARGET_URL}`;
+const targetUrl = `localhost:80`;
 
 describe("smoke", () => {
   it("persistence-service status is 200", async () => {
