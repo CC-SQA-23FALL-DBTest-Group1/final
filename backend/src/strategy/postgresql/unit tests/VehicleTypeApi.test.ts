@@ -83,8 +83,8 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             let name = `Trunk`;
-            // expecting void
-            expect(await vehicleTypeApi.create(name)).not.toBeDefined();
+            
+            expect(await vehicleTypeApi.create(name)).toBeInstanceOf(VehicleType);
         });
 
         test(`with invalid name(empty string) should throw an error`, async () => {
@@ -117,8 +117,8 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             let name = `Trunk`;
-            // expecting void
-            expect(await vehicleTypeApi.updateByID(0, name)).not.toBeDefined();
+            
+            expect(await vehicleTypeApi.updateByID(0, name)).toBeInstanceOf(VehicleType);
         });
 
 
@@ -273,7 +273,11 @@ class MockVehicleTypeDataConnector implements DataConnector<VehicleType> {
 
     }
 
-    save: (entity: VehicleType) => Promise<void>
-    delete: (entity: VehicleType) => Promise<void>
+    async save(entity: VehicleType): Promise<void> {
+
+    }
+    async delete(entity: VehicleType): Promise<void> {
+
+    }
 
 }
