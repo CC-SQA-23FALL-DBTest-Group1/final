@@ -1,0 +1,79 @@
+// Written by Keerthana
+// Version 1
+// Last update: 2023-12-13
+import { TransitPoint } from "../models";
+import { DataConnector } from "../dataconnector/DataConnector";
+
+export class TransitPointApi {
+    #dataConnector: DataConnector<TransitPoint>;
+
+    constructor(dataConnector: DataConnector<TransitPoint>) {
+        this.#dataConnector = dataConnector;
+    }
+    
+    async getByID(id: number): Promise<TransitPoint> {
+        if (isNaN(id) || id < 0) {
+            throw new Error(`The ID is not valid. Code: TP000`)
+        }
+        const result = await this.#dataConnector.get([{ id: id }])
+        if (result.length >= 1) {
+            return result[0]
+        } else {
+            throw new Error(`TransitPoint with ID ${id} not found. Code: TP001`)
+        }
+
+    }
+
+    async get(predicates: Object[]): Promise<TransitPoint[]> {
+        const result = await this.#dataConnector.get(predicates);
+        return result;
+    }
+
+    async create(name: string): Promise<TransitPoint> {
+
+        let transitPoint = new TransitPoint();
+        transitPoint.name = name;
+
+        await this.#dataConnector.save(transitPoint);
+
+        return transitPoint;
+
+    }
+
+    async updateByID(id: number, newName: string): Promise<TransitPoint> {
+
+        if (isNaN(id) || id < 0) {
+            throw new Error(`The ID is not valid. Code: TP002`)
+        }
+
+        const result = await this.#dataConnector.get([{ id: id }])
+
+        var transitPoint = result[0];
+        transitPoint.name = newName;
+
+        await this.#dataConnector.save(transitPoint);
+
+        return transitPoint;
+
+    }
+
+    async DeleteByID(id: number) {
+        if (isNaN(id) || id < 0) {
+            throw new Error(`The ID is not valid. Code: TP003`);
+        }
+
+        const result = await this.#dataConnector.get([{ id: id }]);
+
+        if (result.length < 1) {
+            throw new Error(`Transit Point with ID ${id} not found. Code: TP004`);
+        }
+
+        const transitPoint = result[0];
+
+        await this.#dataConnector.delete(transitPoint);
+
+    }
+
+
+
+}
