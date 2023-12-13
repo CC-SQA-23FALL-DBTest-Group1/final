@@ -1,11 +1,11 @@
-// Written by Xingru 
+// Written by Frederick and Xingru 
 // Version 1
 
 import { EmployeeApi } from "../api/EmployeeApi";
 import { DataConnector } from "../dataconnector";
 import { Employee } from "../models";
 
-describe("Employee Type Table API Tests", () => {
+describe("Employee Table API Tests", () => {
     describe('Get Employee By ID', () => {
         test('With Valid Existing ID', async () => {
             const employeeApi = new EmployeeApi(
