@@ -220,7 +220,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             // expecting void
-            expect(await vehicleTypeApi.DeleteByID(0)).not.toBeDefined();
+            expect(await vehicleTypeApi.deleteByID(0)).not.toBeDefined();
         });
 
 
@@ -229,7 +229,7 @@ describe(`Vehicle Type Table API Tests`, () => {
                 new MockVehicleTypeDataConnector()
             );
 
-            await expect(vehicleTypeApi.DeleteByID(9)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.deleteByID(9)).rejects.toThrow(Error);
         });
 
 
@@ -238,7 +238,7 @@ describe(`Vehicle Type Table API Tests`, () => {
                 new MockVehicleTypeDataConnector()
             );
 
-            await expect(vehicleTypeApi.DeleteByID(-1)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.deleteByID(-1)).rejects.toThrow(Error);
         });
 
     });

@@ -30,7 +30,6 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "**/flatfile"
+    "node_modules"
   ]
 }
