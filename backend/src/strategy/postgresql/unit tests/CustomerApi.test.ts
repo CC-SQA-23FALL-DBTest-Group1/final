@@ -12,7 +12,7 @@ describe("Customer Table API Tests", () => {
             const customerApi = new CustomerApi(
                 new MockCustomerApiDataConnector(),
             );
-            const result = await customerApi.getCustomerByID(0);
+            const result = await customerApi.getByID(0);
             expect(result).toBeInstanceOf(Customer);
         });
 
@@ -21,7 +21,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            await expect(customerApi.getCustomerByID(88)).rejects.toThrow(Error);
+            await expect(customerApi.getByID(88)).rejects.toThrow(Error);
         });
 
         test('With Invalid ID(Negative Integer) should throw an error', async () => {
@@ -29,7 +29,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            await expect(customerApi.getCustomerByID(-1)).rejects.toThrow(Error);
+            await expect(customerApi.getByID(-1)).rejects.toThrow(Error);
         });
     });
 
@@ -39,7 +39,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            const result = await customerApi.getCustomers([{ name: "John" }]);
+            const result = await customerApi.get([{ name: "John" }]);
             expect(result).toHaveLength(1);
         });
 
@@ -48,7 +48,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            const result = await customerApi.getCustomers([{ name: "Alina" }]);
+            const result = await customerApi.get([{ name: "Alina" }]);
             expect(result).toHaveLength(0);
         });
 
@@ -57,7 +57,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            const result = await customerApi.getCustomers([{ id: 0 }]);
+            const result = await customerApi.get([{ id: 0 }]);
             expect(result).toHaveLength(1);
         });
 
@@ -66,7 +66,7 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            const result = await customerApi.getCustomers([{ id: 9 }]);
+            const result = await customerApi.get([{ id: 9 }]);
             expect(result).toHaveLength(0);
         });
 
