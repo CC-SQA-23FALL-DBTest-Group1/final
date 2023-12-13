@@ -1,10 +1,11 @@
-//Team Leader :  Frederick
-//Written by Frederick and Xingru 
+// Written by Xingru 
 // Version 1
 // Last update: 2023-12-13
-import { Shipment,Vehicle,Employee } from "../models";
+// Reviewed by Frederick
+// Reviewed on 2023-12-13
+
+import { Vehicle, Employee } from "../models";
 import { DataConnector } from "../dataconnector";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { VehicleRepairRecord } from "../models";
 
 export class VehicleRepairRecordApi {
@@ -56,14 +57,14 @@ export class VehicleRepairRecordApi {
         }
 
         let vehicleRepairRecord = new VehicleRepairRecord();
-        vehicleRepairRecord. estimatedTime = estimatedTime;
-        vehicleRepairRecord. actualTime = actualTime;
+        vehicleRepairRecord.estimatedTime = estimatedTime;
+        vehicleRepairRecord.actualTime = actualTime;
         vehicleRepairRecord.vehicle = vehicle;
         vehicleRepairRecord.mechanic = mechanic;
 
-        await this.#dataConnector.save( vehicleRepairRecord);
+        await this.#dataConnector.save(vehicleRepairRecord);
 
-        return  vehicleRepairRecord;
+        return vehicleRepairRecord;
 
     }
 
@@ -138,7 +139,7 @@ export class VehicleRepairRecordApi {
         let vehicleRepairRecord = vehicleRepairRecords[0];
 
         await this.#dataConnector.delete(vehicleRepairRecord);
-        
+
     }
 
 }
