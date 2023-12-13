@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "a package to run integration tests against iq-proxy-service",
   "scripts": {
-    "test": "jest --watchAll=false --reporters=jest-junit --detectOpenHandles"
+    "test": "jest --watchAll=false --reporters=jest-junit"
   },
   "dependencies": {
     "@types/jest": "^28.1.5",
