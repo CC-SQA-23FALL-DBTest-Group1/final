@@ -44,7 +44,7 @@ export class MechanicVehicleTypeDataConnector
 
 
 
-            return queryBuilder.getMany();
+            return await queryBuilder.getMany();
 
 
         } catch (e) {
