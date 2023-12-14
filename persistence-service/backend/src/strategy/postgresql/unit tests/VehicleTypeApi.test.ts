@@ -1,6 +1,10 @@
 // Written by Frederick
 // Version 2
 // Last update: 2023-12-12
+
+/**
+ * !!!!!!!! DO NOT CHANGE THIS FILE !!!!!!!!
+ */
 import { VehicleTypeApi } from "../api"
 import { DataConnector } from "../dataconnector"
 import { VehicleType } from "../models"

@@ -1,14 +1,18 @@
 // Written by Xingru 
-//Reviewed by Frederick
-// Version 1
+// Version 2
 // Last update: 2023-12-13
-import { CustomerApi } from "../api/CustomerApi";
+// Reviewed by Frederick
+// Reviewed on 2023-12-14
+
+/**
+ * !!!!!!!! DO NOT CHANGE THIS FILE !!!!!!!!
+ */
 import { DataConnector } from "../dataconnector";
 import { Shipment } from "../models";
 import { Customer } from "../models";
 import { ShipmentApi } from "../api/ShipmentApi";
 import { TransitPoint, VehicleType } from "../models";
-import { DataSource } from "typeorm";
+
 
 describe(`Shipment API Tests`, () => {
 
@@ -19,7 +23,7 @@ describe(`Shipment API Tests`, () => {
                 new MockShipmentDataConnector()
             );
 
-            const result = await shipmentApi.getByID(0);
+            const result = await shipmentApi.getByID(1);
             expect(result).toBeInstanceOf(Shipment);
         });
 
@@ -32,12 +36,12 @@ describe(`Shipment API Tests`, () => {
             await expect(shipmentApi.getByID(9)).rejects.toThrow(Error);
         });
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer or Zero) should throw an error`, async () => {
             const shipmentApi = new ShipmentApi(
                 new MockShipmentDataConnector()
             );
 
-
+            await expect(shipmentApi.getByID(0)).rejects.toThrow(Error);
             await expect(shipmentApi.getByID(-1)).rejects.toThrow(Error);
         });
     });
@@ -102,7 +106,7 @@ describe(`Shipment API Tests`, () => {
                 const to = new TransitPoint();
                 const customer = new Customer();
 
-                await expect(shipmentApi.create(customer, weight, value, from, to)).rejects.toThrow(Error);
+                expect(await shipmentApi.create(customer, weight, value, from, to)).toBeInstanceOf(Shipment);
             });
 
             test(`with negative value should throw an error`, async () => {
@@ -138,7 +142,7 @@ describe(`Shipment API Tests`, () => {
             const to = new TransitPoint();
             const customer = new Customer();
 
-            const result = await shipmentApi.updateByID(0, customer, weight, value, from, to);
+            const result = await shipmentApi.updateByID(1, customer, weight, value, from, to);
             expect(result).toBeInstanceOf(Shipment);
         });
 
@@ -160,7 +164,7 @@ describe(`Shipment API Tests`, () => {
         });
 
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer or Zero) should throw an error`, async () => {
             const shipmentApi = new ShipmentApi(
                 new MockShipmentDataConnector()
             );
@@ -172,7 +176,10 @@ describe(`Shipment API Tests`, () => {
             const customer = new Customer();
 
             await expect(
-                shipmentApi.updateByID(-9, customer, weight, value, from, to)
+                shipmentApi.updateByID(-1, customer, weight, value, from, to)
+            ).rejects.toThrow(Error);
+            await expect(
+                shipmentApi.updateByID(0, customer, weight, value, from, to)
             ).rejects.toThrow(Error);
         });
 
@@ -190,7 +197,7 @@ describe(`Shipment API Tests`, () => {
             const customer = new Customer();
 
             await expect(
-                shipmentApi.updateByID(0, customer, weight, value, from, to)
+                shipmentApi.updateByID(1, customer, weight, value, from, to)
             ).rejects.toThrow(Error);
         });
 
@@ -206,7 +213,7 @@ describe(`Shipment API Tests`, () => {
             const to = new TransitPoint();
             const customer = new Customer();
             await expect(
-                shipmentApi.updateByID(0, customer, weight, value, from, to)
+                shipmentApi.updateByID(1, customer, weight, value, from, to)
             ).rejects.toThrow(Error);
         });
 
@@ -223,9 +230,7 @@ describe(`Shipment API Tests`, () => {
             const to = new TransitPoint();
             const customer = new Customer();
 
-            await expect(
-                shipmentApi.updateByID(0, customer, weight, value, from, to)
-            ).rejects.toThrow(Error);
+            expect(await shipmentApi.create(customer, weight, value, from, to)).toBeInstanceOf(Shipment);
         });
 
 
@@ -241,7 +246,7 @@ describe(`Shipment API Tests`, () => {
             const customer = new Customer();
 
             await expect(
-                shipmentApi.updateByID(0, customer, weight, value, from, to)
+                shipmentApi.updateByID(1, customer, weight, value, from, to)
             ).rejects.toThrow(Error);
         });
 
@@ -257,7 +262,7 @@ describe(`Shipment API Tests`, () => {
 
 
             // expecting void
-            expect(await shipmentApi.deleteByID(0)).not.toBeDefined();
+            expect(await shipmentApi.deleteByID(1)).not.toBeDefined();
         });
 
 
@@ -271,12 +276,12 @@ describe(`Shipment API Tests`, () => {
         });
 
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer or Zero) should throw an error`, async () => {
             const shipmentApi = new ShipmentApi(
                 new MockShipmentDataConnector()
             );
 
-
+            await expect(shipmentApi.deleteByID(0)).rejects.toThrow(Error);
             await expect(shipmentApi.deleteByID(-1)).rejects.toThrow(Error);
         });
 
@@ -285,16 +290,16 @@ describe(`Shipment API Tests`, () => {
 
     class MockShipmentDataConnector implements DataConnector<Shipment> {
 
-        async get(predicates: Object[]): Promise<Shipment[]> {
+        async get(predicate: Shipment): Promise<Shipment[]> {
             const shipment = new Shipment()
-            if (predicates.length >= 1) {
+            if (predicate) {
                 // For Valid Existing ID
-                if (JSON.stringify(predicates[0]) === JSON.stringify({ id: 0 })) {
+                if (predicate.id ==1 ) {
                     return [shipment];
                 }
 
                 // For Valid Nonexisting ID
-                return [shipment];
+                return [];
             }
             else {
                 return [shipment];
