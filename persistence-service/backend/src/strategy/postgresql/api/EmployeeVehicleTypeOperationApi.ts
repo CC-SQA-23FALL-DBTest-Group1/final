@@ -1,5 +1,5 @@
 // Written by Frederick and Keerthana
-// Version 1
+// Version 2
 // Last update: 2023-12-13
 
 import { Employee, EmployeeVehicleTypeOperation, VehicleType } from "../models";
@@ -15,7 +15,7 @@ export class EmployeeVehicleTypeOperationApi {
     async get(predicate: EmployeeVehicleTypeOperation)
         : Promise<EmployeeVehicleTypeOperation[]> {
 
-        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
+        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector;
 
         const result = await dataConnector.get(predicate);
 
@@ -60,9 +60,9 @@ export class EmployeeVehicleTypeOperationApi {
     async update(predicate: EmployeeVehicleTypeOperation, newType: VehicleType)
         : Promise<EmployeeVehicleTypeOperation> {
 
-        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
+        
 
-        const result = await dataConnector.get(predicate);
+        const result = await this.get(predicate);
 
         if (result.length < 1) {
             throw new Error(
@@ -80,7 +80,7 @@ export class EmployeeVehicleTypeOperationApi {
         let evto = result[0];
         const employee = evto.employee;
 
-        await dataConnector.delete(evto);
+        await this.delete(evto);
 
         evto = await this.create(employee, newType);
 
@@ -88,9 +88,9 @@ export class EmployeeVehicleTypeOperationApi {
     }
 
     async delete(predicate: EmployeeVehicleTypeOperation) {
-        const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
+        
 
-        const result = await dataConnector.get(predicate);
+        const result = await this.get(predicate);
 
         if (result.length < 1) {
             throw new Error(

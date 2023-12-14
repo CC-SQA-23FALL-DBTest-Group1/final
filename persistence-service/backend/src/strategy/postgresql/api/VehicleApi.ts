@@ -1,10 +1,10 @@
 // Written by Keerthana
-// Version 1
+// Version 2
 // Last update: 2023-12-13
 // Reviewed By Frederick
 // Reviewed on 2023-12-13
 import { Vehicle, VehicleType } from "../models";
-import { DataConnector } from "../dataconnector/DataConnector";
+import { DataConnector, VehicleDataConnector } from "../dataconnector";
 
 export class VehicleApi {
     #dataConnector: DataConnector<Vehicle>;
@@ -14,20 +14,23 @@ export class VehicleApi {
     }
 
     async getByID(id: number): Promise<Vehicle> {
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: VE000`)
         }
-        const result = await this.#dataConnector.get([{ id: id }])
-        if (result.length >= 1) {
+        const dc = this.#dataConnector as VehicleDataConnector;
+        let predicate = new Vehicle();
+        predicate.id = id;
+        const result = await dc.get(predicate);
+        if (result.length == 1) {
             return result[0]
         } else {
-            throw new Error(`Vehicle with ID ${id} not found. Code: VE001`)
+            throw new Error(`Vehicle with ID ${id} not found. Code: VE001`);
         }
 
     }
 
-    async get(predicates: Object[]): Promise<Vehicle[]> {
-        const result = await this.#dataConnector.get(predicates);
+    async get(predicate: Vehicle): Promise<Vehicle[]> {
+        const result = await this.#dataConnector.get(predicate);
         return result;
     }
 
@@ -52,13 +55,7 @@ export class VehicleApi {
     async updateByID(id: number, brand: string, model: string, load: number, capacity: number, 
         year: number, numberOfRepair: number, type: VehicleType): Promise<Vehicle> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VE002`)
-        }
-
-        const result = await this.#dataConnector.get([{ id: id }])
-
-        var vehicle = result[0];
+        let vehicle = await this.getByID(id);
         vehicle.brand = brand;
         vehicle.model = model;
         vehicle.load = load;
@@ -73,18 +70,9 @@ export class VehicleApi {
 
     }
 
-    async DeleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VE003`);
-        }
+    async deleteByID(id: number) {
 
-        const result = await this.#dataConnector.get([{ id: id }]);
-
-        if (result.length < 1) {
-            throw new Error(`Vehicle Type with ID ${id} not found. Code: VE004`);
-        }
-
-        const vehicle = result[0];
+        let vehicle = await this.getByID(id);
 
         await this.#dataConnector.delete(vehicle);
 

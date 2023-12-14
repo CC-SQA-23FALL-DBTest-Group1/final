@@ -54,9 +54,6 @@ export class VehicleTypeApi {
 
     async updateByID(id: number, newName: string): Promise<VehicleType> {
 
-        if (isNaN(id) || id <= 0) {
-            throw new Error(`The ID is not valid. Code: VT002`)
-        }
         if (newName.trim().length == 0) {
             throw new Error(`Name can not be empty. Code: VT006`)
         }

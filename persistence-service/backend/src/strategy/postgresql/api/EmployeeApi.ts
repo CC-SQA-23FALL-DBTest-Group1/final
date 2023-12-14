@@ -70,19 +70,7 @@ export class EmployeeApi {
         seniority: number
     ): Promise<Employee> {
 
-        if (isNaN(id) || id <= 0) {
-            throw new Error(`The ID is not valid. Code: EA002`)
-        }
-        if (seniority > 9999 || seniority < 0) {
-            throw new Error(`The ID is not valid. Code: EA010`)
-        }
-
-        const dataConnector = this.#dataConnector as EmployeeDataConnector;
-        let predicate = new Employee();
-        predicate.id = id;
-        const result = await dataConnector.get(predicate);
-
-        var employee = result[0];
+        let employee = await this.getByID(id);
         employee.firstName = firstName.trim();
         employee.lastName = lastName.trim();
         employee.seniority = seniority;
@@ -100,26 +88,12 @@ export class EmployeeApi {
     }
 
     async deleteByID(id: number) {
-        if (isNaN(id) || id <= 0) {
-            throw new Error(`The ID is not valid. Code: EA003`);
-        }
 
-        const dataConnector = this.#dataConnector as EmployeeDataConnector;
-        let predicate = new Employee();
-        predicate.id = id;
-        const result = await dataConnector.get(predicate);
-
-        if (result.length < 1) {
-            throw new Error(`Employee with ID ${id} not found. Code: EA004`);
-        }
-
-        const employee = result[0];
+        let employee = await this.getByID(id);
 
         await this.#dataConnector.delete(employee);
 
     }
-
-
 
 }
 
