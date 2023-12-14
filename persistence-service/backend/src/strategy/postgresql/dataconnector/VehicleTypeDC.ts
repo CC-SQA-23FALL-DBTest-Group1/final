@@ -14,9 +14,30 @@ export class VehicleTypeDataConnector implements DataConnector<VehicleType>{
     }
 
 
-    async get(predicates: Object[]): Promise<VehicleType[]> {
+    async get(predicate: VehicleType): Promise<VehicleType[]> {
         try {
-            return await this.#dataSource.manager.findBy(VehicleType, predicates)
+
+            const queryBuilder = this.#dataSource.getRepository(VehicleType)
+                .createQueryBuilder(`vt`);
+
+            if (
+                predicate.id !== undefined
+                && predicate.id !== null
+                && predicate.id >= 1
+            ) {
+                queryBuilder.andWhere(`vt.id = :id`, { id: predicate.id });
+            }
+
+            if (
+                predicate.name !== undefined
+                && predicate.name !== null
+                && predicate.name.trim() !== ''
+            ) {
+                queryBuilder.andWhere(`c.name LIKE :searchTerm`, { searchTerm: `%${predicate.name.trim()}%` });
+            }
+
+            return await queryBuilder.getMany();
+            
         } catch (e) {
             throw Error(`Error occured when searching. Code: VS000`)
         }
