@@ -41,7 +41,7 @@ export class CustomerApi {
         customer.address = address.trim();
         customer.phoneNumber1 = phoneNumber1.trim();
 
-        const phoneNumRegex = /^(\+?(\d{1,3})?)?( ?\(\d{1,4}\))? ?\d{1,14}$/;
+        const phoneNumRegex = /^(\+?(\d{1,3})?)?(\s?\(\d{1,4}\))?\s?\d{1,14}$/;
         if (phoneNumber2) {
 
             if (phoneNumRegex.test(phoneNumber2.trim())) {
@@ -78,7 +78,7 @@ export class CustomerApi {
         customer.address = address.trim();
         customer.phoneNumber1 = phoneNumber1.trim();
 
-        const phoneNumRegex = /^(\+?(\d{1,3})?)?( ?\(\d{1,4}\))? ?\d{1,14}$/;
+        const phoneNumRegex = /^(\+?(\d{1,3})?)?(\s?\(\d{1,4}\))?\s?\d{1,14}$/;
         if (phoneNumber2) {
 
             if (phoneNumRegex.test(phoneNumber2.trim())) {

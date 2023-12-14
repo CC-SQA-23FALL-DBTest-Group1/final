@@ -12,7 +12,7 @@ import { Customer } from "../models";
  * Give Responses with JSON.
  * All errors should be cought here.
  */
-export default class CustomerApiRegister {
+export class CustomerApiRegister {
     #express: Express;
     #dataSource: DataSource;
 
@@ -94,8 +94,8 @@ export default class CustomerApiRegister {
             if (address.length == 0) {
                 return res.json(`Address is not valid`);
             }
-            const phoneNumberRegex = /^(\+?(\d{1,3})?)?( ?\(\d{1,4}\))? ?\d{1,14}$/;
-            if (phoneNumberRegex.test(phoneNumber1)) {
+            const phoneNumberRegex = /^(\+?(\d{1,3})?)?(\s?\(\d{1,4}\))?\s?\d{1,14}$/;
+            if (!phoneNumberRegex.test(phoneNumber1)) {
                 return res.json(`Phone Number 1 is not valid`);
             }
 
@@ -103,7 +103,7 @@ export default class CustomerApiRegister {
                 phoneNumber2 = null;
             }
             else {
-                if (phoneNumberRegex.test(phoneNumber2)) {
+                if (!phoneNumberRegex.test(phoneNumber2)) {
                     return res.json(`Phone Number 2 is not valid`);
                 }
             }
@@ -124,40 +124,41 @@ export default class CustomerApiRegister {
 
         //Update Customer
         this.#express.post(`/customer/update`, async (req, res) => {
-            const id: string = req.body.name?.trim() ?? ``
-            const name: string = req.body.name?.trim() ?? ``
-            const address: string = req.body.address?.trim() ?? ``
-            const phoneNumber1: string = req.body.phoneNumber1?.trim() ?? ``
-            let phoneNumber2: string | null = req.body.phoneNumber2?.trim() ?? ``
+            const id: number = req.body.id?? -9;
+            const name: string = req.body.name?.trim() ?? ``;
+            const address: string = req.body.address?.trim() ?? ``;
+            const phoneNumber1: string = req.body.phoneNumber1?.trim() ?? ``;
+            let phoneNumber2: string | null = req.body.phoneNumber2?.trim() ?? ``;
 
+    
             // Positive integer with or without leading zeros
             const regex = /^[0-9]{1,}$/;
             // If the id is not able to be a positive integer
-            if (!regex.test(id)) {
-                return res.json(`ID is not valid`);
+            if (!regex.test(id.toString())) {
+                return res.json(`ID is not valid. Code:CUUP0`);
             } else {
-                const id_int = parseInt(id);
-                if (id_int == 0) {
-                    return res.json(`ID is not valid`);
+                
+                if (id == 0) {
+                    return res.json(`ID is not valid. Code:CUUP1`);
                 }
             }
             if (name.length == 0) {
-                return res.json(`Name is not valid`);
+                return res.json(`Name is not valid. Code:CUUP2`);
             }
             if (address.length == 0) {
-                return res.json(`Address is not valid`);
+                return res.json(`Address is not valid. Code:CUUP3`);
             }
-            const phoneNumRegex = /^(\+?(\d{1,3})?)?( ?\(\d{1,4}\))? ?\d{1,14}$/;
-            if (phoneNumRegex.test(phoneNumber1)) {
-                return res.json(`Phone Number 1 is not valid`);
+            const phoneNumRegex = /^(\+?(\d{1,3})?)?(\s?\(\d{1,4}\))?\s?\d{1,14}$/;
+            if (!phoneNumRegex.test(phoneNumber1)) {
+                return res.json(`Phone Number 1 is not valid. Code:CUUP4`);
             }
 
             if (phoneNumber2 == `` || phoneNumber2 == null) {
                 phoneNumber2 = null;
             }
             else {
-                if (phoneNumRegex.test(phoneNumber2)) {
-                    return res.json(`Phone Number 2 is not valid`);
+                if (!phoneNumRegex.test(phoneNumber2)) {
+                    return res.json(`Phone Number 2 is not valid. Code:CUUP5`);
                 }
             }
 
@@ -167,7 +168,7 @@ export default class CustomerApiRegister {
 
             try {
                 const result = await api.updateByID(
-                    parseInt(id),
+                    id,
                     name,
                     address,
                     phoneNumber1,
@@ -184,16 +185,16 @@ export default class CustomerApiRegister {
 
         //Delete Customer
         this.#express.post(`/customer/delete`, async (req, res) => {
-            const id: string = req.body.name?.trim() ?? ``
+            const id: number = req.body.id?? -9;
 
             // Positive integer with or without leading zeros
             const regex = /^[0-9]{1,}$/;
             // If the id is not able to be a positive integer
-            if (!regex.test(id)) {
+            if (!regex.test(id.toString())) {
                 return res.json(`ID is not valid`);
             } else {
-                const id_int = parseInt(id);
-                if (id_int == 0) {
+                
+                if (id == 0) {
                     return res.json(`ID is not valid`);
                 }
             }
@@ -203,7 +204,7 @@ export default class CustomerApiRegister {
             const api = new CustomerApi(dc);
 
             try {
-                await api.deleteByID(parseInt(id));
+                await api.deleteByID(id);
 
                 return res.json(`Deleted Customer ID:${id}`);
             } catch (e) {
