@@ -19,34 +19,34 @@ export class EmployeeDataConnector implements DataConnector<Employee>{
                 .createQueryBuilder(`e`);
 
                 if (
-                    predicate.id !== undefined
-                    && predicate.id >= 1
+                    predicate.id !== undefined                    
                     && predicate.id !== null
+                    && predicate.id >= 1
                 ) {
                     queryBuilder.andWhere(`e.id = :id`, { id: predicate.id });
                 }
     
                 if (
-                    predicate.firstName !== undefined
-                    && predicate.firstName !== ''
+                    predicate.firstName !== undefined   
                     && predicate.firstName !== null
+                    && predicate.firstName !== ''
                 ) {
                     queryBuilder.andWhere(`c.firstName LIKE :searchTerm`, { searchTerm: `%${predicate.firstName}%` });
                 }
 
                 if (
                     predicate.lastName !== undefined
-                    && predicate.lastName !== ''
                     && predicate.lastName !== null
+                    && predicate.lastName !== ''                    
                 ) {
                     queryBuilder.andWhere(`c.lastName LIKE :searchTerm`, { searchTerm: `%${predicate.lastName}%` });
                 }
 
                 if (
                     predicate.seniority !== undefined
-                    && predicate.seniority > 0
-                    && predicate.seniority < 9999
                     && predicate.seniority !== null
+                    && predicate.seniority > 0
+                    && predicate.seniority < 9999                    
                 ) {
                     queryBuilder.andWhere(`c.seniority = :searchTerm`, { searchTerm: `%${predicate.seniority}%` });
                 }

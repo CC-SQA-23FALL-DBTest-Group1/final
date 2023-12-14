@@ -22,32 +22,32 @@ export class CustomerDataConnector implements DataConnector<Customer>{
 
             if (
                 predicate.id !== undefined
-                && predicate.id >= 1
                 && predicate.id !== null
+                && predicate.id >= 1
             ) {
                 queryBuilder.andWhere(`c.id = :id`, { id: predicate.id });
             }
 
             if (
                 predicate.name !== undefined
-                && predicate.name !== ''
                 && predicate.name !== null
+                && predicate.name !== ''
             ) {
                 queryBuilder.andWhere(`c.name LIKE :searchTerm`, { searchTerm: `%${predicate.name}%` });
             }
 
             if (
                 predicate.address !== undefined
-                && predicate.address !== ''
                 && predicate.address !== null
+                && predicate.address !== ''
             ) {
                 queryBuilder.andWhere(`c.address LIKE :searchTerm`, { searchTerm: `%${predicate.address}%` });
             }
 
             if (
                 predicate.phoneNumber1 !== undefined
-                && predicate.phoneNumber1 !== ''
                 && predicate.phoneNumber1 !== null
+                && predicate.phoneNumber1 !== ''
             ) {
                 queryBuilder.andWhere(
                     new Brackets(qb => {
@@ -59,8 +59,8 @@ export class CustomerDataConnector implements DataConnector<Customer>{
 
             if (
                 predicate.phoneNumber2 !== undefined
-                && predicate.phoneNumber2 !== ''
                 && predicate.phoneNumber2 !== null
+                && predicate.phoneNumber2 !== ''
             ) {
                 queryBuilder.andWhere(
                     new Brackets(qb => {

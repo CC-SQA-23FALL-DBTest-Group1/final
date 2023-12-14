@@ -64,17 +64,7 @@ export class CustomerApi {
     async updateByID(id: number, name: string, address: string,
         phoneNumber1: string, phoneNumber2?: string): Promise<Customer> {
 
-        if (isNaN(id) || id <= 0) {
-            throw new Error(`The ID is not valid. Code: CU002`);
-        }
-
-        const dataConnector = this.#dataConnector as CustomerDataConnector;
-        let predicate = new Customer()
-        predicate.id = id;
-
-        const result = await dataConnector.get(predicate);
-
-        var customer = result[0];
+        let customer = await this.getByID(id);
         customer.name = name.trim();
         customer.address = address.trim();
         customer.phoneNumber1 = phoneNumber1.trim();
@@ -97,20 +87,8 @@ export class CustomerApi {
     }
 
     async deleteByID(id:number){
-        if (isNaN(id) || id <= 0) {
-            throw new Error(`The ID is not valid. Code: CU003`);
-        }
-        const dataConnector = this.#dataConnector as CustomerDataConnector;
-        let predicate = new Customer()
-        predicate.id = id;
-
-        const result = await dataConnector.get(predicate);
-
-        if (result.length < 1){
-            throw new Error(`Customer with ID ${id} not found. Code: CG004`);
-        }
-
-        const customer = result[0];
+        
+        let customer = await this.getByID(id);
 
         await this.#dataConnector.delete(customer);
 
