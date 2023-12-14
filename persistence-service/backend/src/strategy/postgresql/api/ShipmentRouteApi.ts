@@ -1,39 +1,36 @@
-// Written by Frederick and Xingru
-// Version 2
+// Written by Frederick 
+// Version 3
 // Last update: 2023-12-13
+// Reviewed by Xingru
+//version 3
+// Last update: 2023-12-14
 
 import { Shipment, ShipmentRoute, Trip } from "../models";
 import { DataConnector } from "../dataconnector/DataConnector";
+import { ShipmentRouteDataConnector } from "../dataconnector";
 
 export class ShipmentRouteApi {
     #dataConnector: DataConnector<ShipmentRoute>;
 
-    constructor(dataConnector: DataConnector<ShipmentRoute>) {
+    constructor(dataConnector:
+        DataConnector<ShipmentRoute>) {
         this.#dataConnector = dataConnector;
     }
 
-    async getByShipment(shipment: Shipment): Promise<ShipmentRoute[]> {
+    async get(predicate: ShipmentRoute): Promise<ShipmentRoute[]> {
 
-        const result = await this.#dataConnector.get([{ shipment: shipment }])
+        const dataConnector = this.#dataConnector as
+            ShipmentRouteDataConnector
+        const result = await dataConnector.get(predicate);
 
-        return result;
-    }
-
-    async get(shipment: Shipment, order: number): Promise<ShipmentRoute> {
-        if (isNaN(order) || order < 0) {
-            throw new Error(`The order is not valid. Code: SA000`)
+        if (result.length >= 1) {
+            return result;
+        } else {
+            throw new Error(
+                `Combination of Shipment and trip not found. `
+                + `Code: SA001`
+            );
         }
-
-        const result = await this.#dataConnector.get([{
-            shipment: shipment,
-            order: order
-        }])
-
-        if (result.length != 1) {
-            throw Error(`Combination of shipment and order not found. Code: SA001`);
-        }
-
-        return result[0];
     }
 
     async create(shipment: Shipment, order: number, trip: Trip): Promise<ShipmentRoute> {
@@ -55,14 +52,20 @@ export class ShipmentRouteApi {
 
     async update(shipment: Shipment, order: number, trip: Trip): Promise<ShipmentRoute> {
 
+        const dataConnector = this.#dataConnector as
+            ShipmentRouteDataConnector
+        let predicate = new ShipmentRoute();
+        predicate.shipment = shipment;
+        predicate.trip = trip;
+
+        let msr = await dataConnector.get(predicate);
+
+
         if (isNaN(order) || order < 0) {
             throw new Error(`The order is not valid. Code: SA003`)
         }
 
-        const result = await this.#dataConnector.get([{
-            shipment: shipment,
-            order: order
-        }])
+        const result = await this.#dataConnector.get(predicate);
 
         if (result.length != 1) {
             throw Error(`Combination of shipment and order not found. Code: SA004`);
@@ -80,14 +83,19 @@ export class ShipmentRouteApi {
     }
 
     async delete(shipment: Shipment, order: number) {
+
+        const dataConnector = this.#dataConnector as ShipmentRouteDataConnector
+        let predicate = new ShipmentRoute();
+        predicate.order = order;
+        predicate.shipment = shipment;
+
+        let sr = await dataConnector.get(predicate);
+
         if (isNaN(order) || order < 0) {
             throw new Error(`The order is not valid. Code: SA005`)
         }
 
-        const result = await this.#dataConnector.get([{
-            shipment: shipment,
-            order: order
-        }])
+        const result = await dataConnector.get(predicate);
 
         if (result.length != 1) {
             throw Error(`Combination of shipment and order not found. Code: SA006`);
