@@ -21,16 +21,16 @@ export class EmployeeVehicleTypeOperationDataConnector
 
             if (
                 predicate.employee?.id !== undefined
-                && predicate.employee?.id >= 1
                 && predicate.employee?.id !== null
+                && predicate.employee?.id >= 1                
             ) {
                 queryBuilder.andWhere(`evt.employee = :id`, { id: predicate.employee.id });
             }
 
             if (
                 predicate.type?.id !== undefined
-                && predicate.type?.id >= 1
                 && predicate.type?.id !== null
+                && predicate.type?.id >= 1                
             ) {
                 queryBuilder.andWhere(`evt.type = :id`, { id: predicate.type.id });
             }
