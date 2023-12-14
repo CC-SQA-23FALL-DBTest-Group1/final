@@ -12,12 +12,12 @@ export class EmployeeVehicleTypeOperationApi {
         this.#dataConnector = dataConnector;
     }
 
-    async get(employee?: Employee, type?: VehicleType)
+    async get(predicate: EmployeeVehicleTypeOperation)
         : Promise<EmployeeVehicleTypeOperation[]> {
 
         const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
 
-        const result = await dataConnector.get(employee, type);
+        const result = await dataConnector.get(predicate);
 
         if (result.length >= 1) {
             return result;
@@ -45,7 +45,7 @@ export class EmployeeVehicleTypeOperationApi {
                 + `Code: EO003`
             );
         }
-        
+
 
         let evto = new EmployeeVehicleTypeOperation();
         evto.employee = employee;
@@ -57,12 +57,12 @@ export class EmployeeVehicleTypeOperationApi {
 
     }
 
-    async update(employee: Employee, type: VehicleType, newType: VehicleType)
+    async update(predicate: EmployeeVehicleTypeOperation, newType: VehicleType)
         : Promise<EmployeeVehicleTypeOperation> {
 
         const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
 
-        const result = await dataConnector.get(employee, type);
+        const result = await dataConnector.get(predicate);
 
         if (result.length < 1) {
             throw new Error(
@@ -78,18 +78,19 @@ export class EmployeeVehicleTypeOperationApi {
         }
 
         let evto = result[0];
+        const employee = evto.employee;
 
-        await this.#dataConnector.delete(evto);
+        await dataConnector.delete(evto);
 
-        evto = await this.create(employee,newType);
+        evto = await this.create(employee, newType);
 
         return evto;
     }
 
-    async delete(employee: Employee, type: VehicleType) {
+    async delete(predicate: EmployeeVehicleTypeOperation) {
         const dataConnector = this.#dataConnector as EmployeeVehicleTypeOperationDataConnector
 
-        const result = await dataConnector.get(employee, type);
+        const result = await dataConnector.get(predicate);
 
         if (result.length < 1) {
             throw new Error(
