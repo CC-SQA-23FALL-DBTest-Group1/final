@@ -2,7 +2,7 @@
 // Version 2
 // Last update: 2023-12-11
 import { Customer } from "../models";
-import { DataConnector } from "../dataconnector";
+import { CustomerDataConnector, DataConnector } from "../dataconnector";
 
 export class CustomerApi {
     #dataConnector: DataConnector<Customer>;
@@ -12,10 +12,13 @@ export class CustomerApi {
     }
 
     async getByID(id: number): Promise<Customer> {
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: CG000`)
         }
-        const result = await this.#dataConnector.get([{ id: id }])
+        const dataConnector = this.#dataConnector as CustomerDataConnector;
+        let predicate = new Customer();
+        predicate.id = id;
+        const result = await dataConnector.get(predicate)
         if (result.length >= 1) {
             return result[0]
         } else {
@@ -24,8 +27,9 @@ export class CustomerApi {
 
     }
 
-    async get(predicates: Object[]): Promise<Customer[]> {
-        const result = await this.#dataConnector.get(predicates);
+    async get(predicates: Customer): Promise<Customer[]> {
+        const dataConnector = this.#dataConnector as CustomerDataConnector;
+        const result = await dataConnector.get(predicates);
         return result;
     }
 
@@ -58,19 +62,23 @@ export class CustomerApi {
     }
 
     async updateByID(id: number, name: string, address: string,
-        phoneNumber1: string, phoneNumber2: string): Promise<Customer> {
+        phoneNumber1: string, phoneNumber2?: string): Promise<Customer> {
 
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: CU002`);
         }
 
-        const result = await this.#dataConnector.get([{ id: id }]);
+        const dataConnector = this.#dataConnector as CustomerDataConnector;
+        let predicate = new Customer()
+        predicate.id = id;
+
+        const result = await dataConnector.get(predicate);
 
         var customer = result[0];
         customer.name = name.trim();
         customer.address = address.trim();
         customer.phoneNumber1 = phoneNumber1.trim();
-        customer.phoneNumber2 = phoneNumber2.trim();
+        customer.phoneNumber2 = phoneNumber2?.trim() ?? null;;
 
         if(customer.name.length == 0) {
             throw new Error(`Name can not be empty. Code: CU009`);
@@ -81,9 +89,6 @@ export class CustomerApi {
         if(customer.phoneNumber1.length == 0) {
             throw new Error(`Phone Number 1 can not be empty. Code: CU011`);
         }
-        if(customer.phoneNumber2.length == 0) {
-            throw new Error(`Phone Number 2 can not be empty. Code: CU012`);
-        }
 
         await this.#dataConnector.save(customer);
 
@@ -92,11 +97,14 @@ export class CustomerApi {
     }
 
     async deleteByID(id:number){
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: CU003`);
         }
+        const dataConnector = this.#dataConnector as CustomerDataConnector;
+        let predicate = new Customer()
+        predicate.id = id;
 
-        const result = await this.#dataConnector.get([{ id: id }]);
+        const result = await dataConnector.get(predicate);
 
         if (result.length < 1){
             throw new Error(`Customer with ID ${id} not found. Code: CG004`);
