@@ -14,7 +14,7 @@ describe(`Vehicle Type Table API Tests`, () => {
                 new MockVehicleTypeDataConnector()
             );
 
-            const result = await vehicleTypeApi.getByID(0);
+            const result = await vehicleTypeApi.getByID(1);
             expect(result).toBeInstanceOf(VehicleType);
         });
 
@@ -26,12 +26,13 @@ describe(`Vehicle Type Table API Tests`, () => {
             await expect(vehicleTypeApi.getByID(9)).rejects.toThrow(Error);
         });
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer or Zero) should throw an error`, async () => {
             const vehicleTypeApi = new VehicleTypeApi(
                 new MockVehicleTypeDataConnector()
             );
 
             await expect(vehicleTypeApi.getByID(-1)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.getByID(0)).rejects.toThrow(Error);
         });
     });
 
@@ -42,7 +43,7 @@ describe(`Vehicle Type Table API Tests`, () => {
                 new MockVehicleTypeDataConnector()
             );
 
-            const result = await vehicleTypeApi.get([{ name: "Trunk" }]);
+            const result = await vehicleTypeApi.getByName("Trunk");
             expect(result).toHaveLength(1);
         });
 
@@ -51,27 +52,10 @@ describe(`Vehicle Type Table API Tests`, () => {
                 new MockVehicleTypeDataConnector()
             );
 
-            const result = await vehicleTypeApi.get([{ name: "Train" }]);
+            const result = await vehicleTypeApi.getByName("Train");
             expect(result).toHaveLength(0);
         });
 
-        test(`With Valid Existing ID`, async () => {
-            const vehicleTypeApi = new VehicleTypeApi(
-                new MockVehicleTypeDataConnector()
-            );
-
-            const result = await vehicleTypeApi.get([{ id: 0 }]);
-            expect(result).toHaveLength(1);
-        });
-
-        test(`With Valid Nonexisting ID`, async () => {
-            const vehicleTypeApi = new VehicleTypeApi(
-                new MockVehicleTypeDataConnector()
-            );
-
-            const result = await vehicleTypeApi.get([{ id: 9 }]);
-            expect(result).toHaveLength(0);
-        });
 
     });
 
@@ -83,7 +67,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             let name = `Trunk`;
-            
+
             expect(await vehicleTypeApi.create(name)).toBeInstanceOf(VehicleType);
         });
 
@@ -117,8 +101,8 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             let name = `Trunk`;
-            
-            expect(await vehicleTypeApi.updateByID(0, name)).toBeInstanceOf(VehicleType);
+
+            expect(await vehicleTypeApi.updateByID(1, name)).toBeInstanceOf(VehicleType);
         });
 
 
@@ -141,6 +125,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             let name = `Trunk`;
 
             await expect(vehicleTypeApi.updateByID(-1, name)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
         });
 
 
@@ -151,7 +136,7 @@ describe(`Vehicle Type Table API Tests`, () => {
 
             let name = ``;
 
-            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.updateByID(1, name)).rejects.toThrow(Error);
         });
 
 
@@ -174,6 +159,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             let name = ``;
 
             await expect(vehicleTypeApi.updateByID(-1, name)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
         });
 
 
@@ -184,7 +170,7 @@ describe(`Vehicle Type Table API Tests`, () => {
 
             let name = `   `;
 
-            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.updateByID(1, name)).rejects.toThrow(Error);
         });
 
 
@@ -207,6 +193,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             let name = `   `;
 
             await expect(vehicleTypeApi.updateByID(-1, name)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.updateByID(0, name)).rejects.toThrow(Error);
         });
 
     });
@@ -220,7 +207,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             // expecting void
-            expect(await vehicleTypeApi.deleteByID(0)).not.toBeDefined();
+            expect(await vehicleTypeApi.deleteByID(1)).not.toBeDefined();
         });
 
 
@@ -239,6 +226,7 @@ describe(`Vehicle Type Table API Tests`, () => {
             );
 
             await expect(vehicleTypeApi.deleteByID(-1)).rejects.toThrow(Error);
+            await expect(vehicleTypeApi.deleteByID(0)).rejects.toThrow(Error);
         });
 
     });
@@ -249,16 +237,16 @@ describe(`Vehicle Type Table API Tests`, () => {
 
 
 class MockVehicleTypeDataConnector implements DataConnector<VehicleType> {
-    async get(predicates: Object[]): Promise<VehicleType[]> {
+    async get(predicate: VehicleType): Promise<VehicleType[]> {
         const vehicleType = new VehicleType()
-        if (predicates.length >= 1) {
+        if (predicate) {
             // For Valid Existing ID
-            if (JSON.stringify(predicates[0]) === JSON.stringify({ id: 0 })) {
+            if (predicate.id == 1) {
                 return [vehicleType];
             }
 
             // For Existing Vehicle Type Name
-            if (JSON.stringify(predicates[0]) === JSON.stringify({ name: "Trunk" })) {
+            if (predicate.name == "Trunk") {
                 return [vehicleType];
             }
 
