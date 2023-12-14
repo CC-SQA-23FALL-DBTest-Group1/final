@@ -14,12 +14,39 @@ export class ShipmentRouteDataConnector
     }
 
 
-    async get(predicates: Object[]): Promise<ShipmentRoute[]> {
+    async get(predicate: ShipmentRoute): Promise<ShipmentRoute[]> {
         try {
-            return await this.#dataSource.manager.findBy(
-                ShipmentRoute,
-                predicates
-            );
+            const queryBuilder = this.#dataSource.getRepository
+            (ShipmentRoute)
+            .createQueryBuilder(`sr`);
+
+            if (
+                predicate.shipment?.id !== undefined
+                && predicate.shipment?.id >= 1
+                && predicate.shipment?.id !== null
+            ) {
+                queryBuilder.andWhere(`sr.shipment = :id`, { id: predicate.shipment.id });
+            }
+
+            if (
+                predicate.order !== undefined
+                && predicate.order >= 0
+                && predicate.order !== null
+            ) {
+                queryBuilder.andWhere(`sr.order = :order`, { order: predicate.order });
+            }
+
+            if (
+                predicate.trip?.id !== undefined
+                && predicate.trip?.id >= 1
+                && predicate.trip?.id !== null
+            ) {
+                queryBuilder.andWhere(`sr.trip = :id`, { id: predicate.trip.id });
+            }
+
+            return queryBuilder.getMany();
+          
+
         } catch (e) {
             throw Error(`Error occured when searching. Code: SC000`);
         }
