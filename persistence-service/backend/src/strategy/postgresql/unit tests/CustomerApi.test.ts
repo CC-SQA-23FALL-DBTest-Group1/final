@@ -1,18 +1,20 @@
 // Written by Xingru 
-// Version 1
-// Last update: 2023-12-11
+// Version 2
+// Last update: 2023-12-12
+// Reviewed by Frederick
+// Reviewed on 2023-13-13
 import { CustomerApi } from "../api/CustomerApi";
 import { DataConnector } from "../dataconnector";
 import { Customer } from "../models";
 
-//Last update: 2023-12-12
+
 describe("Customer Table API Tests", () => {
     describe('Get Customer By ID', () => {
         test('With Valid Existing ID', async () => {
             const customerApi = new CustomerApi(
                 new MockCustomerApiDataConnector(),
             );
-            const result = await customerApi.getByID(0);
+            const result = await customerApi.getByID(1);
             expect(result).toBeInstanceOf(Customer);
         });
 
@@ -24,12 +26,13 @@ describe("Customer Table API Tests", () => {
             await expect(customerApi.getByID(88)).rejects.toThrow(Error);
         });
 
-        test('With Invalid ID(Negative Integer) should throw an error', async () => {
+        test('With Invalid ID(Negative Integer and Zero) should throw an error', async () => {
             const customerApi = new CustomerApi(
                 new MockCustomerApiDataConnector()
             );
 
             await expect(customerApi.getByID(-1)).rejects.toThrow(Error);
+            await expect(customerApi.getByID(0)).rejects.toThrow(Error);
         });
     });
 
@@ -38,8 +41,9 @@ describe("Customer Table API Tests", () => {
             const customerApi = new CustomerApi(
                 new MockCustomerApiDataConnector()
             );
-
-            const result = await customerApi.get([{ name: "John" }]);
+            let predicate = new Customer();
+            predicate.name = "John";
+            const result = await customerApi.get(predicate);
             expect(result).toHaveLength(1);
         });
 
@@ -48,7 +52,9 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            const result = await customerApi.get([{ name: "Alina" }]);
+            let predicate = new Customer();
+            predicate.name = "Alina";
+            const result = await customerApi.get(predicate);
             expect(result).toHaveLength(0);
         });
 
@@ -56,8 +62,9 @@ describe("Customer Table API Tests", () => {
             const customerApi = new CustomerApi(
                 new MockCustomerApiDataConnector()
             );
-
-            const result = await customerApi.get([{ id: 0 }]);
+            let predicate = new Customer();
+            predicate.id = 1;
+            const result = await customerApi.get(predicate);
             expect(result).toHaveLength(1);
         });
 
@@ -66,7 +73,9 @@ describe("Customer Table API Tests", () => {
                 new MockCustomerApiDataConnector()
             );
 
-            const result = await customerApi.get([{ id: 9 }]);
+            let predicate = new Customer();
+            predicate.id = 99;
+            const result = await customerApi.get(predicate);
             expect(result).toHaveLength(0);
         });
 
@@ -84,8 +93,8 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '123456789';
             let phoneNumber2 = '789456123';
             // expecting void
-      
-            expect(await customerApi.create(name,address,phoneNumber1,phoneNumber2)).toBeInstanceOf(Customer);
+
+            expect(await customerApi.create(name, address, phoneNumber1, phoneNumber2)).toBeInstanceOf(Customer);
         });
 
         test(`with invalid name(empty string) should throw an error`, async () => {
@@ -98,7 +107,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '123456789';
             let phoneNumber2 = '789456123';
 
-            await expect(customerApi.create(name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.create(name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
         test(`with invalid name(only spaces) should throw an error`, async () => {
@@ -111,7 +120,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '123456789';
             let phoneNumber2 = '789456123';
 
-            await expect(customerApi.create(name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.create(name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
     });
@@ -128,7 +137,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
             // expecting void
-            expect(await customerApi.updateByID(0, name,address,phoneNumber1,phoneNumber2)).toBeInstanceOf(Customer);
+            expect(await customerApi.updateByID(1, name, address, phoneNumber1, phoneNumber2)).toBeInstanceOf(Customer);
         });
 
 
@@ -142,7 +151,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
 
-            await expect(customerApi.updateByID(9,name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(9, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -156,7 +165,8 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
 
-            await expect(customerApi.updateByID(-1, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(-1, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(0, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -169,9 +179,9 @@ describe("Customer Table API Tests", () => {
             let address = "Doon Campus";
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
-            
 
-            await expect(customerApi.updateByID(0, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+
+            await expect(customerApi.updateByID(1, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -185,7 +195,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
 
-            await expect(customerApi.updateByID(9, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(9, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -200,7 +210,8 @@ describe("Customer Table API Tests", () => {
             let phoneNumber2 = '222222222';
 
 
-            await expect(customerApi.updateByID(-1, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(-1, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(0, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -215,7 +226,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber2 = '222222222';
 
 
-            await expect(customerApi.updateByID(0, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(1, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -229,7 +240,7 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
 
-            await expect(customerApi.updateByID(9, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(9, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
 
@@ -243,10 +254,11 @@ describe("Customer Table API Tests", () => {
             let phoneNumber1 = '111111111';
             let phoneNumber2 = '222222222';
 
-            await expect(customerApi.updateByID(-1, name,address,phoneNumber1,phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(-1, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
+            await expect(customerApi.updateByID(0, name, address, phoneNumber1, phoneNumber2)).rejects.toThrow(Error);
         });
 
-        
+
     });
 
     describe(`Delete By ID`, () => {
@@ -257,7 +269,7 @@ describe("Customer Table API Tests", () => {
             );
 
             // expecting void
-            expect(await customerApi.deleteByID(0)).not.toBeDefined();
+            expect(await customerApi.deleteByID(1)).not.toBeDefined();
         });
 
 
@@ -270,12 +282,13 @@ describe("Customer Table API Tests", () => {
         });
 
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer and Zero) should throw an error`, async () => {
             const customerApi = new CustomerApi(
                 new MockCustomerApiDataConnector()
             );
 
             await expect(customerApi.deleteByID(-1)).rejects.toThrow(Error);
+            await expect(customerApi.deleteByID(0)).rejects.toThrow(Error);
         });
     });
 
@@ -283,16 +296,16 @@ describe("Customer Table API Tests", () => {
 
 class MockCustomerApiDataConnector implements DataConnector<Customer>{
 
-    async get(predicates: Object[]): Promise<Customer[]> {
+    async get(predicates: Customer): Promise<Customer[]> {
         const customer = new Customer();
-        if (predicates.length >= 1) {
+        if (predicates) {
             // For Valid Existing ID
-            if (JSON.stringify(predicates[0]) === JSON.stringify({ id: 0 })) {
+            if (predicates.id == 1) {
                 return [customer];
             }
 
             // For Existing Customer Name
-            if (JSON.stringify(predicates[0]) === JSON.stringify({ name: "John" })) {
+            if (predicates.name == "John") {
                 return [customer];
             }
 
@@ -307,7 +320,7 @@ class MockCustomerApiDataConnector implements DataConnector<Customer>{
 
     }
 
-    async save(entity: Customer) :Promise<void> {
+    async save(entity: Customer): Promise<void> {
 
     }
 
