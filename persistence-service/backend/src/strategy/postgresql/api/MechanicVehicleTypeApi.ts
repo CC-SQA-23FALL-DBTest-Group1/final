@@ -1,8 +1,8 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-13
 import { Employee, MechanicVehicleType, VehicleType } from "../models";
-import { DataConnector } from "../dataconnector";
+import { DataConnector, MechanicVehicleTypeDataConnector } from "../dataconnector";
 
 export class MechanicVehicleTypeApi {
     #dataConnector: DataConnector<MechanicVehicleType>;
@@ -11,13 +11,12 @@ export class MechanicVehicleTypeApi {
         this.#dataConnector = dataConnector;
     }
 
-    async get(employee: Employee, type: VehicleType)
+    async get(predicate: MechanicVehicleType)
         : Promise<MechanicVehicleType[]> {
 
-        const result = await this.#dataConnector.get([{
-            employee: employee,
-            type: type
-        }]);
+
+        const dataConnector = this.#dataConnector as MechanicVehicleTypeDataConnector
+        const result = await dataConnector.get(predicate);
 
         if (result.length >= 1) {
             return result;
@@ -57,13 +56,15 @@ export class MechanicVehicleTypeApi {
 
     }
 
-    async update(employee: Employee, type: VehicleType, status: boolean)
+    async update(employee: Employee, type: VehicleType, newStatus: boolean)
         : Promise<MechanicVehicleType> {
 
-        let mvts = await this.#dataConnector.get([{
-            employee: employee,
-            type: type
-        }]);
+        const dataConnector = this.#dataConnector as MechanicVehicleTypeDataConnector
+        let predicate = new MechanicVehicleType();
+        predicate.employee = employee;
+        predicate.type = type;
+
+        let mvts = await dataConnector.get(predicate);
 
         if (mvts.length < 1) {
             throw new Error(
@@ -80,7 +81,7 @@ export class MechanicVehicleTypeApi {
 
         let mvt = mvts[0];
 
-        mvt.status = status;
+        mvt.status = newStatus;
 
         await this.#dataConnector.save(mvt);
 
@@ -88,10 +89,14 @@ export class MechanicVehicleTypeApi {
     }
 
     async delete(employee: Employee, type: VehicleType) {
-        const mvts = await this.#dataConnector.get([{
-            employee: employee,
-            type: type
-        }]);
+
+
+        const dataConnector = this.#dataConnector as MechanicVehicleTypeDataConnector
+        let predicate = new MechanicVehicleType();
+        predicate.employee = employee;
+        predicate.type = type;
+
+        let mvts = await dataConnector.get(predicate);
 
         if (mvts.length < 1) {
             throw new Error(

@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-13
 import { DataSource } from "typeorm";
 import { MechanicVehicleType } from "../models";
 import { DataConnector } from "./DataConnector";
@@ -14,12 +14,39 @@ export class MechanicVehicleTypeDataConnector
     }
 
 
-    async get(predicates: Object[]): Promise<MechanicVehicleType[]> {
+    async get(predicate: MechanicVehicleType): Promise<MechanicVehicleType[]> {
         try {
-            return await this.#dataSource.manager.findBy(
-                MechanicVehicleType,
-                predicates
-            );
+            const queryBuilder = this.#dataSource.getRepository(MechanicVehicleType)
+            .createQueryBuilder(`mvt`);
+
+            if (
+                predicate.employee?.id !== undefined
+                && predicate.employee?.id >= 1
+                && predicate.employee?.id !== null
+            ) {
+                queryBuilder.andWhere(`mvt.employee = :id`, { id: predicate.employee.id });
+            }
+
+            if (
+                predicate.type?.id !== undefined
+                && predicate.type?.id >= 1
+                && predicate.type?.id !== null
+            ) {
+                queryBuilder.andWhere(`mvt.type = :id`, { id: predicate.type.id });
+            }
+
+            if (
+                predicate.status !== undefined
+                && predicate.status !== null
+            ) {
+                queryBuilder.andWhere(`mvt.status = :status`, { status: predicate.status });
+            }
+
+
+
+            return queryBuilder.getMany();
+
+
         } catch (e) {
             throw Error(`Error occured when searching. Code: MV000`);
         }

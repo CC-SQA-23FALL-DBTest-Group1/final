@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-13
 import { DataSource } from "typeorm";
 import { Employee, EmployeeVehicleTypeOperation, VehicleType } from "../models";
 import { DataConnector } from "./DataConnector";
@@ -14,17 +14,25 @@ export class EmployeeVehicleTypeOperationDataConnector
     }
 
 
-    async get(e?: Employee, vt?: VehicleType): Promise<EmployeeVehicleTypeOperation[]> {
+    async get(predicate: EmployeeVehicleTypeOperation): Promise<EmployeeVehicleTypeOperation[]> {
         try {
             const queryBuilder = this.#dataSource.getRepository(EmployeeVehicleTypeOperation)
                 .createQueryBuilder(`evt`);
 
-            if (e !== undefined && e !== null) {
-                queryBuilder.where(`evt.employee = :employeeID`, { employeeID: e.id });
+            if (
+                predicate.employee?.id !== undefined
+                && predicate.employee?.id >= 1
+                && predicate.employee?.id !== null
+            ) {
+                queryBuilder.andWhere(`evt.employee = :id`, { id: predicate.employee.id });
             }
 
-            if (vt !== undefined && vt !== null) {
-                queryBuilder.andWhere(`evt.type = :typeID`, { typeID: vt.id });
+            if (
+                predicate.type?.id !== undefined
+                && predicate.type?.id >= 1
+                && predicate.type?.id !== null
+            ) {
+                queryBuilder.andWhere(`evt.type = :id`, { id: predicate.type.id });
             }
 
             return await queryBuilder.getMany();
