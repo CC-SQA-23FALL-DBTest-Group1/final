@@ -4,7 +4,7 @@
 
 import axios from "axios";
 
-const targetUrl = `localhost`;
+const targetUrl = `${process.env.TARGET_URL}`;
 
 describe("Customer Integration Test", () => {
 
