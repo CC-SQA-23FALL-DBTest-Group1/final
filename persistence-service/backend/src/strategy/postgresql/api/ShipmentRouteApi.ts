@@ -1,6 +1,6 @@
 // Written by Frederick 
-// Version 3
-// Last update: 2023-12-13
+// Version 4
+// Last update: 2023-12-14
 // Reviewed by Xingru
 //version 3
 // Last update: 2023-12-14
@@ -50,31 +50,22 @@ export class ShipmentRouteApi {
 
     }
 
-    async update(shipment: Shipment, order: number, trip: Trip): Promise<ShipmentRoute> {
+    async update(
+        shipment: Shipment,
+        order: number,
+        newTrip: Trip
+    ): Promise<ShipmentRoute> {
 
-        const dataConnector = this.#dataConnector as
-            ShipmentRouteDataConnector
         let predicate = new ShipmentRoute();
         predicate.shipment = shipment;
-        predicate.trip = trip;
+        predicate.order = order;
 
-        let msr = await dataConnector.get(predicate);
+        let srs = await this.get(predicate);
 
-
-        if (isNaN(order) || order < 0) {
-            throw new Error(`The order is not valid. Code: SA003`)
-        }
-
-        const result = await this.#dataConnector.get(predicate);
-
-        if (result.length != 1) {
-            throw Error(`Combination of shipment and order not found. Code: SA004`);
-        }
-
-        let shipmentRoute = result[0];
+        let shipmentRoute = srs[0];
         shipmentRoute.shipment = shipment;
         shipmentRoute.order = order;
-        shipmentRoute.trip = trip;
+        shipmentRoute.trip = newTrip;
 
         await this.#dataConnector.save(shipmentRoute);
 
@@ -84,24 +75,13 @@ export class ShipmentRouteApi {
 
     async delete(shipment: Shipment, order: number) {
 
-        const dataConnector = this.#dataConnector as ShipmentRouteDataConnector
         let predicate = new ShipmentRoute();
         predicate.order = order;
         predicate.shipment = shipment;
 
-        let sr = await dataConnector.get(predicate);
+        let srs = await this.get(predicate);
 
-        if (isNaN(order) || order < 0) {
-            throw new Error(`The order is not valid. Code: SA005`)
-        }
-
-        const result = await dataConnector.get(predicate);
-
-        if (result.length != 1) {
-            throw Error(`Combination of shipment and order not found. Code: SA006`);
-        }
-
-        const shipmentRoute = result[0];
+        let shipmentRoute = srs[0];
 
         await this.#dataConnector.delete(shipmentRoute);
 
