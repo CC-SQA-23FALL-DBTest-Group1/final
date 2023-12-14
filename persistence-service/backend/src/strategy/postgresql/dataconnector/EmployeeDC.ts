@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-13
 import { DataSource } from "typeorm";
 import { Employee } from "../models";
 import { DataConnector } from "./DataConnector";
@@ -11,11 +11,48 @@ export class EmployeeDataConnector implements DataConnector<Employee>{
     constructor(dataSource: DataSource) {
         this.#dataSource = dataSource;
     }
-    
 
-    async get(predicates: Object[]): Promise<Employee[]> {
+
+    async get(predicate: Employee): Promise<Employee[]> {
         try {
-            return await this.#dataSource.manager.findBy(Employee, predicates);
+            const queryBuilder = this.#dataSource.getRepository(Employee)
+                .createQueryBuilder(`e`);
+
+                if (
+                    predicate.id !== undefined
+                    && predicate.id >= 1
+                    && predicate.id !== null
+                ) {
+                    queryBuilder.andWhere(`e.id = :id`, { id: predicate.id });
+                }
+    
+                if (
+                    predicate.firstName !== undefined
+                    && predicate.firstName !== ''
+                    && predicate.firstName !== null
+                ) {
+                    queryBuilder.andWhere(`c.firstName LIKE :searchTerm`, { searchTerm: `%${predicate.firstName}%` });
+                }
+
+                if (
+                    predicate.lastName !== undefined
+                    && predicate.lastName !== ''
+                    && predicate.lastName !== null
+                ) {
+                    queryBuilder.andWhere(`c.lastName LIKE :searchTerm`, { searchTerm: `%${predicate.lastName}%` });
+                }
+
+                if (
+                    predicate.seniority !== undefined
+                    && predicate.seniority > 0
+                    && predicate.seniority < 9999
+                    && predicate.seniority !== null
+                ) {
+                    queryBuilder.andWhere(`c.seniority = :searchTerm`, { searchTerm: `%${predicate.seniority}%` });
+                }
+
+                return await queryBuilder.getMany();
+
         } catch (e) {
             throw Error(`Error occured when searching. Code: ES000`);
         }
@@ -31,7 +68,7 @@ export class EmployeeDataConnector implements DataConnector<Employee>{
 
     }
 
-    async delete(entity: Employee):Promise<void>{
+    async delete(entity: Employee): Promise<void> {
         try {
             await this.#dataSource.manager.remove(entity);
         } catch (e) {
