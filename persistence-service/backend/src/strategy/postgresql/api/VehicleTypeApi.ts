@@ -3,6 +3,7 @@
 // Last update: 2023-12-12
 import { VehicleType } from "../models";
 import { DataConnector } from "../dataconnector/DataConnector";
+import { VehicleTypeDataConnector } from "../dataconnector";
 
 export class VehicleTypeApi {
     #dataConnector: DataConnector<VehicleType>;
@@ -12,11 +13,17 @@ export class VehicleTypeApi {
     }
 
     async getByID(id: number): Promise<VehicleType> {
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: VT000`)
         }
-        const result = await this.#dataConnector.get([{ id: id }])
-        if (result.length >= 1) {
+
+        const dc = this.#dataConnector as VehicleTypeDataConnector;
+        let predicate = new VehicleType();
+        predicate.id = id;
+
+        const result = await dc.get(predicate);
+
+        if (result.length == 1) {
             return result[0]
         } else {
             throw new Error(`Customer with ID ${id} not found. Code: VT001`)
@@ -24,13 +31,16 @@ export class VehicleTypeApi {
 
     }
 
-    async get(predicates: Object[]): Promise<VehicleType[]> {
-        const result = await this.#dataConnector.get(predicates);
+    async getByName(name: string): Promise<VehicleType[]> {
+        const dc = this.#dataConnector as VehicleTypeDataConnector;
+        let predicate = new VehicleType();
+        predicate.name = name.trim();
+        const result = await dc.get(predicate);
         return result;
     }
 
     async create(name: string): Promise<VehicleType> {
-        if (name.trim().length == 0){
+        if (name.trim().length == 0) {
             throw new Error(`Name can not be empty. Code: VT005`)
         }
         let vehicleType = new VehicleType();
@@ -44,16 +54,15 @@ export class VehicleTypeApi {
 
     async updateByID(id: number, newName: string): Promise<VehicleType> {
 
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: VT002`)
         }
-        if (newName.trim().length == 0){
+        if (newName.trim().length == 0) {
             throw new Error(`Name can not be empty. Code: VT006`)
         }
 
-        const result = await this.#dataConnector.get([{ id: id }])
+        let vehicleType = await this.getByID(id);
 
-        var vehicleType = result[0];
         vehicleType.name = newName.trim();
 
         await this.#dataConnector.save(vehicleType);
@@ -63,17 +72,8 @@ export class VehicleTypeApi {
     }
 
     async deleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VT003`);
-        }
 
-        const result = await this.#dataConnector.get([{ id: id }]);
-
-        if (result.length < 1) {
-            throw new Error(`Vehicle Type with ID ${id} not found. Code: VT004`);
-        }
-
-        const vehicleType = result[0];
+        let vehicleType = await this.getByID(id);
 
         await this.#dataConnector.delete(vehicleType);
 

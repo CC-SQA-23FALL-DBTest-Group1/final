@@ -45,7 +45,7 @@ export default class VehicleTypeApiRegister {
             const name = req.query.name ?? null
 
             try {
-                const vehicleTypes = await api.get([{
+                const vehicleTypes = await api.getByName([{
                     name: name,
                 }
                 ]);
