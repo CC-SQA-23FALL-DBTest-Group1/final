@@ -14,12 +14,66 @@ export class VehicleRepairRecordDataConnector
     }
 
 
-    async get(predicates: Object[]): Promise<VehicleRepairRecord[]> {
+    async get(predicate: VehicleRepairRecord): Promise<VehicleRepairRecord[]> {
         try {
-            return await this.#dataSource.manager.findBy(
-                VehicleRepairRecord,
-                predicates
-            );
+            const ds = this.#dataSource
+            const queryBuilder = ds.getRepository(VehicleRepairRecord)
+                .createQueryBuilder(`vrr`);
+
+            if (
+                predicate.id !== undefined
+                && predicate.id !== null
+                && predicate.id >= 1
+            ) {
+                queryBuilder.andWhere(`vrr.id = :id`, { id: predicate.id });
+            }
+
+            if (
+                predicate.actualTime !== undefined
+                && predicate.actualTime !== null
+                && predicate.actualTime >= 1
+            ) {
+                queryBuilder.andWhere(
+                    `vrr.actualTime = :time`,
+                    { time: predicate.actualTime }
+                );
+            }
+
+            if (
+                predicate.estimatedTime !== undefined
+                && predicate.estimatedTime !== null
+                && predicate.estimatedTime >= 1
+            ) {
+                queryBuilder.andWhere(
+                    `vrr.estimatedTime = :time`,
+                    { time: predicate.estimatedTime }
+                );
+            }
+
+            if (
+                predicate.vehicle.id !== undefined
+                && predicate.vehicle.id !== null
+                && predicate.vehicle.id >= 1
+            ) {
+                queryBuilder.andWhere(
+                    `vrr.vehicle = :id`,
+                    { id: predicate.vehicle.id }
+                );
+            }
+
+            if (
+                predicate.mechanic.id !== undefined
+                && predicate.mechanic.id !== null
+                && predicate.mechanic.id >= 1
+            ) {
+                queryBuilder.andWhere(
+                    `vrr.mechanic = :id`,
+                    { id: predicate.mechanic.id }
+                );
+            }
+
+            return await queryBuilder.getMany();
+
         } catch (e) {
             throw Error(`Error occured when searching. Code: RR000`);
         }

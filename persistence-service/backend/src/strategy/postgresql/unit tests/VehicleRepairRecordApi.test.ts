@@ -17,7 +17,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
                 new MockVehicleRepairRecordDataConnector()
             );
 
-            const result = await api.getByID(0);
+            const result = await api.getByID(1);
             expect(result).toBeInstanceOf(VehicleRepairRecord);
         });
 
@@ -30,12 +30,12 @@ describe(`Vehicle Repair Record API Tests`, () => {
             await expect(api.getByID(9)).rejects.toThrow(Error);
         });
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer and Zero) should throw an error`, async () => {
             const api = new VehicleRepairRecordApi(
                 new MockVehicleRepairRecordDataConnector()
             );
 
-
+            await expect(api.getByID(0)).rejects.toThrow(Error);
             await expect(api.getByID(-1)).rejects.toThrow(Error);
         });
     });
@@ -129,7 +129,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
             const vehicle = new Vehicle();
             const mechanic = new Employee();
 
-            const result = await api.updateByID(0, estimatedTime, actualTime, vehicle, mechanic);
+            const result = await api.updateByID(1, estimatedTime, actualTime, vehicle, mechanic);
             expect(result).toBeInstanceOf(VehicleRepairRecord);
         });
 
@@ -150,7 +150,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
         });
 
 
-        test(`Wirh Invalid ID(Negative Integer) should throw an error`, async () => {
+        test(`Wirh Invalid ID(Negative Integer & Zero) should throw an error`, async () => {
             const api = new VehicleRepairRecordApi(
                 new MockVehicleRepairRecordDataConnector()
             );
@@ -162,6 +162,9 @@ describe(`Vehicle Repair Record API Tests`, () => {
 
             await expect(
                 api.updateByID(-9, estimatedTime, actualTime, vehicle, mechanic)
+            ).rejects.toThrow(Error);
+            await expect(
+                api.updateByID(0, estimatedTime, actualTime, vehicle, mechanic)
             ).rejects.toThrow(Error);
         });
 
@@ -178,7 +181,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
             const mechanic = new Employee();
 
             await expect(
-                api.updateByID(0, estimatedTime, actualTime, vehicle, mechanic)
+                api.updateByID(1, estimatedTime, actualTime, vehicle, mechanic)
             ).rejects.toThrow(Error);
         });
 
@@ -194,7 +197,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
             const mechanic = new Employee();
 
             await expect(
-                api.updateByID(0, estimatedTime, actualTime, vehicle, mechanic)
+                api.updateByID(1, estimatedTime, actualTime, vehicle, mechanic)
             ).rejects.toThrow(Error);
         });
 
@@ -211,7 +214,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
             const mechanic = new Employee();
 
             await expect(
-                api.updateByID(0, estimatedTime, actualTime, vehicle, mechanic)
+                api.updateByID(1, estimatedTime, actualTime, vehicle, mechanic)
             ).rejects.toThrow(Error);
         });
 
@@ -228,7 +231,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
             const mechanic = new Employee();
 
             await expect(
-                api.updateByID(0, estimatedTime, actualTime, vehicle, mechanic)
+                api.updateByID(1, estimatedTime, actualTime, vehicle, mechanic)
             ).rejects.toThrow(Error);
         });
 
@@ -244,7 +247,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
 
 
             // expecting void
-            expect(await api.deleteByID(0)).not.toBeDefined();
+            expect(await api.deleteByID(1)).not.toBeDefined();
         });
 
 
@@ -263,7 +266,7 @@ describe(`Vehicle Repair Record API Tests`, () => {
                 new MockVehicleRepairRecordDataConnector()
             );
 
-
+            await expect(api.deleteByID(0)).rejects.toThrow(Error);
             await expect(api.deleteByID(-1)).rejects.toThrow(Error);
         });
 
@@ -275,11 +278,11 @@ describe(`Vehicle Repair Record API Tests`, () => {
 
 
 class MockVehicleRepairRecordDataConnector implements DataConnector<VehicleRepairRecord> {
-    async get(predicates: Object[]): Promise<VehicleRepairRecord[]> {
+    async get(predicate: VehicleRepairRecord): Promise<VehicleRepairRecord[]> {
         const record = new VehicleRepairRecord()
-        if (predicates.length >= 1) {
+        if (predicate) {
             // For Valid Existing ID
-            if (JSON.stringify(predicates[0]) === JSON.stringify({ id: 0 })) {
+            if (predicate.id == 1) {
                 return [record];
             }
 

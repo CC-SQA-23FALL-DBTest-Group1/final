@@ -5,7 +5,7 @@
 // Reviewed on 2023-12-13
 
 import { Vehicle, Employee } from "../models";
-import { DataConnector } from "../dataconnector";
+import { DataConnector, VehicleRepairRecordDataConnector } from "../dataconnector";
 import { VehicleRepairRecord } from "../models";
 
 export class VehicleRepairRecordApi {
@@ -17,13 +17,16 @@ export class VehicleRepairRecordApi {
 
     async getByID(id: number): Promise<VehicleRepairRecord> {
 
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: VRR000`)
         }
 
-        const result = await this.#dataConnector.get([{
-            id: id
-        }]);
+        const dc = this.#dataConnector as VehicleRepairRecordDataConnector;
+
+        let predicate = new VehicleRepairRecord();
+        predicate.id = id;
+
+        const result = await dc.get(predicate);
 
         if (result.length == 1) {
             return result[0];
@@ -83,25 +86,28 @@ export class VehicleRepairRecordApi {
         if (isNaN(estimatedTime) || estimatedTime <= 0) {
             throw new Error(
                 `EstimatedTimeis not valid. `
-                + `Code: VRR006`
+                + `Code: VA006`
             );
         }
 
         if (isNaN(actualTime) || actualTime <= 0) {
             throw new Error(
                 `ActualTime is not valid. `
-                + `Code:VRR007`
+                + `Code:VA007`
             );
         }
 
-        let vehicleRepairRecords = await this.#dataConnector.get([{
-            id: id
-        }]);
+        const dc = this.#dataConnector as VehicleRepairRecordDataConnector;
+
+        let predicate = new VehicleRepairRecord();
+        predicate.id = id;
+
+        let vehicleRepairRecords = await dc.get(predicate);
 
         if (vehicleRepairRecords.length != 1) {
             throw new Error(
                 `VehicleRepairRecord with ID ${id} not found. `
-                + `Code:VRR005`
+                + `Code:VA005`
             );
         }
 
@@ -113,7 +119,7 @@ export class VehicleRepairRecordApi {
         vehicleRepairRecord.vehicle = vehicle;
         vehicleRepairRecord.mechanic = mechanic;
 
-        await this.#dataConnector.save(vehicleRepairRecord);
+        await dc.save(vehicleRepairRecord);
 
         return vehicleRepairRecord;
     }
@@ -121,24 +127,27 @@ export class VehicleRepairRecordApi {
     async deleteByID(id: number): Promise<void> {
 
         if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VRR008`)
+            throw new Error(`The ID is not valid. Code: VA008`)
         }
 
-        let vehicleRepairRecords = await this.#dataConnector.get([{
-            id: id
-        }]);
+        const dc = this.#dataConnector as VehicleRepairRecordDataConnector;
+
+        let predicate = new VehicleRepairRecord();
+        predicate.id = id;
+
+        let vehicleRepairRecords = await dc.get(predicate);
 
         if (vehicleRepairRecords.length != 1) {
             throw new Error(
                 `VehicleRepairRecord with ID ${id} not found. `
-                + `Code: VRR009`
+                + `Code: VA009`
             );
         }
 
 
         let vehicleRepairRecord = vehicleRepairRecords[0];
 
-        await this.#dataConnector.delete(vehicleRepairRecord);
+        await dc.delete(vehicleRepairRecord);
 
     }
 
