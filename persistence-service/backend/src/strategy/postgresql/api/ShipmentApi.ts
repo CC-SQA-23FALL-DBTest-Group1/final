@@ -1,8 +1,9 @@
 // Written by Frederick
 // Version 1
 // Last update: 2023-12-13
+
 import { Customer, Shipment, TransitPoint, VehicleType } from "../models";
-import { DataConnector } from "../dataconnector";
+import { DataConnector, ShipmentDataConnector } from "../dataconnector";
 
 export class ShipmentApi {
     #dataConnector: DataConnector<Shipment>;
@@ -12,25 +13,27 @@ export class ShipmentApi {
     }
 
     async getByID(id: number): Promise<Shipment> {
-
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: SI000`)
         }
-
-        const result = await this.#dataConnector.get([{
-            id: id
-        }]);
-
-        if (result.length == 1) {
-            return result[0];
+        const dataConnector = this.#dataConnector as unknown as ShipmentDataConnector;
+        let predicate = new Shipment();
+        predicate.id=id;
+        const result = await dataConnector.get(predicate)
+        if (result.length >= 1) {
+            return result[0]
         } else {
-            throw new Error(
-                `Shipment with ID ${id} not found. `
-                + `Code: SI001`
-            );
+            throw new Error(`Shipment with ID ${id} not found. Code: SI001`);
         }
+
     }
 
+    async get(predicates:Shipment): Promise<Shipment[]> {
+        const dataConnector = this.#dataConnector as unknown as ShipmentDataConnector;
+        const result = await dataConnector.get(predicates);
+        return result;
+
+    }
     async create(
         customer: Customer,
         weight: number,
