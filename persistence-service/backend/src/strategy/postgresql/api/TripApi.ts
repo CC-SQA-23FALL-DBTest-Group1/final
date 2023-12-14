@@ -1,10 +1,10 @@
 // Written by Keerthana
-// Version 2
+// Version 3
 // Last update: 2023-12-13
 // Reviewed By Frederick
 // Reviewed on 2023-12-13
 import { Employee, TransitPoint, Trip, Vehicle } from "../models";
-import { DataConnector } from "../dataconnector/DataConnector";
+import { DataConnector, TripDataConnector } from "../dataconnector";
 
 export class TripApi {
     #dataConnector: DataConnector<Trip>;
@@ -17,8 +17,11 @@ export class TripApi {
         if (isNaN(id) || id < 0) {
             throw new Error(`The ID is not valid. Code: TR000`)
         }
-        const result = await this.#dataConnector.get([{ id: id }])
-        if (result.length >= 1) {
+        const dc = this.#dataConnector as TripDataConnector;
+        let predicate = new Trip();
+        predicate.id = id;
+        const result = await dc.get(predicate);
+        if (result.length == 1) {
             return result[0]
         } else {
             throw new Error(`Trip with ID ${id} not found. Code: TR001`)
@@ -26,8 +29,8 @@ export class TripApi {
 
     }
 
-    async get(predicates: Object[]): Promise<Trip[]> {
-        const result = await this.#dataConnector.get(predicates);
+    async get(predicate: Trip): Promise<Trip[]> {
+        const result = await this.#dataConnector.get(predicate);
         return result;
     }
 
@@ -63,13 +66,7 @@ export class TripApi {
         driver2?: Employee,
     ): Promise<Trip> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: TR002`)
-        }
-
-        const result = await this.#dataConnector.get([{ id: id }])
-
-        var trip = result[0];
+        let trip = await this.getByID(id);
         trip.vehicle = vehicle;
         trip.from = from;
         trip.to = to;
@@ -85,18 +82,9 @@ export class TripApi {
 
     }
 
-    async DeleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: TR003`);
-        }
-
-        const result = await this.#dataConnector.get([{ id: id }]);
-
-        if (result.length < 1) {
-            throw new Error(`Trip with ID ${id} not found. Code: TR004`);
-        }
-
-        const trip = result[0];
+    async deleteByID(id: number) {
+    
+        let trip = await this.getByID(id);
 
         await this.#dataConnector.delete(trip);
 

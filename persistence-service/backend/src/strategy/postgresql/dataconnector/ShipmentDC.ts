@@ -1,9 +1,14 @@
 // Written by Frederick
 // Version 1
 // Last update: 2023-12-12
-import { DataSource } from "typeorm";
+//Reviewed by Xingru
+//Version 2
+// Last update: 2023-12-13
+import { Brackets, DataSource } from "typeorm";
 import { Shipment } from "../models";
 import { DataConnector } from "./DataConnector";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+
 export class ShipmentDataConnector
     implements DataConnector<Shipment>{
 
@@ -14,12 +19,65 @@ export class ShipmentDataConnector
     }
 
 
-    async get(predicates: Object[]): Promise<Shipment[]> {
+    async get(predicate: Shipment): Promise<Shipment[]> {
+
         try {
-            return await this.#dataSource.manager.findBy(
-                Shipment,
-                predicates
-            );
+
+            const queryBuilder = this.#dataSource.getRepository
+                (Shipment)
+                .createQueryBuilder(`s`);
+
+            if (
+                predicate.id !== undefined
+                && predicate.id !== null
+                && predicate.id >= 1
+            ) {
+                queryBuilder.andWhere(`s.id = :id`, { id: predicate.id });
+
+            }
+            if (
+                predicate.from.id !== undefined
+                && predicate.from.id !== null
+                && predicate.from.id >= 1
+            ) {
+                queryBuilder.andWhere(`s.from = :id`, {id: predicate.from.id });
+            }
+
+            if (
+                predicate.to.id !== undefined
+                && predicate.to.id !== null
+                && predicate.to.id >= 1
+            ) {
+                queryBuilder.andWhere(`s.to = :id`, {id: predicate.to.id });
+            }
+
+            if (
+                predicate.weight !== undefined
+                && predicate.weight !== null
+                && predicate.weight >= 1
+            ) {
+                queryBuilder.andWhere(`s.weight = :weight`, { weight: predicate.weight });
+            }
+
+            if (
+                predicate.value !== undefined
+                && predicate.value !== null
+                && predicate.value >= 0
+            ) {
+                queryBuilder.andWhere(`s.value = :value`, { value: predicate.value });
+            }
+
+            if (
+                predicate.customer.id !== undefined
+                && predicate.customer.id !== null
+                && predicate.customer.id >=1
+            ) {
+                queryBuilder.andWhere(`s.customer = :id`, {id: predicate.customer.id });
+            }
+
+
+            return await queryBuilder.getMany();
+
         } catch (e) {
             throw Error(`Error occured when searching. Code: SD000`);
         }

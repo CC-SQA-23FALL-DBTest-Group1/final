@@ -15,8 +15,8 @@ export class MechanicVehicleTypeApi {
         : Promise<MechanicVehicleType[]> {
 
 
-        const dataConnector = this.#dataConnector as MechanicVehicleTypeDataConnector
-        const result = await dataConnector.get(predicate);
+        const dc = this.#dataConnector as MechanicVehicleTypeDataConnector;
+        const result = await dc.get(predicate);
 
         if (result.length >= 1) {
             return result;
@@ -59,12 +59,12 @@ export class MechanicVehicleTypeApi {
     async update(employee: Employee, type: VehicleType, newStatus: boolean)
         : Promise<MechanicVehicleType> {
 
-        const dataConnector = this.#dataConnector as MechanicVehicleTypeDataConnector
+        
         let predicate = new MechanicVehicleType();
         predicate.employee = employee;
         predicate.type = type;
 
-        let mvts = await dataConnector.get(predicate);
+        let mvts = await this.get(predicate);
 
         if (mvts.length < 1) {
             throw new Error(
@@ -91,12 +91,12 @@ export class MechanicVehicleTypeApi {
     async delete(employee: Employee, type: VehicleType) {
 
 
-        const dataConnector = this.#dataConnector as MechanicVehicleTypeDataConnector
+        
         let predicate = new MechanicVehicleType();
         predicate.employee = employee;
         predicate.type = type;
 
-        let mvts = await dataConnector.get(predicate);
+        let mvts = await this.get(predicate);
 
         if (mvts.length < 1) {
             throw new Error(
