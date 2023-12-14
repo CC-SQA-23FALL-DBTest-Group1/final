@@ -1,8 +1,10 @@
-// Written by Frederick
-// Version 1
-// Last update: 2023-12-13
+// Written by Frederick and Xingru
+// Version 3
+// Last update: 2023-12-14
+// Reviewed By Frederick
+// Reviewed on 2023-12-14
 
-import { Customer, Shipment, TransitPoint, VehicleType } from "../models";
+import { Customer, Shipment, TransitPoint} from "../models";
 import { DataConnector, ShipmentDataConnector } from "../dataconnector";
 
 export class ShipmentApi {
@@ -12,15 +14,16 @@ export class ShipmentApi {
         this.#dataConnector = dataConnector;
     }
 
+
     async getByID(id: number): Promise<Shipment> {
         if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: SI000`)
         }
-        const dataConnector = this.#dataConnector as unknown as ShipmentDataConnector;
+        const dataConnector = this.#dataConnector as ShipmentDataConnector;
         let predicate = new Shipment();
         predicate.id=id;
-        const result = await dataConnector.get(predicate)
-        if (result.length >= 1) {
+        const result = await dataConnector.get(predicate);
+        if (result.length == 1) {
             return result[0]
         } else {
             throw new Error(`Shipment with ID ${id} not found. Code: SI001`);
@@ -28,12 +31,15 @@ export class ShipmentApi {
 
     }
 
+
     async get(predicates:Shipment): Promise<Shipment[]> {
         const dataConnector = this.#dataConnector as unknown as ShipmentDataConnector;
         const result = await dataConnector.get(predicates);
         return result;
 
     }
+
+
     async create(
         customer: Customer,
         weight: number,
@@ -42,7 +48,7 @@ export class ShipmentApi {
         to: TransitPoint
     ): Promise<Shipment> {
 
-        if (isNaN(weight) || weight < 0) {
+        if (isNaN(weight) || weight <= 0) {
             throw new Error(
                 `Weight is not valid. `
                 + `Code: SI002`
@@ -78,11 +84,11 @@ export class ShipmentApi {
         to: TransitPoint
     ): Promise<Shipment> {
 
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: SI004`)
         }
 
-        if (isNaN(weight) || weight < 0) {
+        if (isNaN(weight) || weight <= 0) {
             throw new Error(
                 `Weight is not valid. `
                 + `Code: SI006`
@@ -96,19 +102,8 @@ export class ShipmentApi {
             );
         }
 
-        let shipments = await this.#dataConnector.get([{
-            id: id
-        }]);
 
-        if (shipments.length != 1) {
-            throw new Error(
-                `Shipment with ID ${id} not found. `
-                + `Code: SI005`
-            );
-        }
-
-
-        let shipment = shipments[0];
+        let shipment = await this.getByID(id);
 
         shipment.customer = customer;
         shipment.from = from;
@@ -123,23 +118,7 @@ export class ShipmentApi {
 
     async deleteByID(id: number): Promise<void> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: SI008`)
-        }
-
-        let shipments = await this.#dataConnector.get([{
-            id: id
-        }]);
-
-        if (shipments.length != 1) {
-            throw new Error(
-                `Shipment with ID ${id} not found. `
-                + `Code: SI009`
-            );
-        }
-
-
-        let shipment = shipments[0];
+        let shipment = await this.getByID(id);
 
         await this.#dataConnector.delete(shipment);
         
