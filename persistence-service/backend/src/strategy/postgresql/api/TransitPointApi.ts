@@ -1,10 +1,10 @@
 // Written by Keerthana
-// Version 1
+// Version 2
 // Last update: 2023-12-13
 // Reviewed By Frederick
 // Reviewed on 2023-12-13
 import { TransitPoint } from "../models";
-import { DataConnector } from "../dataconnector/DataConnector";
+import { DataConnector, TransitPointDataConnector } from "../dataconnector";
 
 export class TransitPointApi {
     #dataConnector: DataConnector<TransitPoint>;
@@ -14,11 +14,14 @@ export class TransitPointApi {
     }
 
     async getByID(id: number): Promise<TransitPoint> {
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: TS000`)
         }
-        const result = await this.#dataConnector.get(id);
-        if (result.length >= 1) {
+        const dc = this.#dataConnector as TransitPointDataConnector;
+        let predicate = new TransitPoint();
+        predicate.id = id;
+        const result = await dc.get(predicate);
+        if (result.length == 1) {
             return result[0]
         } else {
             throw new Error(`Transit Point with ID ${id} not found. Code: TS001`)
@@ -27,7 +30,12 @@ export class TransitPointApi {
     }
 
     async getByName(name: string): Promise<TransitPoint[]> {
-        const result = await this.#dataConnector.get(name);
+
+        const dc = this.#dataConnector as TransitPointDataConnector;
+        let predicate = new TransitPoint();
+        predicate.name = name.trim();
+
+        const result = await dc.get(predicate);
         return result;
     }
 
@@ -46,16 +54,11 @@ export class TransitPointApi {
 
     async updateByID(id: number, newName: string): Promise<TransitPoint> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: TS002`)
-        }
         if (newName.trim().length == 0) {
-            throw new Error(`Name can not be empty. Code: TS006`)
+            throw new Error(`Name can not be empty. Code: TS006`);
         }
 
-        const result = await this.#dataConnector.get([{ id: id }])
-
-        var transitPoint = result[0];
+        let transitPoint = await this.getByID(id);
         transitPoint.name = newName.trim();
 
         await this.#dataConnector.save(transitPoint);
@@ -65,23 +68,11 @@ export class TransitPointApi {
     }
 
     async deleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: TS003`);
-        }
-
-        const result = await this.#dataConnector.get([{ id: id }]);
-
-        if (result.length < 1) {
-            throw new Error(`Transit Point with ID ${id} not found. Code: TS004`);
-        }
-
-        const vehicleType = result[0];
+        
+        const vehicleType = await this.getByID(id);
 
         await this.#dataConnector.delete(vehicleType);
-
     }
-
-
 
 }
 

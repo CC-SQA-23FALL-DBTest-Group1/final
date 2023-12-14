@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-13
 import { DataSource } from "typeorm";
 import { TransitPoint } from "../models";
 import { DataConnector } from "./DataConnector";
@@ -13,22 +13,30 @@ export class TransitPointDataConnector implements DataConnector<TransitPoint>{
     }
 
 
-    async get(id?: number, name?: string): Promise<TransitPoint[]> {
+    async get(predicate: TransitPoint): Promise<TransitPoint[]> {
         try {
 
             const queryBuilder = this.#dataSource.getRepository(TransitPoint)
                 .createQueryBuilder(`tp`);
 
-            if (name !== undefined && name !== '') {
-                queryBuilder.where(`tp.name LIKE :searchTerm`, { searchTerm: `%${name}%` });
+            if (
+                predicate.name !== undefined
+                && predicate.name !== null
+                && predicate.name !== ''
+            ) {
+                queryBuilder.andWhere(`tp.name LIKE :searchTerm`, { searchTerm: `%${predicate.name}%` });
             }
 
-            if (id !== undefined) {
-                queryBuilder.andWhere(`tp.id = :id`, { id });
+            if (
+                predicate.id !== undefined
+                && predicate.id !== null
+                && predicate.id >= 1
+            ) {
+                queryBuilder.andWhere(`tp.id = :id`, { id: predicate.id });
             }
-    
+
             return await queryBuilder.getMany();
-            
+
         } catch (e) {
             throw Error(`Error occured when searching. Code: TD000`);
         }

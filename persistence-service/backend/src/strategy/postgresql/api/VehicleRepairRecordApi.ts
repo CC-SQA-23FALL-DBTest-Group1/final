@@ -79,10 +79,6 @@ export class VehicleRepairRecordApi {
         mechanic: Employee
     ): Promise<VehicleRepairRecord> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: SI004`)
-        }
-
         if (isNaN(estimatedTime) || estimatedTime <= 0) {
             throw new Error(
                 `EstimatedTimeis not valid. `
@@ -97,57 +93,24 @@ export class VehicleRepairRecordApi {
             );
         }
 
-        const dc = this.#dataConnector as VehicleRepairRecordDataConnector;
-
-        let predicate = new VehicleRepairRecord();
-        predicate.id = id;
-
-        let vehicleRepairRecords = await dc.get(predicate);
-
-        if (vehicleRepairRecords.length != 1) {
-            throw new Error(
-                `VehicleRepairRecord with ID ${id} not found. `
-                + `Code:VA005`
-            );
-        }
-
-
-        let vehicleRepairRecord = vehicleRepairRecords[0];
+        let vehicleRepairRecord = await this.getByID(id);
 
         vehicleRepairRecord.estimatedTime = estimatedTime;
         vehicleRepairRecord.actualTime = actualTime;
         vehicleRepairRecord.vehicle = vehicle;
         vehicleRepairRecord.mechanic = mechanic;
 
-        await dc.save(vehicleRepairRecord);
+        await this.#dataConnector.save(vehicleRepairRecord);
 
         return vehicleRepairRecord;
     }
 
     async deleteByID(id: number): Promise<void> {
 
-        if (isNaN(id) || id < 0) {
-            throw new Error(`The ID is not valid. Code: VA008`)
-        }
 
-        const dc = this.#dataConnector as VehicleRepairRecordDataConnector;
+        let vehicleRepairRecord = await this.getByID(id);
 
-        let predicate = new VehicleRepairRecord();
-        predicate.id = id;
-
-        let vehicleRepairRecords = await dc.get(predicate);
-
-        if (vehicleRepairRecords.length != 1) {
-            throw new Error(
-                `VehicleRepairRecord with ID ${id} not found. `
-                + `Code: VA009`
-            );
-        }
-
-
-        let vehicleRepairRecord = vehicleRepairRecords[0];
-
-        await dc.delete(vehicleRepairRecord);
+        await this.#dataConnector.delete(vehicleRepairRecord);
 
     }
 
