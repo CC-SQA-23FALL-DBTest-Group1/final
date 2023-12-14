@@ -1,8 +1,8 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-13
 import { Employee } from "../models";
-import { DataConnector } from "../dataconnector/DataConnector";
+import { EmployeeDataConnector, DataConnector } from "../dataconnector";
 
 export class EmployeeApi {
     #dataConnector: DataConnector<Employee>;
@@ -12,10 +12,14 @@ export class EmployeeApi {
     }
 
     async getByID(id: number): Promise<Employee> {
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: EA000`)
         }
-        const result = await this.#dataConnector.get([{ id: id }])
+
+        const dataConnector = this.#dataConnector as EmployeeDataConnector;
+        let predicate = new Employee();
+        predicate.id = id;
+        const result = await dataConnector.get(predicate);
         if (result.length >= 1) {
             return result[0]
         } else {
@@ -24,8 +28,10 @@ export class EmployeeApi {
 
     }
 
-    async get(predicates: Object[]): Promise<Employee[]> {
-        const result = await this.#dataConnector.get(predicates);
+    async get(predicate: Employee): Promise<Employee[]> {
+
+        const dataConnector = this.#dataConnector as EmployeeDataConnector;
+        const result = await dataConnector.get(predicate);
         return result;
     }
 
@@ -44,10 +50,10 @@ export class EmployeeApi {
         employee.firstName = firstName.trim();
         employee.lastName = lastName.trim();
         employee.seniority = seniority;
-        if(employee.firstName.length == 0){
+        if (employee.firstName.length == 0) {
             throw new Error(`First name can not be empty. Code: EA006`)
         }
-        if(employee.lastName.length == 0){
+        if (employee.lastName.length == 0) {
             throw new Error(`Last name can not be empty. Code: EA007`)
         }
 
@@ -64,20 +70,26 @@ export class EmployeeApi {
         seniority: number
     ): Promise<Employee> {
 
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: EA002`)
         }
+        if (seniority > 9999 || seniority < 0) {
+            throw new Error(`The ID is not valid. Code: EA010`)
+        }
 
-        const result = await this.#dataConnector.get([{ id: id }])
+        const dataConnector = this.#dataConnector as EmployeeDataConnector;
+        let predicate = new Employee();
+        predicate.id = id;
+        const result = await dataConnector.get(predicate);
 
         var employee = result[0];
         employee.firstName = firstName.trim();
         employee.lastName = lastName.trim();
         employee.seniority = seniority;
-        if(employee.firstName.length == 0){
+        if (employee.firstName.length == 0) {
             throw new Error(`First name can not be empty. Code: EA008`)
         }
-        if(employee.lastName.length == 0){
+        if (employee.lastName.length == 0) {
             throw new Error(`Last name can not be empty. Code: EA009`)
         }
 
@@ -88,11 +100,14 @@ export class EmployeeApi {
     }
 
     async deleteByID(id: number) {
-        if (isNaN(id) || id < 0) {
+        if (isNaN(id) || id <= 0) {
             throw new Error(`The ID is not valid. Code: EA003`);
         }
 
-        const result = await this.#dataConnector.get([{ id: id }]);
+        const dataConnector = this.#dataConnector as EmployeeDataConnector;
+        let predicate = new Employee();
+        predicate.id = id;
+        const result = await dataConnector.get(predicate);
 
         if (result.length < 1) {
             throw new Error(`Employee with ID ${id} not found. Code: EA004`);
