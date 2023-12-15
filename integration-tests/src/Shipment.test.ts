@@ -38,8 +38,8 @@ describe("Shipment Integration Test", () => {
             )).data;
 
             const data = {
-                fromID: fromTP.id,
-                toTD: toTP.id,
+                from: fromTP.id,
+                to: toTP.id,
                 customerID: newCustomer.id,
                 weight: 66,
                 value: 7
@@ -50,8 +50,17 @@ describe("Shipment Integration Test", () => {
                 data
             );
 
+
+            const dataToCompare = {
+                from: fromTP,
+                to: toTP,
+                customer: newCustomer,
+                weight: 66,
+                value: 7
+            }
+
             expect(response.status).toBe(200);
-            expect(response.data).toMatchObject(data);
+            expect(response.data).toMatchObject(dataToCompare);
         });
 
     });
@@ -61,293 +70,144 @@ describe("Shipment Integration Test", () => {
     describe(`Read`, () => {
 
         test("With Valid Existing ID", async () => {
+            const newCustomer = (await axios.post(
+                `http://${targetUrl}/customer/new`,
+                {
+                    name: `Poom`,
+                    address: `1 Han St`,
+                    phoneNumber1: `9663322455`,
+                    phoneNumber2: `6399841165`,
+                }
+            )).data;
+
+            const toTP = (await axios.post(
+                `http://${targetUrl}/transitpoint/new`,
+                {
+                    name: `Warehouse q99`,
+                }
+            )).data;
+
+
+            const fromTP = (await axios.post(
+                `http://${targetUrl}/transitpoint/new`,
+                {
+                    name: `Warehouse 33559`,
+                }
+            )).data;
+
             const data = {
-                name: `SUV`,
+                from: fromTP.id,
+                to: toTP.id,
+                customerID: newCustomer.id,
+                weight: 10,
+                value: 100
             }
 
-            const newVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
+            const newShipment = (await axios.post(
+                `http://${targetUrl}/shipment/new`,
                 data
             )).data;
 
-            const id = newVT.id;
+
+
+
+            const dataToCompare = {
+                from: fromTP,
+                to: toTP,
+                customer: newCustomer,
+                weight: 10,
+                value: 100
+            }
+            expect(newShipment).toMatchObject(dataToCompare);
+
             const response = await axios.get(
-                `http://${targetUrl}/vehicletype/${id}`
-            );
+                `http://${targetUrl}/shipment/${newShipment.id}`
+            )
 
             expect(response.status).toBe(200);
-            expect(response.data).toMatchObject(data);
-            expect(response.data.id).toEqual(id);
-        });
-
-
-        /**
-         *  Property: Name 
-         */
-        test("With Valid Name", async () => {
-            const data = {
-                name: `Bus A`,
-            }
-
-            const newVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-            const id = newVT.id;
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype`,
-                data
-            );
-
-            expect(response.status).toBe(200);
-            expect(response.data.length).toBeGreaterThanOrEqual(1);
+            expect(response.data).toMatchObject(dataToCompare);
 
         });
-
-        test("With Empty Name", async () => {
-            const data = {
-                name: `Bus B`,
-            }
-
-            const newVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype`,
-                { name: `` }
-            );
-
-
-            expect(response.status).toBe(200);
-            expect(response.data.length).toBeGreaterThanOrEqual(1);
-
-        });
-
-        test("With Name Containing Only Spaces", async () => {
-            const data = {
-                name: `Bus C`,
-            }
-
-            const newVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype`,
-                { name: `         ` }
-            );
-
-
-            expect(response.status).toBe(200);
-            expect(response.data.length).toBeGreaterThanOrEqual(1);
-
-        });
-
-        test("With Name Containing Leading and Trailing Spaces", async () => {
-            const data = {
-                name: `Bus D`,
-            }
-
-            const newVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype`,
-                { name: `   Bus D   ` }
-            );
-
-
-            expect(response.status).toBe(200);
-            expect(response.data.length).toBeGreaterThanOrEqual(1);
-
-        });
-
 
     });
 
 
-    describe(`Update Vehicle Type`, () => {
+    describe(`Update`, () => {
 
         test("With Valid Data", async () => {
+            const newCustomer = (await axios.post(
+                `http://${targetUrl}/customer/new`,
+                {
+                    name: `Hons`,
+                    address: `Aqua`,
+                    phoneNumber1: `9663322455`,
+                    phoneNumber2: `6399841165`,
+                }
+            )).data;
+
+            const toTP = (await axios.post(
+                `http://${targetUrl}/transitpoint/new`,
+                {
+                    name: `Warehouse 999`,
+                }
+            )).data;
+
+
+            const fromTP = (await axios.post(
+                `http://${targetUrl}/transitpoint/new`,
+                {
+                    name: `Warehouse 9559`,
+                }
+            )).data;
+
             const data = {
-                name: `Race Car`,
+                from: fromTP.id,
+                to: toTP.id,
+                customerID: newCustomer.id,
+                weight: 66,
+                value: 7
             }
 
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
+            const shipment = await axios.post(
+                `http://${targetUrl}/shipment/new`,
                 data
-            )).data;
-
-            const id = createdVT.id;
-
-            const newData = {
-                id: id,
-                name: `Cat`
-            }
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
-            expect(response.status).toBe(200);
-            expect(response.data).toMatchObject(newData);
-
-            const readVT = (await axios.get(
-                `http://${targetUrl}/vehicletype/${id}`
-            )).data;
-
-            expect(readVT).toMatchObject(newData);
-
-        });
-
-        /**
-         * Property: ID
-         */
-        test(`With Negative ID`, async () => {
-            const newData = {
-                id: -1,
-                name: `Tiger`
-            }
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(`ID is not valid`);
-
-        });
-
-        test(`With ID 0`, async () => {
-            const newData = {
-                id: 0,
-                name: `Panda`
-            }
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(`ID is not valid`);
-
-        });
-
-        test(`With Non Existing ID`, async () => {
-            const newData = {
-                id: 9999,
-                name: `Bin`
-            }
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(
-                `Customer with ID ${newData.id} not found. Code: VT001`
             );
 
-        });
 
-
-        /**
-         * Property: Name
-         */
-        test(`With Empty Name`, async () => {
-            const data = {
-                name: `Cup Noodle`,
+            const dataToCompare = {
+                id: shipment.data.id,
+                from: fromTP,
+                to: toTP,
+                customer: newCustomer,
+                weight: 100,
+                value: 7
             }
 
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-            const id = createdVT.id;
-            const newData = {
-                id: id,
-                name: ``
+            const dataToSend = {
+                id: shipment.data.id,
+                from: fromTP.id,
+                to: toTP.id,
+                customerID: newCustomer.id,
+                weight: 100,
+                value: 7
             }
 
             const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
+                `http://${targetUrl}/shipment/update`,
+                dataToSend
+            );
 
             expect(response.status).toBe(200);
-            expect(response.data).toEqual(`Name is not valid`);
+            expect(response.data).toMatchObject(dataToCompare);
 
+            const response2 = await axios.get(
+                `http://${targetUrl}/shipment/${dataToSend.id}`,
+            );
+
+            expect(response2.status).toBe(200);
+            expect(response2.data).toMatchObject(dataToCompare);
         });
 
-        test(`With Name Containing Only Spaces`, async () => {
-            const data = {
-                name: `Green Tea`,
-            }
-
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-            const id = createdVT.id;
-            const newData = {
-                id: id,
-                name: `     `
-            }
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(`Name is not valid`);
-
-        });
-
-        test(`With Name Containing Leading and Trailing Spaces`, async () => {
-            const data = {
-                name: `Green Tea`,
-            }
-
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-            const id = createdVT.id;
-            let newData = {
-                id: id,
-                name: `  Bottle  `
-            }
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/update`,
-                newData
-            )
-            newData.name = newData.name.trim()
-
-            expect(response.status).toBe(200);
-            expect(response.data).toMatchObject(newData);
-
-        });
 
 
     });
@@ -357,94 +217,68 @@ describe("Shipment Integration Test", () => {
     describe(`Delete Vehicle Type`, () => {
 
         test("With Valid Data", async () => {
+            const newCustomer = (await axios.post(
+                `http://${targetUrl}/customer/new`,
+                {
+                    name: `Honxs`,
+                    address: `Aquawa`,
+                    phoneNumber1: `9663322455`,
+                    phoneNumber2: `6399841165`,
+                }
+            )).data;
+
+            const toTP = (await axios.post(
+                `http://${targetUrl}/transitpoint/new`,
+                {
+                    name: `Warehouse 999`,
+                }
+            )).data;
+
+
+            const fromTP = (await axios.post(
+                `http://${targetUrl}/transitpoint/new`,
+                {
+                    name: `Warehouse 9559`,
+                }
+            )).data;
+
             const data = {
-                name: `Pencil`,
+                from: fromTP.id,
+                to: toTP.id,
+                customerID: newCustomer.id,
+                weight: 66,
+                value: 7
             }
 
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
+            const dataToCompare = {
+                from: fromTP,
+                to: toTP,
+                customer: newCustomer,
+                weight: 66,
+                value: 7
+            }
+
+            const newShipment = (await axios.post(
+                `http://${targetUrl}/shipment/new`,
                 data
             )).data;
 
-            const id = createdVT.id;
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/delete`,
-                {
-                    id: id
-                }
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(`Delete ID:${id}`);
-
-            const read = await axios.get(
-                `http://${targetUrl}/vehicletype/${id}`
+            const response1 = await axios.get(
+                `http://${targetUrl}/shipment/${newShipment.id}`
             );
-            expect(read.data).toEqual(
-                `Customer with ID ${id} not found. Code: VT001`
+            expect(response1.status).toBe(200);
+            expect(response1.data).toMatchObject(dataToCompare);
+
+            const response2 = await axios.post(
+                `http://${targetUrl}/shipment/delete`,
+                { id: newShipment.id }
             );
+
+            expect(response2.status).toBe(200);
+            expect(response2.data).toEqual(`Delete ID:${newShipment.id}`);
+
 
         });
-
-        test("With Negative ID", async () => {
-            const data = {
-                name: `Island`,
-            }
-
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-            const id = createdVT.id;
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/delete`,
-                {
-                    id: -1
-                }
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(`ID is not valid`);
-
-            const read = await axios.get(
-                `http://${targetUrl}/vehicletype/${id}`
-            );
-            expect(read.data).toMatchObject(data);
-
-        });
-
-        test("With ID 0", async () => {
-            const data = {
-                name: `Clold`,
-            }
-
-            const createdVT = (await axios.post(
-                `http://${targetUrl}/vehicletype/new`,
-                data
-            )).data;
-
-            const id = createdVT.id;
-
-            const response = await axios.post(
-                `http://${targetUrl}/vehicletype/delete`,
-                {
-                    id: 0
-                }
-            )
-
-            expect(response.status).toBe(200);
-            expect(response.data).toEqual(`ID is not valid`);
-
-            const read = await axios.get(
-                `http://${targetUrl}/vehicletype/${id}`
-            );
-            expect(read.data).toMatchObject(data);
-
-        });
-
 
 
 
