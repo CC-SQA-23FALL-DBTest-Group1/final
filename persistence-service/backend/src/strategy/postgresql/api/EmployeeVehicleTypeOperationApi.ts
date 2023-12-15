@@ -78,12 +78,8 @@ export class EmployeeVehicleTypeOperationApi {
         }
 
         let evto = result[0];
-        const employee = evto.employee;
-
-        await this.delete(evto);
-
-        evto = await this.create(employee, newType);
-
+        evto.type = newType;
+        this.#dataConnector.save(evto);
         return evto;
     }
 
