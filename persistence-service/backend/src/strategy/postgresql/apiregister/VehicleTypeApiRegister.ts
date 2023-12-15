@@ -7,11 +7,11 @@ import { VehicleTypeApi } from "../api";
 import { VehicleTypeDataConnector } from "../dataconnector";
 
 /**
- * Register the urls related to Customer table.
+ * Register the urls related to VehicleType table.
  * Give Responses with JSON.
  * All errors should be cought here.
  */
-export default class VehicleTypeApiRegister {
+export class VehicleTypeApiRegister {
     #express: Express;
     #dataSource: DataSource;
 
@@ -26,7 +26,7 @@ export default class VehicleTypeApiRegister {
             return res.json(`Vehicle Type`);
         });
 
-        //Read one customer
+        //Read one Vehicle Type
         this.#express.get(`/vehicletype/:id`, async (req, res) => {
             const id = req.params.id.trim();
             const regex = /^[0-9]{1,}$/; // Positive integer with or without leading zeros
@@ -47,7 +47,7 @@ export default class VehicleTypeApiRegister {
 
         })
 
-        //Read customers
+        //Read Vehicle Types
         this.#express.post(`/vehicletype`, async (req, res) => {
             const name = req.body.name ?? ``;
 
@@ -59,7 +59,7 @@ export default class VehicleTypeApiRegister {
             }
         })
 
-        //Create Customer
+        //Create Vehicle Type
         this.#express.post(`/vehicletype/new`, async (req, res) => {
             const name: string = req.body.name?.trim() ?? ``;
 
@@ -77,7 +77,7 @@ export default class VehicleTypeApiRegister {
         })
 
 
-        //Update Customer
+        //Update Vehicle Type
         this.#express.post(`/vehicletype/update`, async (req, res) => {
             const id: number = req.body.id ?? 0
             const name: string = req.body.name?.trim() ?? ``
@@ -100,7 +100,7 @@ export default class VehicleTypeApiRegister {
         })
 
 
-        //Delete Customer
+        //Delete Vehicle Type
         this.#express.post(`/vehicletype/delete`, async (req, res) => {
             const id: number = req.body.id ?? 0
 
