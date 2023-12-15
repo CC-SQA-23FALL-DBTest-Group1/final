@@ -161,6 +161,7 @@ export class InterData1702592349735 implements MigrationInterface {
         v1.capacity = 100000;
         v1.year = 2022;
         v1.type = cargoPlanesTypeId.id;
+        v1.numberOfRepair = 1;
         await vehicleRepo.save(v1);
 
         let v2 = new Vehicle();
@@ -170,6 +171,7 @@ export class InterData1702592349735 implements MigrationInterface {
         v2.capacity = 120000;
         v2.year = 2021;
         v2.type = cargoPlanesTypeId.id;
+        v2.numberOfRepair = 1;
         await vehicleRepo.save(v2);
 
         let v3 = new Vehicle();
@@ -179,6 +181,7 @@ export class InterData1702592349735 implements MigrationInterface {
         v3.capacity = 4000;
         v3.year = 2020;
         v3.type = cargoPlanesTypeId.id;
+        v3.numberOfRepair = 1;
         await vehicleRepo.save(v3);
 
         const vehicleRepairRecordRepo = queryRunner.manager.getRepository(VehicleRepairRecord);
@@ -193,14 +196,14 @@ export class InterData1702592349735 implements MigrationInterface {
         vrr2.estimatedTime = 100;
         vrr2.actualTime = 90;
         vrr2.vehicle = v2;
-        vrr2.mechanic = e2;
+        vrr2.mechanic = e1;
         await vehicleRepairRecordRepo.save(vrr2);
 
         let vrr3 = new VehicleRepairRecord();
         vrr3.estimatedTime = 90;
         vrr3.actualTime = 80;
         vrr3.vehicle = v3;
-        vrr3.mechanic = e3;
+        vrr3.mechanic = e1;
         await vehicleRepairRecordRepo.save(vrr3);
 
 
@@ -212,7 +215,6 @@ export class InterData1702592349735 implements MigrationInterface {
         const vehicle3 = await vehicleRepo.findOneOrFail({ where: { brand: 'Cessna' } });
 
         const driver1 = await employeeRepo.findOneOrFail({ where: { firstName: 'John', lastName: 'Doe' } });
-        const driver2 = await employeeRepo.findOneOrFail({ where: { firstName: 'Jane', lastName: 'Smith' } });
 
 
 
@@ -220,15 +222,13 @@ export class InterData1702592349735 implements MigrationInterface {
         let trip1 = new Trip();
         trip1.vehicle = vehicle1;
         trip1.driver1 = driver1;
-        trip1.driver2 = driver2;
         trip1.from = transitPoint1;
         trip1.to = transitPoint2;
         await tripRepo.save(trip1);
 
         let trip2 = new Trip();
         trip2.vehicle = vehicle2;
-        trip2.driver1 = driver2;
-        trip2.driver2 = driver1;
+        trip2.driver1 = driver1;
         trip2.from = transitPoint2;
         trip2.to = transitPoint3;
         await tripRepo.save(trip2);
@@ -236,7 +236,6 @@ export class InterData1702592349735 implements MigrationInterface {
         let trip3 = new Trip();
         trip3.vehicle = vehicle3;
         trip3.driver1 = driver1;
-        trip3.driver2 = null;
         trip3.from = transitPoint2;
         trip3.to = transitPoint3;
         await tripRepo.save(trip3);
