@@ -1,8 +1,8 @@
 // Written by Frederick
-// Version 2
-// Last update: 2023-12-13
+// Version 3
+// Last update: 2023-12-15
 import { DataSource } from "typeorm";
-import { Employee, EmployeeVehicleTypeOperation, VehicleType } from "../models";
+import { EmployeeVehicleTypeOperation } from "../models";
 import { DataConnector } from "./DataConnector";
 export class EmployeeVehicleTypeOperationDataConnector
     implements DataConnector<EmployeeVehicleTypeOperation>{
@@ -16,9 +16,11 @@ export class EmployeeVehicleTypeOperationDataConnector
 
     async get(predicate: EmployeeVehicleTypeOperation): Promise<EmployeeVehicleTypeOperation[]> {
         try {
-            const queryBuilder = this.#dataSource.getRepository(EmployeeVehicleTypeOperation)
-                .createQueryBuilder(`evt`);
-
+            const repo = this.#dataSource.getRepository(EmployeeVehicleTypeOperation);
+            const queryBuilder = repo.createQueryBuilder(`evt`);
+            queryBuilder.leftJoinAndSelect('evt.employee', 'employee');
+            queryBuilder.leftJoinAndSelect('evt.type', 'type');
+            
             if (
                 predicate.employee?.id !== undefined
                 && predicate.employee?.id !== null
@@ -26,17 +28,19 @@ export class EmployeeVehicleTypeOperationDataConnector
             ) {
                 queryBuilder.andWhere(`evt.employee = :id`, { id: predicate.employee.id });
             }
-
+            
             if (
                 predicate.type?.id !== undefined
                 && predicate.type?.id !== null
                 && predicate.type?.id >= 1                
             ) {
-                queryBuilder.andWhere(`evt.type = :id`, { id: predicate.type.id });
+                queryBuilder.andWhere(`evt.type = :typeid`, { typeid: predicate.type.id });
+                
             }
-
+            
             return await queryBuilder.getMany();
         } catch (e) {
+            console.log(e);
             throw Error(`Error occured when searching. Code: EV000`);
         }
 
