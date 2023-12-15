@@ -18,8 +18,13 @@ export default class VehicleTypeApiRegister {
     constructor(dataSource: DataSource, express: Express) {
         this.#dataSource = dataSource;
         this.#express = express;
-        const dataConnector = new VehicleTypeDataConnector(this.#dataSource);
-        const api = new VehicleTypeApi(dataConnector);
+        const dc = new VehicleTypeDataConnector(this.#dataSource);
+        const api = new VehicleTypeApi(dc);
+
+        //Default
+        this.#express.get(`/vehicletype`, (_, res) => {
+            return res.json(`Vehicle Type`);
+        });
 
         //Read one customer
         this.#express.get(`/vehicletype/:id`, async (req, res) => {
@@ -29,8 +34,10 @@ export default class VehicleTypeApiRegister {
             if (!regex.test(id)) {
                 // if the id is not able to be a positive integer
                 return res.json(`ID is not valid`);
+            } else if (parseInt(id) <= 0) {
+                return res.json(`ID is not valid`);
             }
-           
+
             try {
                 const vehicleType = await api.getByID(parseInt(id));
                 return res.json(vehicleType);
@@ -41,14 +48,11 @@ export default class VehicleTypeApiRegister {
         })
 
         //Read customers
-        this.#express.get(`/vehicletype`, async (req, res) => {
-            const name = req.query.name ?? null
+        this.#express.post(`/vehicletype`, async (req, res) => {
+            const name = req.body.name ?? ``;
 
             try {
-                const vehicleTypes = await api.getByName([{
-                    name: name,
-                }
-                ]);
+                const vehicleTypes = await api.getByName(name.trim());
                 return res.json(vehicleTypes);
             } catch (e) {
                 return res.json((e as Error).message);
@@ -57,14 +61,11 @@ export default class VehicleTypeApiRegister {
 
         //Create Customer
         this.#express.post(`/vehicletype/new`, async (req, res) => {
-            const name: string = req.body.name?.trim() ?? null
+            const name: string = req.body.name?.trim() ?? ``;
 
-            /**
-             * 
-             * Space for Validations
-             * 
-             */
-
+            if (name.length == 0) {
+                return res.json(`Name is not valid`);
+            }
 
             try {
                 const result = await api.create(name);
@@ -77,24 +78,19 @@ export default class VehicleTypeApiRegister {
 
 
         //Update Customer
-        this.#express.post(`/customer/update`, async (req, res) => {
-            const id: string = req.body.name?.trim() ?? null
-            const name: string = req.body.name?.trim() ?? null
-            const address: string = req.body.address?.trim() ?? null
-            const phoneNumber1: string = req.body.phoneNumber1?.trim() ?? null
-            const phoneNumber2: string = req.body.phoneNumber2?.trim() ?? null
+        this.#express.post(`/vehicletype/update`, async (req, res) => {
+            const id: number = req.body.id ?? 0
+            const name: string = req.body.name?.trim() ?? ``
 
-            /**
-             * 
-             * Space for Validations
-             * 
-             */
-
-
-    
+            if (id <= 0) {
+                return res.json(`ID is not valid`);
+            }
+            if (name.length == 0) {
+                return res.json(`Name is not valid`);
+            }
 
             try {
-                const result = await api.updateByID(parseInt(id),name);
+                const result = await api.updateByID(id, name);
 
                 return res.json(result);
             } catch (e) {
@@ -105,19 +101,15 @@ export default class VehicleTypeApiRegister {
 
 
         //Delete Customer
-        this.#express.post(`/customer/delete`, async (req, res) => {
-            const id: string = req.body.name?.trim() ?? null
+        this.#express.post(`/vehicletype/delete`, async (req, res) => {
+            const id: number = req.body.id ?? 0
 
-            /**
-             * 
-             * Space for Validations
-             * 
-             */
-
-
+            if (id <= 0) {
+                return res.json(`ID is not valid`);
+            }
 
             try {
-                await api.deleteByID(parseInt(id));
+                await api.deleteByID(id);
 
                 return res.json(`Delete ID:${id}`);
             } catch (e) {

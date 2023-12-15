@@ -33,7 +33,7 @@ export class VehicleTypeDataConnector implements DataConnector<VehicleType>{
                 && predicate.name !== null
                 && predicate.name.trim() !== ''
             ) {
-                queryBuilder.andWhere(`c.name LIKE :searchTerm`, { searchTerm: `%${predicate.name.trim()}%` });
+                queryBuilder.andWhere(`vt.name LIKE :searchTerm`, { searchTerm: `%${predicate.name.trim()}%` });
             }
 
             return await queryBuilder.getMany();
