@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 2
-// Last update: 2023-12-11
+// Version 2 , 2023-12-11
+// Version 3 , 2023-12-14
 import cors from "cors";
 import express, { json } from "express";
 import postgresDataSource from "./strategy/postgresql";
@@ -13,6 +13,7 @@ import ApiRegister from "./strategy/postgresql/apiregister/ApiRegister";
   app.use(json());
 
   const datasource = await postgresDataSource.initialize();
+  datasource.runMigrations();
 
   new ApiRegister(datasource,app);
   
