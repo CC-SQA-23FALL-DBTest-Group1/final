@@ -16,15 +16,17 @@ export class MechanicVehicleTypeDataConnector
 
     async get(predicate: MechanicVehicleType): Promise<MechanicVehicleType[]> {
         try {
-            const queryBuilder = this.#dataSource.getRepository(MechanicVehicleType)
-            .createQueryBuilder(`mvt`);
+            const repo = this.#dataSource.getRepository(MechanicVehicleType);
+            const queryBuilder = repo.createQueryBuilder(`mvt`);
+            queryBuilder.leftJoinAndSelect('mvt.employee', 'employee');
+            queryBuilder.leftJoinAndSelect('mvt.type', 'type');
 
             if (
                 predicate.employee?.id !== undefined                
                 && predicate.employee?.id !== null
                 && predicate.employee?.id >= 1
             ) {
-                queryBuilder.andWhere(`mvt.employee = :id`, { id: predicate.employee.id });
+                queryBuilder.andWhere(`mvt.employee = :eid`, { eid: predicate.employee.id });
             }
 
             if (
@@ -32,7 +34,7 @@ export class MechanicVehicleTypeDataConnector
                 && predicate.type?.id !== null
                 && predicate.type?.id >= 1                
             ) {
-                queryBuilder.andWhere(`mvt.type = :id`, { id: predicate.type.id });
+                queryBuilder.andWhere(`mvt.type = :tid`, { tid: predicate.type.id });
             }
 
             if (
@@ -41,7 +43,6 @@ export class MechanicVehicleTypeDataConnector
             ) {
                 queryBuilder.andWhere(`mvt.status = :status`, { status: predicate.status });
             }
-
 
 
             return await queryBuilder.getMany();

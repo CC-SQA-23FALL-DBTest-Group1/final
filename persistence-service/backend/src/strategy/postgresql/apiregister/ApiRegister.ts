@@ -7,6 +7,7 @@ import { CustomerApiRegister } from "./CustomerApiRegister";
 import { VehicleTypeApiRegister } from "./VehicleTypeApiRegister";
 import { EmployeeApiRegister } from "./EmployeeApiRegister";
 import { EmployeeVehicleTypeOperationApiRegister } from "./EmployeeVehicleTypeOperationApiRegister";
+import { MechanicVehicleTypeApiRegister } from "./MechanicVehicleTypeApiRegister";
 
 /**
  * Register all table urls here
@@ -17,8 +18,8 @@ export default class ApiRegister {
 
         new CustomerApiRegister(dataSource, express);
         new EmployeeApiRegister(dataSource, express);
-        new EmployeeVehicleTypeOperationApiRegister(dataSource,express);
-        // new MechanicVehicleTypeApiR
+        new EmployeeVehicleTypeOperationApiRegister(dataSource, express);
+        new MechanicVehicleTypeApiRegister(dataSource, express);
         // new ShipmentApiR
         // new ShipmentRouteApiR
         // new TransitPointApiR
