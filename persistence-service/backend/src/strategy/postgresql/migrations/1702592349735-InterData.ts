@@ -14,19 +14,19 @@ export class InterData1702592349735 implements MigrationInterface {
         c1.name = `John Doe`;
         c1.address = '123 Main St';
         c1.phoneNumber1 = '5555471234';
-        customerRepo.save(c1);
+        await customerRepo.save(c1);
 
         let c2 = new Customer();
         c2.name = `Jane Smith`;
         c2.address = '456 Oak St';
         c2.phoneNumber1 = '5565471984';
-        customerRepo.save(c2);
+        await customerRepo.save(c2);
 
         let c3 = new Customer();
         c3.name = `Bob Johnson`;
         c3.address = '789 Pine St';
         c3.phoneNumber1 = '5565910184';
-        customerRepo.save(c3);
+        await customerRepo.save(c3);
 
 
         const employeeRepo = queryRunner.manager.getRepository(Employee);
@@ -35,46 +35,46 @@ export class InterData1702592349735 implements MigrationInterface {
         e1.firstName = 'John';
         e1.lastName = 'Doe';
         e1.seniority = 2;
-        employeeRepo.save(e1);
+        await employeeRepo.save(e1);
 
         let e2 = new Employee();
         e2.firstName = 'Jane';
         e2.lastName = 'Smith';
         e2.seniority = 3;
-        employeeRepo.save(e2);
+        await employeeRepo.save(e2);
 
         let e3 = new Employee();
         e3.firstName = 'Bob';
         e3.lastName = 'Johnson';
         e3.seniority = 1;
-        employeeRepo.save(e3);
+        await  employeeRepo.save(e3);
 
         const vehicleTypeRepo = queryRunner.manager.getRepository(VehicleType);
         let vt1 = new VehicleType();
         vt1.name = "Cargo Planes";
-        vehicleTypeRepo.save(vt1);
+        await vehicleTypeRepo.save(vt1);
 
         let vt2 = new VehicleType();
         vt2.name = "In-city trucks";
-        vehicleTypeRepo.save(vt2);
+        await vehicleTypeRepo.save(vt2);
 
 
         let vt3 = new VehicleType();
         vt3.name = "Long haul trucks";
-        vehicleTypeRepo.save(vt3);
+        await vehicleTypeRepo.save(vt3);
 
         const transitPointRepo = queryRunner.manager.getRepository(TransitPoint);
         let transitPoint1 = new TransitPoint();
         transitPoint1.name = 'Warehouse A';
-        transitPointRepo.save(transitPoint1);
+        await transitPointRepo.save(transitPoint1);
 
         let transitPoint2 = new TransitPoint();
         transitPoint2.name = 'Warehouse B';
-        transitPointRepo.save(transitPoint2);
+        await transitPointRepo.save(transitPoint2);
 
         let transitPoint3 = new TransitPoint();
         transitPoint3.name = 'Distribution Center';
-        transitPointRepo.save(transitPoint3);
+        await transitPointRepo.save(transitPoint3);
 
 
 
@@ -133,26 +133,6 @@ export class InterData1702592349735 implements MigrationInterface {
 
 
         const vehicleRepo = queryRunner.manager.getRepository(Vehicle);
-        const cargoPlanesTypeId = await vehicleTypeRepo
-            .createQueryBuilder()
-            .select('id')
-            .from(VehicleType, 'vt')
-            .where('vt.name = :name', { name: 'Cargo Planes' })
-            .getRawOne();
-
-        const inCityTrucksTypeId = await vehicleTypeRepo
-            .createQueryBuilder()
-            .select('id')
-            .from(VehicleType, 'vt')
-            .where('vt.name = :name', { name: 'In-city trucks' })
-            .getRawOne();
-
-        const longHaulTrucksTypeId = await vehicleTypeRepo
-            .createQueryBuilder()
-            .select('id')
-            .from(VehicleType, 'vt')
-            .where('vt.name = :name', { name: 'Long haul trucks' })
-            .getRawOne();
 
         let v1 = new Vehicle();
         v1.brand = 'Boeing';
@@ -160,7 +140,7 @@ export class InterData1702592349735 implements MigrationInterface {
         v1.load = 10000;
         v1.capacity = 100000;
         v1.year = 2022;
-        v1.type = cargoPlanesTypeId.id;
+        v1.type = cargoPlanes;
         v1.numberOfRepair = 1;
         await vehicleRepo.save(v1);
 
@@ -170,7 +150,7 @@ export class InterData1702592349735 implements MigrationInterface {
         v2.load = 12000;
         v2.capacity = 120000;
         v2.year = 2021;
-        v2.type = cargoPlanesTypeId.id;
+        v2.type = cargoPlanes;
         v2.numberOfRepair = 1;
         await vehicleRepo.save(v2);
 
@@ -180,7 +160,7 @@ export class InterData1702592349735 implements MigrationInterface {
         v3.load = 1500;
         v3.capacity = 4000;
         v3.year = 2020;
-        v3.type = cargoPlanesTypeId.id;
+        v3.type = cargoPlanes;
         v3.numberOfRepair = 1;
         await vehicleRepo.save(v3);
 
@@ -306,6 +286,11 @@ export class InterData1702592349735 implements MigrationInterface {
 
 
 
+
+
+
+
+
     public async down(queryRunner: QueryRunner): Promise<void> {
 
         const customerRepo = queryRunner.manager.getRepository(Customer);
@@ -317,14 +302,14 @@ export class InterData1702592349735 implements MigrationInterface {
             .where('name IN (:...names)', { names: customerNames })
             .execute();
 
-
+/*
         const employeeRepo = queryRunner.manager.getRepository(Employee);
         const employeeFirstNames = ['John', 'Jane', 'Bob'];
         await employeeRepo
             .createQueryBuilder()
             .delete()
             .from(Employee)
-            .where('firstName IN (:...firstNames)', { firstName: employeeFirstNames })
+            .where('firstname IN (:...firstNames)', { firstName: employeeFirstNames })
             .execute();
 
 
@@ -476,6 +461,8 @@ export class InterData1702592349735 implements MigrationInterface {
                 trip3: trip3,
             })
             .execute();
+            */
     }
+    
 
 }
