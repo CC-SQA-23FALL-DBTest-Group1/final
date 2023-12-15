@@ -1,6 +1,6 @@
 // Written by Frederick
-// Version 1
-// Last update: 2023-12-12
+// Version 2
+// Last update: 2023-12-15
 import { Brackets, DataSource } from "typeorm";
 import { Trip } from "../models";
 import { DataConnector } from "./DataConnector";
@@ -18,13 +18,19 @@ export class TripDataConnector
         try {
             const queryBuilder = this.#dataSource.getRepository(Trip)
                 .createQueryBuilder(`t`);
+            queryBuilder.leftJoinAndSelect('t.vehicle', 'vehicle');
+            queryBuilder.leftJoinAndSelect('t.to', 'to');
+            queryBuilder.leftJoinAndSelect('t.from', 'from');
+            queryBuilder.leftJoinAndSelect('t.driver1', 'driver1');
+            queryBuilder.leftJoinAndSelect('t.driver2', 'driver2');
+
 
             if (
                 predicate.id !== undefined
                 && predicate.id !== null
                 && predicate.id >= 1
             ) {
-                queryBuilder.andWhere(`t.id = :id`, { id: predicate.id });
+                queryBuilder.andWhere(`t.id = :tid`, { tid: predicate.id });
             }
 
             if (
@@ -32,7 +38,7 @@ export class TripDataConnector
                 && predicate.vehicle.id !== null
                 && predicate.vehicle.id >= 1
             ) {
-                queryBuilder.andWhere(`t.vehicle = :id`, { id: predicate.vehicle.id });
+                queryBuilder.andWhere(`t.vehicle = :vid`, { vid: predicate.vehicle.id });
             }
 
             if (
@@ -40,7 +46,7 @@ export class TripDataConnector
                 && predicate.from.id !== null
                 && predicate.from.id >= 1
             ) {
-                queryBuilder.andWhere(`t.from = :id`, { id: predicate.from.id });
+                queryBuilder.andWhere(`t.from = :fid`, { fid: predicate.from.id });
             }
 
             if (
@@ -48,7 +54,7 @@ export class TripDataConnector
                 && predicate.to.id !== null
                 && predicate.to.id >= 1
             ) {
-                queryBuilder.andWhere(`t.to = :id`, { id: predicate.to.id });
+                queryBuilder.andWhere(`t.to = :oid`, { oid: predicate.to.id });
             }
 
             if (
@@ -58,8 +64,8 @@ export class TripDataConnector
             ) {
                 queryBuilder.andWhere(
                     new Brackets(qb => {
-                        qb.where('t.driver1 = :id', { id: predicate.driver1.id })
-                            .orWhere('t.driver2 = :id', { id: predicate.driver1.id });
+                        qb.where('t.driver1 = :d1id', { d1id: predicate.driver1.id })
+                            .orWhere('t.driver2 = :d2id', { d2id: predicate.driver1.id });
                     })
                 );
             }
@@ -73,8 +79,8 @@ export class TripDataConnector
             ) {
                 queryBuilder.andWhere(
                     new Brackets(qb => {
-                        qb.where('t.driver1 = :id', { id: predicate.driver2!.id })
-                            .orWhere('t.driver2 = :id', { id: predicate.driver2!.id });
+                        qb.where('t.driver1 = :r1id', { r1id: predicate.driver2!.id })
+                            .orWhere('t.driver2 = :r2id', { r2id: predicate.driver2!.id });
                     })
                 );
             }
