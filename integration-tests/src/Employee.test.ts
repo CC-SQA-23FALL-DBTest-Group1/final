@@ -38,7 +38,7 @@ describe("Employee Integration Test", () => {
                 firstName: `John`,
                 lastName: `Enderson`,
                 seniority: 1,
-                vehicleTypeID: 3,
+                vehicleTypeID: vehicleType.id,
             }
 
             const dataToVerify = {
