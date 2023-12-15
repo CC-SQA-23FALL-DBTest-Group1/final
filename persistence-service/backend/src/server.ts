@@ -13,6 +13,7 @@ import ApiRegister from "./strategy/postgresql/apiregister/ApiRegister";
   app.use(json());
 
   const datasource = await postgresDataSource.initialize();
+  datasource.undoLastMigration({transaction:`all`});
   datasource.runMigrations();
 
   new ApiRegister(datasource,app);
