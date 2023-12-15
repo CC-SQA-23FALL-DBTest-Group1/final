@@ -3,7 +3,6 @@
 // Last update: 2023-12-15
 
 import axios from "axios";
-import { cleanUp } from "./CleanUp"
 
 //const targetUrl = `${process.env.TARGET_URL}`;
 const targetUrl = `localhost`;

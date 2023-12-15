@@ -6,21 +6,10 @@
 // Last update: 2023-12-14
 
 import axios from "axios";
-import { cleanUp } from "./CleanUp";
 
 //const targetUrl = `${process.env.TARGET_URL}`;
 const targetUrl = `localhost`
 describe("Customer Integration Test", () => {
-
-
-
-    afterAll(async () => {
-        // Clean up the data from this test
-        let a = await cleanUp(targetUrl, `customer`, `Customer`, `Customer`);
-        console.log(a);
-    })
-
-
 
 
 
