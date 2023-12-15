@@ -4,11 +4,21 @@
 
 import { DataSource } from "typeorm";
 import { Express } from "express";
-import { EmployeeDataConnector, EmployeeVehicleTypeOperationDataConnector, VehicleTypeDataConnector } from "../dataconnector";
-import { EmployeeApi, EmployeeVehicleTypeOperationApi, VehicleTypeApi } from "../api";
+import {
+    EmployeeDataConnector,
+    EmployeeVehicleTypeOperationDataConnector,
+    VehicleTypeDataConnector
+} from "../dataconnector";
+import {
+    EmployeeApi,
+    EmployeeVehicleTypeOperationApi,
+    VehicleTypeApi
+} from "../api";
 import { Employee } from "../models";
+
+
 /**
- * Register the urls related to VehicleType table.
+ * Register the urls related to Employee table.
  * Give Responses with JSON.
  * All errors should be cought here.
  */
@@ -168,7 +178,7 @@ export class EmployeeApiRegister {
             }
 
             try {
-                
+
                 const result = await api.updateByID(
                     id,
                     firstName,

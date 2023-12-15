@@ -5,6 +5,7 @@ import { DataSource } from "typeorm";
 import { Express } from "express";
 import { CustomerApiRegister } from "./CustomerApiRegister";
 import { VehicleTypeApiRegister } from "./VehicleTypeApiRegister";
+import { EmployeeApiRegister } from "./EmployeeApiRegister";
 
 /**
  * Register all table urls here
@@ -15,7 +16,7 @@ export default class ApiRegister {
 
         new CustomerApiRegister(dataSource, express);
         new VehicleTypeApiRegister(dataSource, express);
-
+        new EmployeeApiRegister(dataSource, express);
 
 
     }
