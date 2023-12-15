@@ -53,7 +53,7 @@ export class ShipmentApiRegister {
         //Create
         this.#express.post(`/shipment/new`, async (req, res) => {
             const fromID: number = req.body.from ?? 0;
-            const toID: number = req.body.from ?? 0;
+            const toID: number = req.body.to ?? 0;
             const customerID: number = req.body.customerID ?? 0;
             const weight: number = req.body.weight ?? 0;
             const value: number = req.body.value ?? -1;
@@ -98,7 +98,7 @@ export class ShipmentApiRegister {
         this.#express.post(`/shipment/update`, async (req, res) => {
             const id: number = req.body.id ?? 0
             const fromID: number = req.body.from ?? 0;
-            const toID: number = req.body.from ?? 0;
+            const toID: number = req.body.to ?? 0;
             const customerID: number = req.body.customerID ?? 0;
             const weight: number = req.body.weight ?? 0;
             const value: number = req.body.value ?? -1;

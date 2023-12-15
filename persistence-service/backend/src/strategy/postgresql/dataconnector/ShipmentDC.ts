@@ -4,10 +4,9 @@
 //Reviewed by Xingru
 //Version 2
 // Last update: 2023-12-13
-import { Brackets, DataSource } from "typeorm";
+import { DataSource } from "typeorm";
 import { Shipment } from "../models";
 import { DataConnector } from "./DataConnector";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 export class ShipmentDataConnector
     implements DataConnector<Shipment>{
@@ -23,35 +22,34 @@ export class ShipmentDataConnector
 
         try {
 
-            const queryBuilder = this.#dataSource.getRepository
-                (Shipment)
+            const queryBuilder = this.#dataSource.getRepository(Shipment)
                 .createQueryBuilder(`s`);
-                queryBuilder.leftJoinAndSelect('s.customer', 'customer');
-                queryBuilder.leftJoinAndSelect('s.to', 'to');
-                queryBuilder.leftJoinAndSelect('s.from', 'from');
+            queryBuilder.leftJoinAndSelect('s.customer', 'customer');
+            queryBuilder.leftJoinAndSelect('s.to', 'to');
+            queryBuilder.leftJoinAndSelect('s.from', 'from');
 
-            if (
+            if (predicate &&
                 predicate.id !== undefined
                 && predicate.id !== null
                 && predicate.id >= 1
             ) {
-                queryBuilder.andWhere(`s.id = :id`, { id: predicate.id });
+                queryBuilder.andWhere(`s.id = :sid`, { sid: predicate.id });
 
             }
             if (
-                predicate.from.id !== undefined
-                && predicate.from.id !== null
-                && predicate.from.id >= 1
+                predicate.from?.id !== undefined
+                && predicate.from?.id !== null
+                && predicate.from?.id >= 1
             ) {
-                queryBuilder.andWhere(`s.from = :id`, {id: predicate.from.id });
+                queryBuilder.andWhere(`s.from = :fid`, { fid: predicate.from.id });
             }
 
             if (
-                predicate.to.id !== undefined
-                && predicate.to.id !== null
-                && predicate.to.id >= 1
+                predicate.to?.id !== undefined
+                && predicate?.to.id !== null
+                && predicate?.to.id >= 1
             ) {
-                queryBuilder.andWhere(`s.to = :id`, {id: predicate.to.id });
+                queryBuilder.andWhere(`s.to = :tid`, { tid: predicate.to.id });
             }
 
             if (
@@ -71,17 +69,17 @@ export class ShipmentDataConnector
             }
 
             if (
-                predicate.customer.id !== undefined
-                && predicate.customer.id !== null
-                && predicate.customer.id >=1
+                predicate.customer?.id !== undefined
+                && predicate.customer?.id !== null
+                && predicate.customer?.id >= 1
             ) {
-                queryBuilder.andWhere(`s.customer = :id`, {id: predicate.customer.id });
+                queryBuilder.andWhere(`s.customer = :cid`, { cid: predicate.customer.id });
             }
-
 
             return await queryBuilder.getMany();
 
         } catch (e) {
+            console.log(e)
             throw Error(`Error occured when searching. Code: SD000`);
         }
 
