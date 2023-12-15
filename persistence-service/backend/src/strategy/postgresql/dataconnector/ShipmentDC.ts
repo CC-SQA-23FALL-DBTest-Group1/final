@@ -26,6 +26,9 @@ export class ShipmentDataConnector
             const queryBuilder = this.#dataSource.getRepository
                 (Shipment)
                 .createQueryBuilder(`s`);
+                queryBuilder.leftJoinAndSelect('s.customer', 'customer');
+                queryBuilder.leftJoinAndSelect('s.to', 'to');
+                queryBuilder.leftJoinAndSelect('s.from', 'from');
 
             if (
                 predicate.id !== undefined
