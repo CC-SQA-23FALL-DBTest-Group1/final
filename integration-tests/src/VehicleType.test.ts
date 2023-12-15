@@ -2,6 +2,7 @@
 // Version 1
 // Last update: 2023-12-14
 import axios from "axios";
+import { cleanUp } from "./CleanUp";
 
 //const targetUrl = `${process.env.TARGET_URL}`;
 const targetUrl = `localhost`;
@@ -10,45 +11,8 @@ describe("Vehicle Type Integration Test", () => {
 
     afterAll(async () => {
         // Clean up the data from this test
-        const response = await axios.post(`http://${targetUrl}/vehicletype`);
-        if (response.data) {
-            const vehicleTypes = response.data as any[];
-            console.log(
-                `==============================================`
-                + `\n`
-                + `Existing Vehicle Type records in the table:`
-                + `${vehicleTypes?.length ?? `None`}`
-                + `\n`
-                + `==============================================`
-            );
-
-            if (vehicleTypes.length > 3) {
-                console.log(`Cleaning up records from previous test.`);
-                vehicleTypes.forEach(async vt => {
-                    if (vt.id > 3) {
-                        await axios.post(
-                            `http://${targetUrl}/vehicletype/delete`,
-                            { id: vt.id }
-                        );
-                    }
-                });
-                console.log(
-                    `Clean-up done.`
-                    + `\n`
-                    + `==============================================`
-                );
-            }
-            else if (vehicleTypes.length > 0) {
-                console.log(
-                    `Reserve records from migration.`
-                    + `\n==============================================`
-                );
-
-            }
-        }
-        else {
-            throw Error(`Vehicle Type Integration Test Stops.`)
-        }
+        let a = await cleanUp(targetUrl, `vehicletype`, `VehicleType`, `Vehicle Type`);
+        console.log(a);
     })
 
 
