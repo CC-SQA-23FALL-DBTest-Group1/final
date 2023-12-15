@@ -21,7 +21,7 @@ import ApiRegister from "./strategy/postgresql/apiregister/ApiRegister";
     let a = await repository.query(`TRUNCATE TABLE ${entity.tableName} RESTART IDENTITY CASCADE`);
   }
   // End of temp codes
-
+  await datasource.undoLastMigration();
   await datasource.runMigrations();
 
   new ApiRegister(datasource, app);
