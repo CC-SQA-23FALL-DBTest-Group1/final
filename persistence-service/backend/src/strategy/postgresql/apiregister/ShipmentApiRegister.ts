@@ -71,7 +71,7 @@ export class ShipmentApiRegister {
                 return res.json(`Weight is not valid`);
             }
             if (value < 0) {
-                return res.json(`Weight is not valid`);
+                return res.json(`Value is not valid`);
             }
 
 
@@ -118,7 +118,7 @@ export class ShipmentApiRegister {
                 return res.json(`Weight is not valid`);
             }
             if (value < 0) {
-                return res.json(`Weight is not valid`);
+                return res.json(`Value is not valid`);
             }
 
             try {
