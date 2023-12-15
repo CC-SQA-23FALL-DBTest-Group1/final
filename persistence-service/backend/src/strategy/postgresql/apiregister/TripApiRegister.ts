@@ -39,8 +39,8 @@ export class TripApiRegister {
             }
 
             try {
-                const employee = await api.getByID(parseInt(id));
-                return res.json(employee);
+                const trip = await api.getByID(parseInt(id));
+                return res.json(trip);
             } catch (e) {
                 return res.json((e as Error).message);
             }
