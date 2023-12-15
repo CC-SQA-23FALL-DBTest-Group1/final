@@ -7,6 +7,7 @@ import {
   Shipment, ShipmentRoute, TransitPoint, Trip, Vehicle, VehicleRepairRecord,
   VehicleType
 } from "./models";
+import { InterData1702592349735 } from "./migrations/1702592349735-InterData";
 
 
 export const postgresDataSource = new DataSource({
@@ -21,7 +22,9 @@ export const postgresDataSource = new DataSource({
     Trip, Vehicle, VehicleRepairRecord, VehicleType],
   synchronize: true,
   logging: false,
-  migrations: [],
+  migrations: [
+    InterData1702592349735
+  ],
 });
 
 
