@@ -6,6 +6,7 @@ import { Express } from "express";
 import { CustomerApiRegister } from "./CustomerApiRegister";
 import { VehicleTypeApiRegister } from "./VehicleTypeApiRegister";
 import { EmployeeApiRegister } from "./EmployeeApiRegister";
+import { EmployeeVehicleTypeOperationApiRegister } from "./EmployeeVehicleTypeOperationApiRegister";
 
 /**
  * Register all table urls here
@@ -15,11 +16,15 @@ export default class ApiRegister {
     constructor(dataSource: DataSource, express: Express) {
 
         new CustomerApiRegister(dataSource, express);
-        new VehicleTypeApiRegister(dataSource, express);
         new EmployeeApiRegister(dataSource, express);
-
-
+        new EmployeeVehicleTypeOperationApiRegister(dataSource,express);
+        // new MechanicVehicleTypeApiR
+        // new ShipmentApiR
+        // new ShipmentRouteApiR
+        // new TransitPointApiR
+        // new TripApiR
+        // new VehicleApiR
+        // new VehicleRepairRecordApiR
+        new VehicleTypeApiRegister(dataSource, express);
     }
-
-
 }

@@ -53,14 +53,14 @@ export class EmployeeApiRegister {
                 return res.json((e as Error).message);
             }
 
-        })
+        });
 
         //Read Employees
         express.post(`/employee`, async (req, res) => {
             const firstName: string = req.body.firstName?.trim() ?? ``;
-            const lastName: string = req.body.lastName.trim() ?? ``;
+            const lastName: string = req.body.lastName?.trim() ?? ``;
             const seniority: number = req.body.seniority ?? -1;
-
+           
             let predicate = new Employee();
             predicate.firstName = firstName;
             predicate.lastName = lastName;
@@ -72,13 +72,13 @@ export class EmployeeApiRegister {
             } catch (e) {
                 return res.json((e as Error).message);
             }
-        })
+        });
 
         //Create Employee
         //Employee at least can operate one vehicle type
         express.post(`/employee/new`, async (req, res) => {
             const firstName: string = req.body.firstName?.trim() ?? ``;
-            const lastName: string = req.body.lastName.trim() ?? ``;
+            const lastName: string = req.body.lastName?.trim() ?? ``;
             const seniority: number = req.body.seniority ?? -1;
             const vehicleTypeID: number = req.body.vehicleTypeID ?? -1;
 
@@ -125,7 +125,7 @@ export class EmployeeApiRegister {
                         try {
 
                             await evtoAPI.create(newEmployee, vt);
-
+                            
                         } catch (e) {
 
                             // Failed to create EmployeeVehicleTypeOperation
@@ -154,14 +154,14 @@ export class EmployeeApiRegister {
 
 
 
-        })
+        });
 
 
         //Update Employee
         express.post(`/employee/update`, async (req, res) => {
             const id: number = req.body.id ?? 0
             const firstName: string = req.body.firstName?.trim() ?? ``;
-            const lastName: string = req.body.lastName.trim() ?? ``;
+            const lastName: string = req.body.lastName?.trim() ?? ``;
             const seniority: number = req.body.seniority ?? -1;
 
             if (id <= 0) {
@@ -191,7 +191,7 @@ export class EmployeeApiRegister {
                 return res.json((e as Error).message);
             }
 
-        })
+        });
 
 
         //Delete Employee
@@ -210,7 +210,7 @@ export class EmployeeApiRegister {
                 return res.json((e as Error).message);
             }
 
-        })
+        });
 
 
     }

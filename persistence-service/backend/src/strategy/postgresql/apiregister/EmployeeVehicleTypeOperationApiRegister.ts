@@ -21,27 +21,46 @@ export class EmployeeVehicleTypeOperationApiRegister {
 
         //Read
         express.post(`/evto`, async (req, res) => {
-            const eID: number = req.body.eID ?? 0;
-            const vtID: number = req.body.vtID ?? 0;
-            if (eID <= 0) {
+            const eID: number = req.body.eID ?? null;
+            const vtID: number = req.body.vtID ?? null;
+            if (eID != null && eID <= 0) {
                 return res.json(`Employee is not valid`);
             }
-            if (vtID <= 0) {
+            if (vtID != null && vtID <= 0) {
                 return res.json(`Vehicle Type is not valid`);
             }
 
             try {
-                const eDC = new EmployeeDataConnector(dataSource);
-                const eAPI = new EmployeeApi(eDC);
-                const employee = await eAPI.getByID(eID);
+                let employee = null;
 
-                const vtDC = new VehicleTypeDataConnector(dataSource);
-                const vtAPI = new VehicleTypeApi(vtDC);
-                const vehicleType = await vtAPI.getByID(vtID);
+                if (eID) {
+                    const eDC = new EmployeeDataConnector(dataSource);
+                    const eAPI = new EmployeeApi(eDC);
+                    try {
+                        employee = await eAPI.getByID(eID);
+                    } catch (e) {
+                        return res.json(`Employee does not exist`);
+                    }
+                }
+                let vehicleType = null;
+                if (vtID) {
+                    const vtDC = new VehicleTypeDataConnector(dataSource);
+                    const vtAPI = new VehicleTypeApi(vtDC);
+                    try {
+                        vehicleType = await vtAPI.getByID(vtID);
+                    } catch (e) {
+                        return res.json(`Vehicle Type does not exist`);
+                    }
+                    
+                }
 
                 let predicate = new EmployeeVehicleTypeOperation();
-                predicate.employee = employee;
-                predicate.type = vehicleType;
+                if(employee){
+                    predicate.employee = employee;
+                }
+                if(vehicleType){
+                    predicate.type = vehicleType;
+                }
 
                 const result = await api.get(predicate);
 
@@ -75,7 +94,7 @@ export class EmployeeVehicleTypeOperationApiRegister {
                 const vtAPI = new VehicleTypeApi(vtDC);
                 const vehicleType = await vtAPI.getByID(vtID);
 
-                const result = await api.create(employee,vehicleType);
+                const result = await api.create(employee, vehicleType);
 
                 return res.json(result);
 
@@ -114,7 +133,7 @@ export class EmployeeVehicleTypeOperationApiRegister {
                 predicate.employee = employee;
                 predicate.type = vehicleType;
 
-                const result = await api.update(predicate,newVhicleType);
+                const result = await api.update(predicate, newVhicleType);
 
                 return res.json(result);
 
@@ -134,7 +153,7 @@ export class EmployeeVehicleTypeOperationApiRegister {
             if (vtID <= 0) {
                 return res.json(`Vehicle Type is not valid`);
             }
-        
+
 
             try {
                 const eDC = new EmployeeDataConnector(dataSource);
@@ -152,9 +171,9 @@ export class EmployeeVehicleTypeOperationApiRegister {
                 await api.delete(predicate);
 
                 return res.json(
-                    `Delete combination of employee(ID:${eID})`+
+                    `Delete combination of employee(ID:${eID})` +
                     ` and Vehicle Type(ID:${vtID})`
-                    );
+                );
 
             } catch (e) {
                 return res.json((e as Error).message);
