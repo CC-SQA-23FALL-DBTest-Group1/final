@@ -5,7 +5,8 @@
   "description": "a package to run integration tests against iq-proxy-service",
   "scripts": {
     "test": "jest --watchAll=false --reporters=jest-junit --detectOpenHandles",
-    "t": "jest"
+    "t": "jest",
+    "tt": "jest --detectOpenHandles --no-cache --runInBand"
   },
   "dependencies": {
     "@types/jest": "^28.1.5",

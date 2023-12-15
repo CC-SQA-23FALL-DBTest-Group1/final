@@ -41,7 +41,7 @@ export class EmployeeVehicleTypeOperationApi {
 
         if (!(type instanceof VehicleType)) {
             throw new Error(
-                `Old Vehicle type is not valid. `
+                `Vehicle type is not valid. `
                 + `Code: EO003`
             );
         }

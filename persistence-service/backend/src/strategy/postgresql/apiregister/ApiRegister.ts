@@ -4,28 +4,27 @@
 import { DataSource } from "typeorm";
 import { Express } from "express";
 import { CustomerApiRegister } from "./CustomerApiRegister";
-import { VehicleApi } from "../api/VehicleApi";
-import VehicleTypeApiRegister from "./VehicleTypeApiRegister";
+import { VehicleTypeApiRegister } from "./VehicleTypeApiRegister";
+import { EmployeeApiRegister } from "./EmployeeApiRegister";
+import { EmployeeVehicleTypeOperationApiRegister } from "./EmployeeVehicleTypeOperationApiRegister";
 
 /**
  * Register all table urls here
  */
 export default class ApiRegister {
-    // #express: Express;
-    // #dataSource: DataSource;
 
     constructor(dataSource: DataSource, express: Express) {
-        // this.#dataSource = dataSource;
-        // this.#express = express;
 
         new CustomerApiRegister(dataSource, express);
-        new VehicleTypeApiRegister(dataSource,express);
-
-
-
-
-
+        new EmployeeApiRegister(dataSource, express);
+        new EmployeeVehicleTypeOperationApiRegister(dataSource,express);
+        // new MechanicVehicleTypeApiR
+        // new ShipmentApiR
+        // new ShipmentRouteApiR
+        // new TransitPointApiR
+        // new TripApiR
+        // new VehicleApiR
+        // new VehicleRepairRecordApiR
+        new VehicleTypeApiRegister(dataSource, express);
     }
-
-
 }

@@ -6,54 +6,18 @@
 // Last update: 2023-12-14
 
 import axios from "axios";
+import { cleanUp } from "./CleanUp";
 
-const targetUrl = `${process.env.TARGET_URL}`;
-//const targetUrl = `localhost`;
+//const targetUrl = `${process.env.TARGET_URL}`;
+const targetUrl = `localhost`
 describe("Customer Integration Test", () => {
 
 
 
     afterAll(async () => {
         // Clean up the data from this test
-        const response = await axios.post(`http://${targetUrl}/customer`);
-        if (response.data) {
-            const customers = response.data as any[];
-            console.log(
-                `==============================================`
-                + `\n`
-                + `Existing records in the table:`
-                + `${customers?.length ?? `None`}`
-                + `\n`
-                + `==============================================`
-            );
-
-            if (customers.length > 3) {
-                console.log(`Cleaning up records from previous test.`);
-                customers.forEach(async customer => {
-                    if (customer.id > 3) {
-                        await axios.post(
-                            `http://${targetUrl}/customer/delete`,
-                            { id: customer.id }
-                        );
-                    }
-                });
-                console.log(
-                    `Cleaned up records from previous test.`
-                    + `\n`
-                    + `==============================================`
-                );
-            }
-            else if (customers.length > 0) {
-                console.log(
-                    `Reserve records from migration.`
-                    + `\n==============================================`
-                );
-
-            }
-        }
-        else {
-            throw Error(`Customer Integration Test Stops.`)
-        }
+        let a = await cleanUp(targetUrl, `customer`, `Customer`, `Customer`);
+        console.log(a);
     })
 
 
@@ -415,7 +379,7 @@ describe("Customer Integration Test", () => {
 
     describe(`Update Customer`, () => {
 
-        
+
         test("With Valid Data", async () => {
 
             const data = {
@@ -661,7 +625,7 @@ describe("Customer Integration Test", () => {
 
 
         test("With negative ID", async () => {
-           
+
             const id = -1;
 
             const response = await axios.post(
@@ -672,11 +636,11 @@ describe("Customer Integration Test", () => {
 
             expect(response.status).toBe(200);
             expect(response.data).toEqual(`ID is not valid`)
-            
+
         });
 
         test("With ID 0", async () => {
-           
+
             const id = 0;
 
             const response = await axios.post(
@@ -687,7 +651,7 @@ describe("Customer Integration Test", () => {
 
             expect(response.status).toBe(200);
             expect(response.data).toEqual(`ID is not valid`)
-            
+
         });
     });
 
