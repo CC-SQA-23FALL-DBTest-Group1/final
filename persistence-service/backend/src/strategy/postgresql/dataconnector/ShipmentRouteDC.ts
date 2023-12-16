@@ -19,13 +19,15 @@ export class ShipmentRouteDataConnector
             const queryBuilder = this.#dataSource.getRepository
             (ShipmentRoute)
             .createQueryBuilder(`sr`);
+            queryBuilder.leftJoinAndSelect(`sr.shipment`, `shipment`);
+            queryBuilder.leftJoinAndSelect(`sr.trip`, `trip`);
 
             if (
                 predicate.shipment?.id !== undefined
                 && predicate.shipment?.id >= 1
                 && predicate.shipment?.id !== null
             ) {
-                queryBuilder.andWhere(`sr.shipment = :id`, { id: predicate.shipment.id });
+                queryBuilder.andWhere(`sr.shipment = :sid`, { sid: predicate.shipment.id });
             }
 
             if (
@@ -41,7 +43,7 @@ export class ShipmentRouteDataConnector
                 && predicate.trip?.id >= 1
                 && predicate.trip?.id !== null
             ) {
-                queryBuilder.andWhere(`sr.trip = :id`, { id: predicate.trip.id });
+                queryBuilder.andWhere(`sr.trip = :tid`, { tid: predicate.trip.id });
             }
 
             return queryBuilder.getMany();
