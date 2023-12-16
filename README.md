@@ -32,12 +32,12 @@ This project serves as a comprehensive demonstration of various concepts covered
 
 #### *Unit Test*
 1. Verify if Node and NPM are installed:
-```bash
-node -v
-```
-```bash
-npm -v
-```
+    ```bash
+    node -v
+    ```
+    ```bash
+    npm -v
+    ```
 2. Open a terminal, go to `persistence-service/backend` diretory.
 3. Run commands:
    ```bash
