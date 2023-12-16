@@ -6,9 +6,9 @@
 // Last update: 2023-12-14
 
 import axios from "axios";
+import { targetURL } from "./Config";
 
-//const targetUrl = `${process.env.TARGET_URL}`;
-const targetUrl = `localhost`
+const targetUrl = targetURL();
 describe("Customer Integration Test", () => {
 
 
