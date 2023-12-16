@@ -1,7 +1,223 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="0" errors="0" time="2.575">
-  <testsuite name="smoke" errors="0" failures="0" skipped="0" timestamp="2023-12-13T22:20:08" time="2.384" tests="1">
-    <testcase classname="smoke persistence-service status is 200" name="smoke persistence-service status is 200" time="0.056">
+<testsuites name="jest tests" tests="98" failures="0" errors="0" time="16.294">
+  <testsuite name="Customer Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:53:55" time="5.831" tests="27">
+    <testcase classname="Customer Integration Test Create Customer With Valid Data" name="Customer Integration Test Create Customer With Valid Data" time="0.721">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Empty Name" name="Customer Integration Test Create Customer With Empty Name" time="0.009">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Name Containing Only Spaces" name="Customer Integration Test Create Customer With Name Containing Only Spaces" time="0.018">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Name Containing Leading and Trailing Spaces" name="Customer Integration Test Create Customer With Name Containing Leading and Trailing Spaces" time="0.017">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Empty Address" name="Customer Integration Test Create Customer With Empty Address" time="0.018">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Address Containing Only Spaces" name="Customer Integration Test Create Customer With Address Containing Only Spaces" time="0.017">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Address Containing Leading and Trailing Spaces" name="Customer Integration Test Create Customer With Address Containing Leading and Trailing Spaces" time="0.022">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Empty phoneNumber1" name="Customer Integration Test Create Customer With Empty phoneNumber1" time="0.014">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With phoneNumber1 Containing Only Spaces" name="Customer Integration Test Create Customer With phoneNumber1 Containing Only Spaces" time="0.021">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With phoneNumber1 Containing Leading and Trailing Spaces" name="Customer Integration Test Create Customer With phoneNumber1 Containing Leading and Trailing Spaces" time="0.022">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer Without phoneNumber2" name="Customer Integration Test Create Customer Without phoneNumber2" time="0.019">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With Empty phoneNumber2" name="Customer Integration Test Create Customer With Empty phoneNumber2" time="0.02">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With phoneNumber2 Containing Only Spaces" name="Customer Integration Test Create Customer With phoneNumber2 Containing Only Spaces" time="0.019">
+    </testcase>
+    <testcase classname="Customer Integration Test Create Customer With phoneNumber2 Containing Leading and Trailing Spaces" name="Customer Integration Test Create Customer With phoneNumber2 Containing Leading and Trailing Spaces" time="0.018">
+    </testcase>
+    <testcase classname="Customer Integration Test Read Customer With Valid Existing ID" name="Customer Integration Test Read Customer With Valid Existing ID" time="0.041">
+    </testcase>
+    <testcase classname="Customer Integration Test Read Customer With negative ID" name="Customer Integration Test Read Customer With negative ID" time="0.018">
+    </testcase>
+    <testcase classname="Customer Integration Test Read Customer With ID 0" name="Customer Integration Test Read Customer With ID 0" time="0.014">
+    </testcase>
+    <testcase classname="Customer Integration Test Read Customer With non existing ID" name="Customer Integration Test Read Customer With non existing ID" time="0.014">
+    </testcase>
+    <testcase classname="Customer Integration Test Update Customer With Valid Data" name="Customer Integration Test Update Customer With Valid Data" time="0.08">
+    </testcase>
+    <testcase classname="Customer Integration Test Update Customer With negative ID" name="Customer Integration Test Update Customer With negative ID" time="0.016">
+    </testcase>
+    <testcase classname="Customer Integration Test Update Customer With ID 0" name="Customer Integration Test Update Customer With ID 0" time="0.021">
+    </testcase>
+    <testcase classname="Customer Integration Test Update Customer With Empty Name" name="Customer Integration Test Update Customer With Empty Name" time="0.035">
+    </testcase>
+    <testcase classname="Customer Integration Test Update Customer With Name Containing Only Spaces" name="Customer Integration Test Update Customer With Name Containing Only Spaces" time="0.032">
+    </testcase>
+    <testcase classname="Customer Integration Test Update Customer With Name Containing Leading and Trailing Spaces" name="Customer Integration Test Update Customer With Name Containing Leading and Trailing Spaces" time="0.049">
+    </testcase>
+    <testcase classname="Customer Integration Test Delete Customer With Valid Existing ID" name="Customer Integration Test Delete Customer With Valid Existing ID" time="0.062">
+    </testcase>
+    <testcase classname="Customer Integration Test Delete Customer With negative ID" name="Customer Integration Test Delete Customer With negative ID" time="0.01">
+    </testcase>
+    <testcase classname="Customer Integration Test Delete Customer With ID 0" name="Customer Integration Test Delete Customer With ID 0" time="0.012">
+    </testcase>
+  </testsuite>
+  <testsuite name="Shipment Route Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:01" time="2.171" tests="4">
+    <testcase classname="Shipment Route Integration Test Create With Valid Data" name="Shipment Route Integration Test Create With Valid Data" time="0.656">
+    </testcase>
+    <testcase classname="Shipment Route Integration Test Read With Valid Data" name="Shipment Route Integration Test Read With Valid Data" time="0.256">
+    </testcase>
+    <testcase classname="Shipment Route Integration Test Update With Valid Data" name="Shipment Route Integration Test Update With Valid Data" time="0.368">
+    </testcase>
+    <testcase classname="Shipment Route Integration Test Read With Valid Data" name="Shipment Route Integration Test Read With Valid Data" time="0.308">
+    </testcase>
+  </testsuite>
+  <testsuite name="Transit Point Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:03" time="0.926" tests="19">
+    <testcase classname="Transit Point Integration Test Create Transit Point With Valid Data" name="Transit Point Integration Test Create Transit Point With Valid Data" time="0.067">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Create Transit Point With Empty Name" name="Transit Point Integration Test Create Transit Point With Empty Name" time="0.011">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Create Transit Point With Name Containing Only Spaces" name="Transit Point Integration Test Create Transit Point With Name Containing Only Spaces" time="0.017">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Create Transit Point With Name Containing Leading and Trailing Spaces" name="Transit Point Integration Test Create Transit Point With Name Containing Leading and Trailing Spaces" time="0.014">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Read Transit Point With Valid Existing ID" name="Transit Point Integration Test Read Transit Point With Valid Existing ID" time="0.025">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Read Transit Point With Valid Name" name="Transit Point Integration Test Read Transit Point With Valid Name" time="0.047">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Read Transit Point With Empty Name" name="Transit Point Integration Test Read Transit Point With Empty Name" time="0.022">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Read Transit Point With Name Containing Only Spaces" name="Transit Point Integration Test Read Transit Point With Name Containing Only Spaces" time="0.023">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Read Transit Point With Name Containing Leading and Trailing Spaces" name="Transit Point Integration Test Read Transit Point With Name Containing Leading and Trailing Spaces" time="0.034">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With Valid Data" name="Transit Point Integration Test Update Vehicle Type With Valid Data" time="0.033">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With Negative ID" name="Transit Point Integration Test Update Vehicle Type With Negative ID" time="0.011">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With ID 0" name="Transit Point Integration Test Update Vehicle Type With ID 0" time="0.009">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With Non Existing ID" name="Transit Point Integration Test Update Vehicle Type With Non Existing ID" time="0.016">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With Empty Name" name="Transit Point Integration Test Update Vehicle Type With Empty Name" time="0.024">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With Name Containing Only Spaces" name="Transit Point Integration Test Update Vehicle Type With Name Containing Only Spaces" time="0.023">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Update Vehicle Type With Name Containing Leading and Trailing Spaces" name="Transit Point Integration Test Update Vehicle Type With Name Containing Leading and Trailing Spaces" time="0.028">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Delete Vehicle Type With Valid Data" name="Transit Point Integration Test Delete Vehicle Type With Valid Data" time="0.048">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Delete Vehicle Type With Negative ID" name="Transit Point Integration Test Delete Vehicle Type With Negative ID" time="0.026">
+    </testcase>
+    <testcase classname="Transit Point Integration Test Delete Vehicle Type With ID 0" name="Transit Point Integration Test Delete Vehicle Type With ID 0" time="0.03">
+    </testcase>
+  </testsuite>
+  <testsuite name="Vehicle Type Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:04" time="0.831" tests="19">
+    <testcase classname="Vehicle Type Integration Test Create Vehicle Type With Valid Data" name="Vehicle Type Integration Test Create Vehicle Type With Valid Data" time="0.029">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Create Vehicle Type With Empty Name" name="Vehicle Type Integration Test Create Vehicle Type With Empty Name" time="0.006">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Create Vehicle Type With Name Containing Only Spaces" name="Vehicle Type Integration Test Create Vehicle Type With Name Containing Only Spaces" time="0.01">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Create Vehicle Type With Name Containing Leading and Trailing Spaces" name="Vehicle Type Integration Test Create Vehicle Type With Name Containing Leading and Trailing Spaces" time="0.014">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Read Vehicle Type With Valid Existing ID" name="Vehicle Type Integration Test Read Vehicle Type With Valid Existing ID" time="0.028">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Read Vehicle Type With Valid Name" name="Vehicle Type Integration Test Read Vehicle Type With Valid Name" time="0.034">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Read Vehicle Type With Empty Name" name="Vehicle Type Integration Test Read Vehicle Type With Empty Name" time="0.034">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Read Vehicle Type With Name Containing Only Spaces" name="Vehicle Type Integration Test Read Vehicle Type With Name Containing Only Spaces" time="0.026">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Read Vehicle Type With Name Containing Leading and Trailing Spaces" name="Vehicle Type Integration Test Read Vehicle Type With Name Containing Leading and Trailing Spaces" time="0.03">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With Valid Data" name="Vehicle Type Integration Test Update Vehicle Type With Valid Data" time="0.055">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With Negative ID" name="Vehicle Type Integration Test Update Vehicle Type With Negative ID" time="0.01">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With ID 0" name="Vehicle Type Integration Test Update Vehicle Type With ID 0" time="0.01">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With Non Existing ID" name="Vehicle Type Integration Test Update Vehicle Type With Non Existing ID" time="0.013">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With Empty Name" name="Vehicle Type Integration Test Update Vehicle Type With Empty Name" time="0.046">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With Name Containing Only Spaces" name="Vehicle Type Integration Test Update Vehicle Type With Name Containing Only Spaces" time="0.024">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Update Vehicle Type With Name Containing Leading and Trailing Spaces" name="Vehicle Type Integration Test Update Vehicle Type With Name Containing Leading and Trailing Spaces" time="0.033">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Delete Vehicle Type With Valid Data" name="Vehicle Type Integration Test Delete Vehicle Type With Valid Data" time="0.043">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Delete Vehicle Type With Negative ID" name="Vehicle Type Integration Test Delete Vehicle Type With Negative ID" time="0.046">
+    </testcase>
+    <testcase classname="Vehicle Type Integration Test Delete Vehicle Type With ID 0" name="Vehicle Type Integration Test Delete Vehicle Type With ID 0" time="0.036">
+    </testcase>
+  </testsuite>
+  <testsuite name="Trip Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:05" time="0.967" tests="4">
+    <testcase classname="Trip Integration Test Create With Valid Data" name="Trip Integration Test Create With Valid Data" time="0.163">
+    </testcase>
+    <testcase classname="Trip Integration Test Read With Valid Existing ID" name="Trip Integration Test Read With Valid Existing ID" time="0.137">
+    </testcase>
+    <testcase classname="Trip Integration Test Update With Valid Data" name="Trip Integration Test Update With Valid Data" time="0.196">
+    </testcase>
+    <testcase classname="Trip Integration Test Delete With Valid Data" name="Trip Integration Test Delete With Valid Data" time="0.194">
+    </testcase>
+  </testsuite>
+  <testsuite name="Employee Vehicle Type Operation Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:06" time="0.861" tests="4">
+    <testcase classname="Employee Vehicle Type Operation Integration Test Create Record With Valid Data" name="Employee Vehicle Type Operation Integration Test Create Record With Valid Data" time="0.186">
+    </testcase>
+    <testcase classname="Employee Vehicle Type Operation Integration Test Read Record With Valid Data" name="Employee Vehicle Type Operation Integration Test Read Record With Valid Data" time="0.105">
+    </testcase>
+    <testcase classname="Employee Vehicle Type Operation Integration Test Update Record With Valid Data" name="Employee Vehicle Type Operation Integration Test Update Record With Valid Data" time="0.142">
+    </testcase>
+    <testcase classname="Employee Vehicle Type Operation Integration Test Delete Record With Valid Data" name="Employee Vehicle Type Operation Integration Test Delete Record With Valid Data" time="0.134">
+    </testcase>
+  </testsuite>
+  <testsuite name="Vehicle Repair Record Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:06" time="1.086" tests="4">
+    <testcase classname="Vehicle Repair Record Integration Test Read With Valid Data" name="Vehicle Repair Record Integration Test Read With Valid Data" time="0.248">
+    </testcase>
+    <testcase classname="Vehicle Repair Record Integration Test Create With Valid Data" name="Vehicle Repair Record Integration Test Create With Valid Data" time="0.18">
+    </testcase>
+    <testcase classname="Vehicle Repair Record Integration Test Update With Valid Data" name="Vehicle Repair Record Integration Test Update With Valid Data" time="0.124">
+    </testcase>
+    <testcase classname="Vehicle Repair Record Integration Test Delete Vehicle Type With Valid Data" name="Vehicle Repair Record Integration Test Delete Vehicle Type With Valid Data" time="0.122">
+    </testcase>
+  </testsuite>
+  <testsuite name="Shipment Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:08" time="0.988" tests="4">
+    <testcase classname="Shipment Integration Test Create With Valid Data" name="Shipment Integration Test Create With Valid Data" time="0.136">
+    </testcase>
+    <testcase classname="Shipment Integration Test Read With Valid Existing ID" name="Shipment Integration Test Read With Valid Existing ID" time="0.161">
+    </testcase>
+    <testcase classname="Shipment Integration Test Update With Valid Data" name="Shipment Integration Test Update With Valid Data" time="0.114">
+    </testcase>
+    <testcase classname="Shipment Integration Test Delete Vehicle Type With Valid Data" name="Shipment Integration Test Delete Vehicle Type With Valid Data" time="0.148">
+    </testcase>
+  </testsuite>
+  <testsuite name="Mechanic Vehicle Type Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:09" time="0.845" tests="4">
+    <testcase classname="Mechanic Vehicle Type Integration Test Create Record With Valid Data" name="Mechanic Vehicle Type Integration Test Create Record With Valid Data" time="0.079">
+    </testcase>
+    <testcase classname="Mechanic Vehicle Type Integration Test Read Record With Valid Data" name="Mechanic Vehicle Type Integration Test Read Record With Valid Data" time="0.095">
+    </testcase>
+    <testcase classname="Mechanic Vehicle Type Integration Test Update Record With Valid Data" name="Mechanic Vehicle Type Integration Test Update Record With Valid Data" time="0.124">
+    </testcase>
+    <testcase classname="Mechanic Vehicle Type Integration Test Delete Record With Valid Data" name="Mechanic Vehicle Type Integration Test Delete Record With Valid Data" time="0.085">
+    </testcase>
+  </testsuite>
+  <testsuite name="Vehicle Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:09" time="0.773" tests="4">
+    <testcase classname="Vehicle Integration Test Create With Valid Data" name="Vehicle Integration Test Create With Valid Data" time="0.087">
+    </testcase>
+    <testcase classname="Vehicle Integration Test Read With Valid Existing ID" name="Vehicle Integration Test Read With Valid Existing ID" time="0.049">
+    </testcase>
+    <testcase classname="Vehicle Integration Test Update With Valid Data" name="Vehicle Integration Test Update With Valid Data" time="0.114">
+    </testcase>
+    <testcase classname="Vehicle Integration Test Delete With Valid Data" name="Vehicle Integration Test Delete With Valid Data" time="0.062">
+    </testcase>
+  </testsuite>
+  <testsuite name="Employee Integration Test" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:10" time="0.501" tests="4">
+    <testcase classname="Employee Integration Test Create Employee With Valid Data" name="Employee Integration Test Create Employee With Valid Data" time="0.094">
+    </testcase>
+    <testcase classname="Employee Integration Test Read Employee With Valid Existing ID" name="Employee Integration Test Read Employee With Valid Existing ID" time="0.041">
+    </testcase>
+    <testcase classname="Employee Integration Test Update Employee With Valid Existing ID" name="Employee Integration Test Update Employee With Valid Existing ID" time="0.049">
+    </testcase>
+    <testcase classname="Employee Integration Test Delete Employee With Valid Existing ID" name="Employee Integration Test Delete Employee With Valid Existing ID" time="0.062">
+    </testcase>
+  </testsuite>
+  <testsuite name="smoke" errors="0" failures="0" skipped="0" timestamp="2023-12-16T03:54:11" time="0.215" tests="1">
+    <testcase classname="smoke persistence-service status is 200" name="smoke persistence-service status is 200" time="0.01">
     </testcase>
   </testsuite>
 </testsuites>
