@@ -257,7 +257,7 @@ export class TripApiRegister {
 
                 api.deleteByID(tripID);
 
-                return res.json(`Delte ID:${tripID}`);
+                return res.json(`Delete ID:${tripID}`);
 
             } catch (e) {
                 console.log(e);

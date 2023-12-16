@@ -6,7 +6,7 @@ import { targetURL } from "./Config";
 
 const targetUrl = targetURL();
 
-xdescribe("Trip Integration Test", () => {
+describe("Trip Integration Test", () => {
 
 
     describe(`Create`, () => {
@@ -53,14 +53,13 @@ xdescribe("Trip Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'assag',
+                    model: 'Aoeing 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -143,14 +142,13 @@ xdescribe("Trip Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: '354tygv',
+                    model: 'Aoeing 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -238,14 +236,13 @@ xdescribe("Trip Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'sfcvcxv',
+                    model: 'ccc 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -300,7 +297,7 @@ xdescribe("Trip Integration Test", () => {
 
 
 
-    describe(`Delete Vehicle Type`, () => {
+    describe(`Delete`, () => {
 
         test("With Valid Data", async () => {
 
@@ -345,14 +342,13 @@ xdescribe("Trip Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'sdfsd',
+                    model: 'Aoeinccg 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -371,7 +367,7 @@ xdescribe("Trip Integration Test", () => {
             const readTrip = (await axios.get(
                 `http://${targetUrl}/trip/${newTrip.id}`
 
-            ))
+            )).data;
 
             const expected = {
                 id: newTrip.id,

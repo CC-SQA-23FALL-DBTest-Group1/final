@@ -23,6 +23,7 @@ export class TripDataConnector
             queryBuilder.leftJoinAndSelect('t.from', 'from');
             queryBuilder.leftJoinAndSelect('t.driver1', 'driver1');
             queryBuilder.leftJoinAndSelect('t.driver2', 'driver2');
+            queryBuilder.leftJoinAndSelect('vehicle.type', 'type');
 
 
             if (
