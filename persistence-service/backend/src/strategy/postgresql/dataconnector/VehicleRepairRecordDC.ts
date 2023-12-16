@@ -19,6 +19,8 @@ export class VehicleRepairRecordDataConnector
             const ds = this.#dataSource
             const queryBuilder = ds.getRepository(VehicleRepairRecord)
                 .createQueryBuilder(`vrr`);
+            queryBuilder.leftJoinAndSelect('vrr.mechanic', 'mechanic');
+            queryBuilder.leftJoinAndSelect('vrr.vehicle', 'vehicle');
 
             if (
                 predicate.id !== undefined
@@ -34,8 +36,8 @@ export class VehicleRepairRecordDataConnector
                 && predicate.actualTime >= 1
             ) {
                 queryBuilder.andWhere(
-                    `vrr.actualTime = :time`,
-                    { time: predicate.actualTime }
+                    `vrr.actualTime = :atime`,
+                    { atime: predicate.actualTime }
                 );
             }
 
@@ -45,8 +47,8 @@ export class VehicleRepairRecordDataConnector
                 && predicate.estimatedTime >= 1
             ) {
                 queryBuilder.andWhere(
-                    `vrr.estimatedTime = :time`,
-                    { time: predicate.estimatedTime }
+                    `vrr.estimatedTime = :etime`,
+                    { etime: predicate.estimatedTime }
                 );
             }
 
@@ -56,8 +58,8 @@ export class VehicleRepairRecordDataConnector
                 && predicate.vehicle.id >= 1
             ) {
                 queryBuilder.andWhere(
-                    `vrr.vehicle = :id`,
-                    { id: predicate.vehicle.id }
+                    `vrr.vehicle = :vid`,
+                    { vid: predicate.vehicle.id }
                 );
             }
 
@@ -67,8 +69,8 @@ export class VehicleRepairRecordDataConnector
                 && predicate.mechanic.id >= 1
             ) {
                 queryBuilder.andWhere(
-                    `vrr.mechanic = :id`,
-                    { id: predicate.mechanic.id }
+                    `vrr.mechanic = :mid`,
+                    { mid: predicate.mechanic.id }
                 );
             }
 
