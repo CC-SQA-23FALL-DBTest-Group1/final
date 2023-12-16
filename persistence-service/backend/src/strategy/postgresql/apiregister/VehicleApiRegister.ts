@@ -48,7 +48,7 @@ export class VehicleApiRegister {
 
 
         //Create
-        express.post(`/Vehicle/new`, async (req, res) => {
+        express.post(`/vehicle/new`, async (req, res) => {
             const brand: string = req.body.brand ?? ``
             const model: string = req.body.model ?? ``
             const load: number = req.body.load ?? -1;
@@ -168,7 +168,7 @@ export class VehicleApiRegister {
 
 
         //Delete
-        express.post(`/Vehicled/delete`, async (req, res) => {
+        express.post(`/vehicle/delete`, async (req, res) => {
             const id: number = req.body.id ?? 0
 
             if (id <= 0) {

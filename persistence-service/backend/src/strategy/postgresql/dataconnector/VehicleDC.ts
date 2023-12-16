@@ -90,15 +90,16 @@ export class VehicleDataConnector
             }
 
             if (
-                predicate.type.id !== undefined
-                && predicate.type.id !== null
-                && predicate.type.id >= 1
+                predicate.type?.id !== undefined
+                && predicate.type?.id !== null
+                && predicate.type?.id >= 1
             ) {
                 queryBuilder.andWhere(`v.type = :tid`, { tid: predicate.type.id });
             }
 
             return await queryBuilder.getMany();
         } catch (e) {
+            console.log(e);
             throw Error(`Error occured when searching. Code: VD000`);
         }
 
