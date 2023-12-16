@@ -6,7 +6,7 @@ import { targetURL } from "./Config";
 
 const targetUrl = targetURL();
 
-xdescribe("Shipment Route Integration Test", () => {
+describe("Shipment Route Integration Test", () => {
 
     describe(`Create`, () => {
         test("With Valid Data", async () => {
@@ -74,14 +74,13 @@ xdescribe("Shipment Route Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'sss',
+                    model: 'Aoeincccg 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -193,14 +192,13 @@ xdescribe("Shipment Route Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'ssscz',
+                    model: 'Aoeing 66',
+                    load: 150,
+                    capacity: 1157,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -321,14 +319,13 @@ xdescribe("Shipment Route Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'Aoesssccxxing',
+                    model: 'Aoeinzzzg 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -480,14 +477,13 @@ xdescribe("Shipment Route Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'acsca scs',
+                    model: 'Aoeiddsng 66',
+                    load: 150,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -523,9 +519,9 @@ xdescribe("Shipment Route Integration Test", () => {
             ))
 
             expect(response.status).toBe(200);
-            expect(response.data).toMatchObject(
+            expect(response.data).toEqual(
                 `Delete Route with shipment(ID:${newShipment.id}) and order at ${1}`
-                );
+            );
 
         });
     });

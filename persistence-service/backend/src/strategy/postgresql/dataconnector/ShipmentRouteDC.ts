@@ -17,10 +17,20 @@ export class ShipmentRouteDataConnector
     async get(predicate: ShipmentRoute): Promise<ShipmentRoute[]> {
         try {
             const queryBuilder = this.#dataSource.getRepository
-            (ShipmentRoute)
-            .createQueryBuilder(`sr`);
+                (ShipmentRoute)
+                .createQueryBuilder(`sr`);
             queryBuilder.leftJoinAndSelect(`sr.shipment`, `shipment`);
             queryBuilder.leftJoinAndSelect(`sr.trip`, `trip`);
+            queryBuilder.leftJoinAndSelect(`trip.vehicle`, `vehicle`);
+            queryBuilder.leftJoinAndSelect(`vehicle.type`, `type`);
+            queryBuilder.leftJoinAndSelect(`trip.from`, `tfrom`);
+            queryBuilder.leftJoinAndSelect(`trip.to`, `tto`);
+            queryBuilder.leftJoinAndSelect(`trip.driver1`, `driver1`);
+            queryBuilder.leftJoinAndSelect(`trip.driver2`, `driver2`);
+            queryBuilder.leftJoinAndSelect(`shipment.customer`, `customer`);
+            queryBuilder.leftJoinAndSelect(`shipment.from`, `sfrom`);
+            queryBuilder.leftJoinAndSelect(`shipment.to`, `sto`);
+
 
             if (
                 predicate.shipment?.id !== undefined
@@ -47,7 +57,7 @@ export class ShipmentRouteDataConnector
             }
 
             return queryBuilder.getMany();
-          
+
 
         } catch (e) {
             throw Error(`Error occured when searching. Code: SC000`);

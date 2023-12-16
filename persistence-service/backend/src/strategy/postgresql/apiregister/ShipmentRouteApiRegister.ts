@@ -58,7 +58,7 @@ export class ShipmentRouteApiRegister {
                 predicate.order = parseInt(order);
 
                 const result = await api.get(predicate);
-                return res.json(result);
+                return res.json(result[0]);
             } catch (e) {
                 return res.json((e as Error).message);
             }
