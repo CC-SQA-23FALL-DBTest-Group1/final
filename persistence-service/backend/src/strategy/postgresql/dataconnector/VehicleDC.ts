@@ -18,6 +18,7 @@ export class VehicleDataConnector
         try {
             const queryBuilder = this.#dataSource.getRepository(Vehicle)
                 .createQueryBuilder(`v`);
+            queryBuilder.leftJoinAndSelect(`v.type`, `type`);
 
             if (
                 predicate.id !== undefined
@@ -33,8 +34,8 @@ export class VehicleDataConnector
                 && predicate.brand.trim() !== ''
             ) {
                 queryBuilder.andWhere(
-                    `v.brand LIKE :searchTerm`,
-                    { searchTerm: `%${predicate.brand}%` }
+                    `v.brand LIKE :searchTerm1`,
+                    { searchTerm1: `%${predicate.brand}%` }
                 );
             }
 
@@ -44,8 +45,8 @@ export class VehicleDataConnector
                 && predicate.model.trim() !== ''
             ) {
                 queryBuilder.andWhere(
-                    `v.model LIKE :searchTerm`,
-                    { searchTerm: `%${predicate.model}%` }
+                    `v.model LIKE :searchTerm2`,
+                    { searchTerm2: `%${predicate.model}%` }
                 );
             }
 
@@ -93,7 +94,7 @@ export class VehicleDataConnector
                 && predicate.type.id !== null
                 && predicate.type.id >= 1
             ) {
-                queryBuilder.andWhere(`t.type = :id`, { id: predicate.type.id });
+                queryBuilder.andWhere(`v.type = :tid`, { tid: predicate.type.id });
             }
 
             return await queryBuilder.getMany();

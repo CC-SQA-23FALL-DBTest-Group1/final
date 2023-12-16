@@ -14,22 +14,19 @@ import { VehicleTypeDataConnector, VehicleDataConnector } from "../dataconnector
  * All errors should be cought here.
  */
 export class VehicleApiRegister {
-    #express: Express;
-    #dataSource: DataSource;
 
     constructor(dataSource: DataSource, express: Express) {
-        this.#dataSource = dataSource;
-        this.#express = express;
-        const dc = new VehicleDataConnector(this.#dataSource);
+
+        const dc = new VehicleDataConnector(dataSource);
         const api = new VehicleApi(dc);
 
         //Default
-        this.#express.get(`/vehicle`, (_, res) => {
+        express.get(`/vehicle`, (_, res) => {
             return res.json(`Vehicle`);
         });
 
         //Read one 
-        this.#express.get(`/vehicle/:id`, async (req, res) => {
+        express.get(`/vehicle/:id`, async (req, res) => {
             const id = req.params.id.trim();
             const regex = /^[0-9]{1,}$/; // Positive integer with or without leading zeros
 
@@ -51,14 +48,14 @@ export class VehicleApiRegister {
 
 
         //Create
-        this.#express.post(`/Vehicle/new`, async (req, res) => {
+        express.post(`/Vehicle/new`, async (req, res) => {
             const brand: string = req.body.brand ?? ``
             const model: string = req.body.model ?? ``
-            const load: number = req.body.load ?? 0;
+            const load: number = req.body.load ?? -1;
             const capacity: number = req.body.capacity ?? 0;
-            const year: number = req.body.year ?? 0;
-            const numberOfRepair: number = req.body.numberOfRepair ?? 0;
-            const typeID: number = req.body.typeID ?? 0;
+            const year: number = req.body.year ?? -1;
+            const numberOfRepair: number = req.body.numberOfRepair ?? -1;
+            const typeID: number = req.body.type ?? 0;
 
             if (brand.length == 0) {
                 return res.json(`Brand is not valid`);
@@ -66,18 +63,18 @@ export class VehicleApiRegister {
             if (model.length == 0) {
                 return res.json(`Model is not valid`);
             }
-            if (load <= 0) {
-                return res.json(`load is not valid`);
+            if (load < 0) {
+                return res.json(`Load is not valid`);
             }
             if (capacity <= 0) {
-                return res.json(`capacity is not valid`);
+                return res.json(`Capacity is not valid`);
             }
             const isInteger = Number.isInteger(year);
 
             if (!isInteger || !(/^\d{4}$/.test(String(year)))) {
                 return res.json(`Year is not valid.`);
             }
-            if (numberOfRepair <= 0) {
+            if (numberOfRepair < 0) {
                 return res.json(`NumberOfRepair is not valid`);
             }
             if (typeID <= 0) {
@@ -92,7 +89,15 @@ export class VehicleApiRegister {
                 const type = await vtAPI.getByID(typeID);
 
 
-                const result = await api.create(brand,model,load,capacity,year,numberOfRepair,type);
+                const result = await api.create(
+                    brand,
+                    model,
+                    load,
+                    capacity,
+                    year,
+                    numberOfRepair,
+                    type
+                );
                 return res.json(result);
             } catch (e) {
                 return res.json((e as Error).message);
@@ -102,33 +107,34 @@ export class VehicleApiRegister {
 
 
         //Update
-        this.#express.post(`/vehicle/update`, async (req, res) => {
+        express.post(`/vehicle/update`, async (req, res) => {
+            const id: number = req.body.id ?? 0;
             const brand: string = req.body.brand ?? ``
             const model: string = req.body.model ?? ``
-            const load: number = req.body.load ?? 0;
+            const load: number = req.body.load ?? -1;
             const capacity: number = req.body.capacity ?? 0;
-            const year: number = req.body.year ?? 0;
-            const numberOfRepair: number = req.body.numberOfRepair ?? 0;
-            const typeID: number = req.body.typeID ?? 0;
-           
+            const year: number = req.body.year ?? -1;
+            const numberOfRepair: number = req.body.numberOfRepair ?? -1;
+            const typeID: number = req.body.type ?? 0;
+
             if (brand.length == 0) {
                 return res.json(`Brand is not valid`);
             }
             if (model.length == 0) {
                 return res.json(`Model is not valid`);
             }
-            if (load <= 0) {
-                return res.json(`load is not valid`);
+            if (load < 0) {
+                return res.json(`Load is not valid`);
             }
             if (capacity <= 0) {
-                return res.json(`capacity is not valid`);
+                return res.json(`Capacity is not valid`);
             }
             const isInteger = Number.isInteger(year);
 
             if (!isInteger || !(/^\d{4}$/.test(String(year)))) {
                 return res.json(`Year is not valid.`);
             }
-            if (numberOfRepair <= 0) {
+            if (numberOfRepair < 0) {
                 return res.json(`NumberOfRepair is not valid`);
             }
             if (typeID <= 0) {
@@ -141,7 +147,18 @@ export class VehicleApiRegister {
                 const type = await vtAPI.getByID(typeID);
 
 
-                const result = await api.create(brand,model,load,capacity,year,numberOfRepair,type);
+
+                const result = await api.updateByID(
+                    id,
+                    brand,
+                    model,
+                    load,
+                    capacity,
+                    year,
+                    numberOfRepair,
+                    type
+                );
+
                 return res.json(result);
             } catch (e) {
                 return res.json((e as Error).message);
@@ -149,11 +166,9 @@ export class VehicleApiRegister {
 
         })
 
-      
-
 
         //Delete
-        this.#express.post(`/vehicle/delete`, async (req, res) => {
+        express.post(`/Vehicled/delete`, async (req, res) => {
             const id: number = req.body.id ?? 0
 
             if (id <= 0) {
