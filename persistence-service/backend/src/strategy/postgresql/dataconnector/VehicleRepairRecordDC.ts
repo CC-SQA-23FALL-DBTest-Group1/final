@@ -21,6 +21,7 @@ export class VehicleRepairRecordDataConnector
                 .createQueryBuilder(`vrr`);
             queryBuilder.leftJoinAndSelect('vrr.mechanic', 'mechanic');
             queryBuilder.leftJoinAndSelect('vrr.vehicle', 'vehicle');
+            queryBuilder.leftJoinAndSelect('vehicle.type', 'type');
 
             if (
                 predicate.id !== undefined
@@ -53,9 +54,9 @@ export class VehicleRepairRecordDataConnector
             }
 
             if (
-                predicate.vehicle.id !== undefined
-                && predicate.vehicle.id !== null
-                && predicate.vehicle.id >= 1
+                predicate.vehicle?.id !== undefined
+                && predicate.vehicle?.id !== null
+                && predicate.vehicle?.id >= 1
             ) {
                 queryBuilder.andWhere(
                     `vrr.vehicle = :vid`,
@@ -64,9 +65,9 @@ export class VehicleRepairRecordDataConnector
             }
 
             if (
-                predicate.mechanic.id !== undefined
-                && predicate.mechanic.id !== null
-                && predicate.mechanic.id >= 1
+                predicate.mechanic?.id !== undefined
+                && predicate.mechanic?.id !== null
+                && predicate.mechanic?.id >= 1
             ) {
                 queryBuilder.andWhere(
                     `vrr.mechanic = :mid`,

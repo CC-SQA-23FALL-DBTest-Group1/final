@@ -46,8 +46,8 @@ export class ShipmentDataConnector
 
             if (
                 predicate.to?.id !== undefined
-                && predicate?.to.id !== null
-                && predicate?.to.id >= 1
+                && predicate?.to?.id !== null
+                && predicate?.to?.id >= 1
             ) {
                 queryBuilder.andWhere(`s.to = :tid`, { tid: predicate.to.id });
             }

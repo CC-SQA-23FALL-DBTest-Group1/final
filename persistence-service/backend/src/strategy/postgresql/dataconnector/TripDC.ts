@@ -34,33 +34,33 @@ export class TripDataConnector
             }
 
             if (
-                predicate.vehicle.id !== undefined
-                && predicate.vehicle.id !== null
-                && predicate.vehicle.id >= 1
+                predicate.vehicle?.id !== undefined
+                && predicate.vehicle?.id !== null
+                && predicate.vehicle?.id >= 1
             ) {
                 queryBuilder.andWhere(`t.vehicle = :vid`, { vid: predicate.vehicle.id });
             }
 
             if (
-                predicate.from.id !== undefined
-                && predicate.from.id !== null
-                && predicate.from.id >= 1
+                predicate.from?.id !== undefined
+                && predicate.from?.id !== null
+                && predicate.from?.id >= 1
             ) {
                 queryBuilder.andWhere(`t.from = :fid`, { fid: predicate.from.id });
             }
 
             if (
-                predicate.to.id !== undefined
-                && predicate.to.id !== null
-                && predicate.to.id >= 1
+                predicate.to?.id !== undefined
+                && predicate.to?.id !== null
+                && predicate.to?.id >= 1
             ) {
                 queryBuilder.andWhere(`t.to = :oid`, { oid: predicate.to.id });
             }
 
             if (
-                predicate.driver1.id !== undefined
-                && predicate.driver1.id !== null
-                && predicate.driver1.id >= 1
+                predicate.driver1?.id !== undefined
+                && predicate.driver1?.id !== null
+                && predicate.driver1?.id >= 1
             ) {
                 queryBuilder.andWhere(
                     new Brackets(qb => {
@@ -73,9 +73,9 @@ export class TripDataConnector
             if (
                 predicate.driver2 !== undefined
                 && predicate.driver2 !== null
-                && predicate.driver2.id !== undefined
-                && predicate.driver2.id !== null
-                && predicate.driver2.id >= 1
+                && predicate.driver2?.id !== undefined
+                && predicate.driver2?.id !== null
+                && predicate.driver2?.id >= 1
             ) {
                 queryBuilder.andWhere(
                     new Brackets(qb => {

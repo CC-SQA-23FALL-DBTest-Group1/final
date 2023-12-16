@@ -6,7 +6,7 @@ import { targetURL } from "./Config";
 
 const targetUrl = targetURL();
 
-xdescribe("Vehicle Repair Record Integration Test", () => {
+describe("Vehicle Repair Record Integration Test", () => {
 
 
     describe(`Read`, () => {
@@ -29,14 +29,13 @@ xdescribe("Vehicle Repair Record Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'AWQFDD',
+                    model: 'Aoeing 66',
+                    load: 14,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -106,14 +105,13 @@ xdescribe("Vehicle Repair Record Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'AWQFc sDD',
+                    model: 'Aoeing 66',
+                    load: 14,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -179,14 +177,13 @@ xdescribe("Vehicle Repair Record Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'APSL ',
+                    model: 'Aoeing 66',
+                    load: 14,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
@@ -264,14 +261,13 @@ xdescribe("Vehicle Repair Record Integration Test", () => {
             const newVehicle = (await axios.post(
                 `http://${targetUrl}/vehicle/new`,
                 {
-                    /**
-                     * Wait for Vehicle Integration
-                     * 
-                     * 
-                     * 
-                     * 
-                     * 
-                     */
+                    brand: 'AWQQQ FDD',
+                    model: 'Aoeing 66',
+                    load: 14,
+                    capacity: 117,
+                    year: 2022,
+                    numberOfRepair: 1,
+                    type: newVehicleType.id,
                 }
             )).data;
 
