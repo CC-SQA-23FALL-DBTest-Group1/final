@@ -13,7 +13,7 @@ import { VehicleTypeDataConnector, VehicleDataConnector } from "../dataconnector
  * Give Responses with JSON.
  * All errors should be cought here.
  */
-export class VehicleTypeApiRegister {
+export class VehicleApiRegister {
     #express: Express;
     #dataSource: DataSource;
 
@@ -136,18 +136,12 @@ export class VehicleTypeApiRegister {
             }
 
             try {
-                const cDC = new CustomerDataConnector(dataSource);
-                const cAPI = new CustomerApi(cDC);
-                const customer = await cAPI.getByID(customerID);
-
-                const tDC = new TransitPointDataConnector(dataSource);
-                const tAPI = new TransitPointApi(tDC);
-                const toTP = await tAPI.getByID(year);
-                const fromTP = await tAPI.getByID(fromID);
+                const vtDC = new VehicleTypeDataConnector(dataSource);
+                const vtAPI = new VehicleTypeApi(vtDC);
+                const type = await vtAPI.getByID(typeID);
 
 
-                const result = await api.updateByID(id, customer, load, capacity, fromTP, toTP);
-
+                const result = await api.create(brand,model,load,capacity,year,numberOfRepair,type);
                 return res.json(result);
             } catch (e) {
                 return res.json((e as Error).message);
@@ -155,9 +149,11 @@ export class VehicleTypeApiRegister {
 
         })
 
+      
+
 
         //Delete
-        this.#express.post(`/Vehicled/delete`, async (req, res) => {
+        this.#express.post(`/vehicle/delete`, async (req, res) => {
             const id: number = req.body.id ?? 0
 
             if (id <= 0) {
